@@ -2,3 +2,5 @@ Flask
 Flask-SQLAlchemy
 PyMySQL
 requests
+python-dotenv
+flask-WTF

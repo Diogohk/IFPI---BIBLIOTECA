@@ -12,3 +12,4 @@ INTEGRANTES DO PROJETO:
  * Brenno Ramos Cruz
  * Hitallo Rodrigues de Alencar
  * Kauan Ramos da Silva
+ * Murilo de Sousa Joaquim

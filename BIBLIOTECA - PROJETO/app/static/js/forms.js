@@ -1,11 +1,10 @@
-
-document.addEventListener(“DOMContentLoaded”, function () {
-    const formularios = document.querySelectorAll(“form”);
+document.addEventListener("DOMContentLoaded", function () {
+    const formularios = document.querySelectorAll("form");
 
     formularios.forEach(function (formulario) {
-        formulario.addEventListener(“submit”, function (evento) {
+        formulario.addEventListener("submit", function (evento) {
             const campos = formulario.querySelectorAll(
-                “input[required], select[required], textarea[required]”
+                "input[required], select[required], textarea[required]"
             );
 
             let formularioValido = true;
@@ -13,15 +12,15 @@ document.addEventListener(“DOMContentLoaded”, function () {
             campos.forEach(function (campo) {
                 if (!campo.value.trim()) {
                     formularioValido = false;
-                    campo.style.border = “2px solid red”;
+                    campo.style.border = "2px solid red";
                 } else {
-                    campo.style.border = “”;
+                    campo.style.border = "";
                 }
             });
 
             if (!formularioValido) {
                 evento.preventDefault();
-                alert(“Preencha todos os campos obrigatórios!”);
+                alert("Preencha todos os campos obrigatórios!");
             }
         });
     });

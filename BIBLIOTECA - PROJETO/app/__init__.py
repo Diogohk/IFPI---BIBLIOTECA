@@ -1,10 +1,11 @@
-from flask import Flask
+from flask import Flask, render_template
 from app.extensions import db, csrf
 from app.config import Config
 
+
 def create_app():
     app = Flask(__name__)
-    
+
     app.config.from_object(Config)
 
     db.init_app(app)
@@ -12,5 +13,9 @@ def create_app():
 
     from app import models
 
-    return app
+    @app.route("/")
+    @app.route("/alunos")
+    def index():
+        return render_template("alunos.html")
 
+    return app

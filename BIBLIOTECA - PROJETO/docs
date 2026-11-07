@@ -1,0 +1,50 @@
+Regras de Funcionamento da Biblioteca — IFPI Campus Paulistana
+
+1. Cadastro de alunos
+
+2. Todo aluno que realizar empréstimos deverá possuir cadastro no sistema.
+3. O cadastro deverá conter nome completo, matrícula e demais informações necessárias para identificação.
+4. A matrícula deverá ser única para cada aluno.
+5. Não deverá ser permitido cadastrar dois alunos com a mesma matrícula.
+6. Os dados dos alunos deverão poder ser consultados e atualizados pelos funcionários autorizados.
+
+7. Cadastro e controle de livros
+
+8. Todo livro deverá possuir um registro no acervo da biblioteca.
+9. Cada obra deverá possuir informações de identificação, como título, autor, ISBN e editora, quando disponíveis.
+10. Uma mesma obra poderá possuir vários exemplares.
+11. Cada exemplar deverá possuir identificação própria.
+12. O sistema deverá permitir consultar a disponibilidade dos exemplares.
+
+13. Empréstimos
+
+14. O empréstimo deverá estar associado a um aluno cadastrado.
+15. Todo empréstimo deverá estar associado a um exemplar específico.
+16. Não deverá ser permitido emprestar um exemplar que já esteja emprestado.
+17. Todo empréstimo deverá registrar a data em que foi realizado.
+18. Todo empréstimo deverá possuir uma data prevista para devolução.
+19. O sistema deverá manter o histórico dos empréstimos realizados.
+
+20. Devoluções
+
+21. Toda devolução deverá estar associada a um empréstimo existente.
+22. O sistema deverá registrar a data efetiva da devolução.
+23. Após a devolução, o exemplar deverá voltar a ficar disponível, desde que não exista outra restrição.
+24. O sistema deverá permitir identificar empréstimos ainda não devolvidos.
+25. Deverá ser possível identificar empréstimos devolvidos após a data prevista.
+
+26. Consultas e gerenciamento
+
+27. Os funcionários deverão poder consultar os dados dos alunos cadastrados.
+28. Deverá ser possível pesquisar livros pelo título, autor ou ISBN.
+29. O sistema deverá informar se existem exemplares disponíveis de determinada obra.
+30. Os funcionários deverão poder consultar o histórico de empréstimos de cada aluno.
+31. Os registros deverão permitir operações de cadastro, consulta, edição e exclusão, respeitando as dependências entre os dados.
+
+32. Validação e segurança
+
+33. Os campos obrigatórios deverão ser preenchidos antes do envio dos formulários.
+34. O sistema deverá impedir o envio de informações inválidas.
+35. O sistema deverá impedir duplicidade de matrículas e identificadores de exemplares.
+36. As operações de gerenciamento deverão ser realizadas por funcionários autorizados.
+37. Os dados registrados deverão ser armazenados no banco de dados.

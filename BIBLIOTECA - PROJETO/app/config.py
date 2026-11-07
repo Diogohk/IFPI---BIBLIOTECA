@@ -8,7 +8,6 @@ class Config:
         f"mysql+pymysql://{os.getenv('DB_USER','root')}:"
         f"{quote_plus(os.getenv('DB_PASSWORD',''))}@"
         f"{os.getenv('DB_HOST', 'localhost')}/"
-        f"{os.getenv('DB_NAME,', 'biblioteca')}"
         f"{os.getenv('DB_NAME', 'biblioteca')}?charset=utf8mb4"
     )
 

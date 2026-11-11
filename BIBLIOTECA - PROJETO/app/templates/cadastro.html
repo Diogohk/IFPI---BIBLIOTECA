@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar livro | Biblioteca IFPI{% endblock %}
+
+{% block content %}
+<main class="livros-page">
+  <section class="livros-header">
+    <div>
+      <p class="eyebrow">ACERVO • LIVROS</p>
+      <h1>Registrar livro</h1>
+      <p class="subtitle">Preencha os dados da obra para adicioná-la ao acervo.</p>
+    </div>
+  </section>
+
+  {# Exibe mensagens flash enviadas pelas rotas Flask, se existirem. #}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-list" aria-live="polite">
+        {% for category, message in messages %}
+          <p class="flash flash-{{ category }}">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <section class="form-card">
+    {#
+      Integração pendente:
+      Quando a rota estiver pronta, substitua action="" por:
+      action="{{ url_for('livros.cadastrar') }}"
+      Ajuste o endpoint ao nome real do Blueprint/rota.
+    #}
+    <form id="form-livro" method="POST" action="" novalidate>
+      {# Se Flask-WTF/CSRF estiver configurado, habilite a linha abaixo. #}
+      {# {{ form.hidden_tag() }} #}
+
+      <div class="form-section">
+        <h2>Identificação da obra</h2>
+        <div class="form-grid">
+          <div class="field field-full">
+            <label for="titulo">Título <span aria-hidden="true">*</span></label>
+            <input id="titulo" name="titulo" type="text" maxlength="200"
+                   placeholder="Ex.: Dom Casmurro" autocomplete="off" required>
+            <small class="field-error" id="erro-titulo"></small>
+          </div>
+
+          <div class="field">
+            <label for="isbn">ISBN <span aria-hidden="true">*</span></label>
+            <input id="isbn" name="isbn" type="text" inputmode="numeric"
+                   maxlength="17" placeholder="978-85-359-1484-9" required>
+            <small class="hint">Informe ISBN-10 ou ISBN-13.</small>
+            <small class="field-error" id="erro-isbn"></small>
+          </div>
+
+          <div class="field">
+            <label for="autor">Autor <span aria-hidden="true">*</span></label>
+            <input id="autor" name="autor" type="text" maxlength="150"
+                   placeholder="Nome do autor" required>
+            <small class="field-error" id="erro-autor"></small>
+          </div>
+
+          <div class="field">
+            <label for="editora">Editora</label>
+            <input id="editora" name="editora" type="text" maxlength="120"
+                   placeholder="Nome da editora">
+          </div>
+
+          <div class="field">
+            <label for="ano_publicacao">Ano de publicação</label>
+            <input id="ano_publicacao" name="ano_publicacao" type="number"
+                   min="1" max="2100" placeholder="Ex.: 2024">
+            <small class="field-error" id="erro-ano_publicacao"></small>
+          </div>
+
+          <div class="field">
+            <label for="edicao">Edição</label>
+            <input id="edicao" name="edicao" type="text" maxlength="40"
+                   placeholder="Ex.: 2ª edição">
+          </div>
+
+          <div class="field">
+            <label for="categoria">Categoria / área</label>
+            <input id="categoria" name="categoria" type="text" maxlength="100"
+                   placeholder="Ex.: Literatura">
+          </div>
+
+          <div class="field field-full">
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao" name="descricao" rows="4" maxlength="1000"
+                      placeholder="Informações adicionais sobre a obra"></textarea>
+            <small class="hint">Até 1.000 caracteres.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <p class="required-note"><span aria-hidden="true">*</span> Campos obrigatórios</p>
+        <div class="form-actions">
+          <button class="button button-secondary" type="reset">Limpar</button>
+          <button class="button button-primary" type="submit">Salvar livro</button>
+        </div>
+      </div>
+      <p id="form-feedback" class="form-feedback" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/livros.js') }}" defer></script>
+{% endblock %}

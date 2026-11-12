@@ -1,0 +1,159 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #063b2b, #08734d);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 430px;
+}
+
+.login-card {
+    padding: 40px 35px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+.logo-icon {
+    font-size: 42px;
+}
+
+.logo h1 {
+    margin-top: 10px;
+    color: #075c3e;
+    font-size: 27px;
+}
+
+.logo p,
+.welcome p {
+    margin-top: 5px;
+    color: #777;
+    font-size: 14px;
+}
+
+.welcome {
+    margin-bottom: 25px;
+}
+
+.welcome h2 {
+    margin-bottom: 8px;
+    color: #222;
+    font-size: 23px;
+}
+
+.welcome p {
+    line-height: 1.5;
+}
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 9px;
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #d5d5d5;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    border-color: #08734d;
+    box-shadow: 0 0 0 3px rgba(8, 115, 77, 0.12);
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container input {
+    padding-right: 85px;
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #08734d;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background: #08734d;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.login-button:hover {
+    background: #055c3d;
+}
+
+.login-button:focus-visible,
+.toggle-password:focus-visible {
+    outline: 3px solid #f0b429;
+    outline-offset: 3px;
+}
+
+footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    text-align: center;
+}
+
+footer p,
+footer span {
+    color: #777;
+    font-size: 12px;
+}
+
+footer p {
+    margin-bottom: 6px;
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        padding: 30px 22px;
+    }
+
+    .logo h1 {
+        font-size: 23px;
+    }
+}

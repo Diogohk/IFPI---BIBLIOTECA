@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Painel | Biblioteca IFPI{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+{% block content %}
+<section class="welcome">
+  <p class="eyebrow">PAINEL DE CONTROLE</p>
+  <h1>Bem-vindo(a), {{ nome }}.</h1>
+  <p>Gerencie as principais atividades da biblioteca em um só lugar.</p>
+</section>
+<section class="section-heading"><div><p class="eyebrow">ACESSO RÁPIDO</p><h2>O que deseja fazer?</h2></div></section>
+<div class="dashboard-grid">
+  <a class="action-card" href="{{ url_for('cadastro.cadastrar') }}"><span class="card-icon">＋</span><h3>Registrar livro</h3><p>Adicionar uma obra ao catálogo da biblioteca.</p><span class="card-link">Acessar formulário →</span></a>
+  <a class="action-card" href="{{ url_for('alunos.cadastrar_aluno') }}"><span class="card-icon">♙</span><h3>Cadastrar aluno</h3><p>Registrar os dados de um estudante.</p><span class="card-link">Acessar formulário →</span></a>
+  <article class="action-card muted-card"><span class="card-icon">▤</span><h3>Exemplares</h3><p>O gerenciamento de exemplares será integrado em uma próxima etapa.</p><span class="coming-soon">Em desenvolvimento</span></article>
+  <article class="action-card muted-card"><span class="card-icon">↗</span><h3>Empréstimos e devoluções</h3><p>Controle de circulação do acervo.</p><span class="coming-soon">Em desenvolvimento</span></article>
+</div>
+{% endblock %}

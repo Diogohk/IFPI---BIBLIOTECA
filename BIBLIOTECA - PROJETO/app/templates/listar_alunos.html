@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Alunos cadastrados | Biblioteca IFPI{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <p class="eyebrow">CONSULTA • ALUNOS</p>
+    <h1>Alunos cadastrados</h1>
+    <p>Relação de estudantes registrados no sistema.</p>
+
+    <div class="form-card">
+        {% if alunos %}
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Matrícula</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for aluno in alunos %}
+                        <tr>
+                            <td>{{ aluno.matricula }}</td>
+                            <td>{{ aluno.nome }}</td>
+                            <td>{{ aluno.email or "Não informado" }}</td>
+                            <td>{{ aluno.telefone or "Não informado" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>Nenhum aluno cadastrado até o momento.</p>
+        {% endif %}
+
+        <div class="form-actions">
+            <a href="{{ url_for('alunos.cadastrar_aluno') }}">Cadastrar aluno</a>
+            <a href="{{ url_for('dashboard.inicio') }}">Voltar ao painel</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

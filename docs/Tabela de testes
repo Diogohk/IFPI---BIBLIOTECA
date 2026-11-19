@@ -1,0 +1,41 @@
+# Testes Funcionais — Sistema Biblioteca IFPI
+
+**Projeto:** Sistema de Gerenciamento da Biblioteca IFPI  
+**Equipe:** Guardiões da Galáxia  
+**Responsável pelos testes:** Eduardo
+
+---
+
+## 1. Objetivo
+
+Verificar o funcionamento das principais funcionalidades do sistema, identificando possíveis erros e confirmando se os resultados apresentados correspondem ao esperado.
+
+## 2. Casos de teste
+
+| ID | Funcionalidade | Procedimento | Resultado esperado | Status |
+|:---:|---|---|---|:---:|
+| T01 | Login | Informar matrícula e senha corretas. | Acessar o painel principal do sistema. | Concluído |
+| T02 | Cadastro de alunos | Preencher os campos obrigatórios e enviar o formulário. | Registrar o aluno no banco de dados. | Concluído |
+| T03 | Cadastro de livros | Preencher os dados do livro e enviar o formulário. | Registrar o livro corretamente no banco de dados. | Conluído |
+| T04 | Validação de formulário | Tentar enviar um formulário com campos obrigatórios vazios. | Apresentar uma mensagem de validação. | Conluído |
+| T05 | Consulta de alunos | Acessar a página de alunos cadastrados. | Exibir os alunos registrados no banco de dados. | Concluído |
+
+## 3. Registro dos resultados
+
+Após executar cada teste, atualizar seu status conforme o resultado:
+
+- **Pendente:** teste ainda não realizado.
+- **Aprovado:** funcionalidade apresentou o resultado esperado.
+- **Reprovado:** funcionalidade apresentou erro ou resultado diferente do esperado.
+
+## 4. Observações
+
+Os testes devem ser realizados no sistema em execução, verificando tanto o funcionamento das páginas quanto a comunicação com o banco de dados.
+
+Caso algum teste seja reprovado, registrar o erro encontrado para que possa ser corrigido pela equipe.
+
+## 5. Responsabilidade
+
+**Responsável:** Eduardo
+
+**Entrega:** execução dos testes funcionais, registro dos resultados e organização das evidências por meio de capturas de tela.

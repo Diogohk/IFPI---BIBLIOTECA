@@ -1,174 +1,153 @@
-Biblioteca IFPI — Sistema de Gerenciamento
+# Biblioteca IFPI — Sistema de Gerenciamento
 
-Equipe: Guardiões da Galáxia
-Instituição: Instituto Federal do Piauí (IFPI) — Campus Paulistana
+**Equipe:** Guardiões da Galáxia  
+**Instituição:** Instituto Federal do Piauí (IFPI) — Campus Paulistana
 
-Sobre o projeto
+## Sobre o projeto
 
-O Biblioteca IFPI é um sistema web desenvolvido para auxiliar o Setor de Biblioteca do IFPI — Campus Paulistana no gerenciamento de suas atividades.
+O Biblioteca IFPI é um sistema web desenvolvido para apoiar as atividades do Setor de Biblioteca do IFPI — Campus Paulistana. A aplicação é direcionada aos funcionários da biblioteca e permite, na etapa atual, acessar os formulários de cadastro de livros e alunos e consultar os alunos cadastrados.
 
-O projeto busca tornar mais prático o registro e a consulta de informações dos alunos e contribuir para a redução de conflitos durante o processo de empréstimo e devolução de livros, especialmente aqueles relacionados às instabilidades do sistema atualmente utilizado.
+O projeto está em desenvolvimento. Funcionalidades ainda não integradas, como cadastro de exemplares, empréstimos, devoluções, movimentações e estatísticas, não devem ser consideradas disponíveis.
 
-A aplicação está inicialmente direcionada aos funcionários da biblioteca.
+## Tecnologias
 
-Objetivos
+- Python e Flask
+- Flask-SQLAlchemy e SQLAlchemy (ORM)
+- MySQL e PyMySQL
+- Flask-WTF (proteção CSRF)
+- HTML, CSS e JavaScript
+- XAMPP (opção para executar o MySQL localmente)
 
-- Facilitar o cadastro e a consulta de alunos.
-- Organizar o catálogo de livros.
-- Controlar os exemplares disponíveis.
-- Gerenciar empréstimos e devoluções.
-- Manter os registros organizados em um banco de dados.
-- Oferecer uma interface simples e acessível aos funcionários.
+## Requisitos
 
-Tecnologias utilizadas
+- Python 3.10 ou superior
+- MySQL em execução (pode ser iniciado pelo XAMPP)
+- Git
+- Dependências de `requirements.txt`
 
-Tecnologia| Finalidade
-Python| Linguagem principal
-Flask| Framework web e gerenciamento das rotas
-Flask-SQLAlchemy| Integração entre aplicação e banco de dados
-SQLAlchemy| Mapeamento objeto-relacional (ORM)
-MySQL| Sistema de gerenciamento de banco de dados
-XAMPP| Ambiente local para execução do MySQL
-PyMySQL| Conector entre Python e MySQL
-HTML| Estrutura das páginas
-CSS| Estilização das interfaces
-JavaScript| Interatividade no navegador
-Requests| Requisições HTTP e possível integração com APIs
+## Como instalar e executar
 
-Integração complementar
+### 1. Baixar o projeto
 
-Está prevista a utilização da API pública do Google Books para auxiliar na obtenção de informações de livros por ISBN ou título.
-
-Essa integração é complementar e não deve comprometer o desenvolvimento das funcionalidades principais.
-
-Funcionalidades previstas
-
-- Cadastro, consulta, edição e exclusão de alunos.
-- Cadastro e gerenciamento de livros.
-- Gerenciamento de exemplares.
-- Registro de empréstimos.
-- Registro de devoluções.
-- Consulta de informações armazenadas no banco de dados.
-
-As funcionalidades serão disponibilizadas progressivamente durante o desenvolvimento.
-
-Estrutura do projeto
-
-A estrutura modular planejada é:
-
-BIBLIOTECA - PROJETO/
-│
-├── app/
-│   ├── __init__.py
-│   ├── config.py
-│   ├── extensions.py
-│   │
-│   ├── models/
-│   │   └── __init__.py
-│   │
-│   ├── routes/
-│   │   └── __init__.py
-│   │
-│   ├── templates/
-│   │
-│   └── static/
-│       ├── css/
-│       ├── js/
-│       └── img/
-│
-├── .env
-├── .gitignore
-├── requirements.txt
-├── run.py
-└── README.md
-
-A estrutura acima representa a organização planejada e poderá ser ajustada conforme a implementação.
-
-Requisitos para execução
-
-- Python instalado.
-- MySQL disponível localmente.
-- XAMPP ou outro ambiente compatível para executar o MySQL.
-- Git instalado.
-- Dependências listadas em "requirements.txt".
-
-Instalação
-
-1. Clone o repositório
-
+```bash
 git clone https://github.com/Diogohk/IFPI---BIBLIOTECA.git
+cd IFPI---BIBLIOTECA/"BIBLIOTECA - PROJETO"
+```
 
-2. Acesse a pasta do projeto
+### 2. Criar e ativar o ambiente virtual
 
-cd "IFPI---BIBLIOTECA"
-
-Caso os arquivos estejam em uma subpasta, acesse também essa pasta.
-
-3. Crie um ambiente virtual
-
+```bash
 python -m venv venv
-
-Ative o ambiente virtual:
+```
 
 Windows:
 
+```bash
 venv\Scripts\activate
+```
 
 Linux/macOS:
 
+```bash
 source venv/bin/activate
+```
 
-4. Instale as dependências
+### 3. Instalar as dependências
 
+```bash
 pip install -r requirements.txt
+```
 
-5. Configure o banco de dados
+### 4. Preparar o banco de dados
 
-Inicie o MySQL pelo XAMPP e prepare o banco de dados conforme a configuração definida pela equipe.
+1. Inicie o serviço MySQL pelo XAMPP ou por outro gerenciador.
+2. Abra o phpMyAdmin (ou outro cliente MySQL).
+3. Crie um banco de dados chamado `biblioteca`, utilizando codificação `utf8mb4`.
 
-A conexão deverá utilizar o driver PyMySQL e as credenciais do ambiente local.
+Se optar por executar o comando SQL:
 
-Não compartilhe senhas ou credenciais no repositório.
+```sql
+CREATE DATABASE biblioteca CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
 
-6. Execute a aplicação
+### 5. Configurar as variáveis de ambiente
 
-Após a implementação do ponto de entrada da aplicação:
+Crie uma cópia de `.env.example` com o nome `.env`, na pasta `BIBLIOTECA - PROJETO`.
 
+Preencha os dados de acesso ao MySQL. Exemplo para uma instalação local do XAMPP:
+
+```env
+SECRET_KEY=coloque_uma_chave_aleatoria
+DB_USER=root
+DB_PASSWORD=
+DB_HOST=localhost
+DB_NAME=biblioteca
+```
+
+Gere uma chave secreta própria e substitua o valor de exemplo. Uma opção é executar:
+
+```bash
+python -c "import secrets; print(secrets.token_hex(32))"
+```
+
+Não publique o arquivo `.env` nem compartilhe suas credenciais. Ele já está listado no `.gitignore`.
+
+### 6. Criar o primeiro funcionário (primeiro acesso)
+
+**Antes de abrir a tela de login, é necessário cadastrar pelo menos um funcionário.** O sistema não cria uma conta padrão.
+
+Com o MySQL ligado e o arquivo `.env` configurado, execute:
+
+```bash
+python criar_funcionario.py
+```
+
+O programa solicitará matrícula, nome, cargo e senha. A senha é digitada sem aparecer no terminal, precisa ter pelo menos oito caracteres e é armazenada no banco usando hash seguro do Werkzeug. O programa também cria as tabelas mapeadas pela aplicação, caso ainda não existam.
+
+Guarde a matrícula e a senha informadas: elas serão usadas na tela de login. Para cadastrar outro funcionário, execute o mesmo comando novamente com uma matrícula diferente.
+
+### 7. Iniciar o sistema
+
+```bash
 python run.py
+```
 
-O endereço local será informado pelo Flask no terminal.
+Abra no navegador o endereço local exibido no terminal (normalmente http://127.0.0.1:5000) e entre com a matrícula e a senha cadastradas no passo anterior.
 
-«Observação: os comandos de execução dependem da conclusão da estrutura de inicialização da aplicação.»
+## Estrutura principal
 
-Desenvolvimento
+```text
+BIBLIOTECA - PROJETO/
+├── app/
+│   ├── models/
+│   ├── routes/
+│   ├── static/
+│   └── templates/
+├── .env.example
+├── criar_funcionario.py
+├── requirements.txt
+└── run.py
+```
 
-O desenvolvimento está organizado em etapas:
+## Segurança
 
-1. Organização do ambiente e do repositório.
-2. Definição e revisão da estrutura do banco de dados.
-3. Configuração do Flask e SQLAlchemy.
-4. Implementação dos modelos.
-5. Desenvolvimento dos formulários.
-6. Implementação das operações CRUD.
-7. Testes e validações.
-8. Documentação e preparação da entrega.
+- As senhas dos funcionários são armazenadas como hash, nunca em texto puro.
+- Os formulários que alteram dados utilizam proteção CSRF.
+- As credenciais locais ficam no arquivo `.env`, que não deve ser enviado ao GitHub.
+- O cadastro inicial é feito localmente pelo script `criar_funcionario.py`; não existe usuário ou senha padrão no repositório.
 
-Equipe
+## Funcionalidades na etapa atual
 
-Guardiões da Galáxia
+- Login de funcionário.
+- Cadastro de livros (formulário e rota existentes; a integração de gravação deve ser conferida conforme a etapa de desenvolvimento).
+- Cadastro de alunos.
+- Consulta/listagem de alunos.
 
-- Diogo Luiz Reis Rufino
-- Renan Silva Nascimento
-- Brenno Ramos Cruz
-- Hitallo Rodrigues de Alencar
-- Kauan Ramos da Silva
+Cadastro de exemplares, empréstimos, devoluções, movimentações e estatísticas permanecem como etapas futuras ou em integração.
 
-Situação do projeto
+## Equipe
 
-O projeto encontra-se em desenvolvimento. A equipe está trabalhando na estruturação da aplicação, na integração com o banco de dados e na criação dos modelos de dados.
-
-As funcionalidades serão documentadas e atualizadas conforme forem implementadas e testadas.
+Guardiões da Galáxia — IFPI, Campus Paulistana.
 
 ---
-
 Desenvolvido no âmbito das atividades acadêmicas do IFPI — Campus Paulistana.

@@ -1,0 +1,61 @@
+Projeto: Biblioteca IFPI
+Equipe: Guardiões da Galáxia
+Instituição: IFPI – Campus Paulistana
+
+   Tabela de testes
+
+Requisito do setor| Formulário / campo| Regra de conferência| Teste (o que digitei e o que esperava)
+
+| Resultado (passou / falhou)
+Acesso ao sistema| Login / matrícula e senha| Não permitir acesso com matrícula ou senha incorretas.
+
+
+| Digitei matrícula e senha válidas; esperava acessar o sistema.| A executar
+Cadastro de aluno| Cadastro de aluno /
+
+
+ campos obrigatórios| Não permitir cadastro com campos obrigatórios vazios.
+
+
+| Deixei um campo obrigatório vazio; esperava receber uma mensagem de erro.| A executar
+
+
+
+Cadastro de livros| Cadastro de livro / título e ISBN| Conferir o preenchimento dos dados obrigatórios e a validade das informações.
+
+
+| Preenchi os dados do livro; esperava salvar o cadastro corretamente.| A executar
+
+
+Cadastro de exemplares| Cadastro de exemplar / código e livro relacionado| Verificar se o exemplar está associado a um livro existente.| 
+
+
+Selecionei um livro cadastrado e informei o código do exemplar; esperava registrar o exemplar.
+
+
+| A executar
+Consulta de registros| Pesquisa de alunos e livros| Exibir os registros correspondentes à pesquisa realizada.
+
+
+| Pesquisei um aluno ou livro já cadastrado; esperava visualizar suas informações.
+
+
+| A executar
+Edição de registros| Edição / alteração de informações| Permitir atualizar os dados e salvar as alterações corretamente.
+
+
+| Editei as informações de um registro; esperava que as alterações fossem salvas no banco de dados.| A executar
+Exclusão de registros| Exclusão / remoção de registros
+
+
+| Remover o registro selecionado do sistema.| Solicitei a exclusão de um registro de teste; esperava que ele não aparecesse mais na consulta.| A executar
+
+Objetivo dos testes
+
+Verificar o funcionamento das principais funcionalidades do Sistema Biblioteca IFPI, conferindo os formulários, as validações, o armazenamento de informações no banco de dados e as operações de cadastro, consulta, edição e exclusão.
+
+Conclusão
+
+A tabela de testes foi elaborada para registrar e verificar o funcionamento das funcionalidades desenvolvidas no Sistema Biblioteca IFPI. Por meio dos testes, é possível identificar erros, conferir as validações dos formulários e verificar se as informações são armazenadas e atualizadas corretamente no banco de dados.
+
+Os resultados deverão ser preenchidos após a execução de cada teste, indicando se a funcionalidade passou ou falhou.

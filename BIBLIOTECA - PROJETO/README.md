@@ -1,129 +1,168 @@
-Biblioteca IFPI — Sistema de Gerenciamento
+# Biblioteca IFPI — Sistema de Gerenciamento
 
-Equipe: Guardiões da Galáxia
-Instituição: Instituto Federal do Piauí (IFPI) — Campus Paulistana
+**Equipe:** Guardiões da Galáxia  
+**Instituição:** Instituto Federal do Piauí (IFPI) — Campus Paulistana
 
-Sobre o projeto
+## Sobre o projeto
 
 O Biblioteca IFPI é um sistema web desenvolvido para apoiar as atividades do Setor de Biblioteca do IFPI — Campus Paulistana. A aplicação é direcionada aos funcionários da biblioteca e permite, nesta etapa, acessar os formulários de cadastro de livros e alunos e consultar os alunos cadastrados.
 
 O projeto está em desenvolvimento. Funcionalidades que ainda não estejam integradas e testadas — como cadastro de exemplares, empréstimos, devoluções, movimentações e estatísticas — não devem ser consideradas disponíveis.
 
-Tecnologias
+## Tecnologias
 
-* Python 3.10 ou superior
-* Flask
-* Flask-SQLAlchemy e SQLAlchemy (ORM)
-* MySQL e PyMySQL
-* Flask-WTF (proteção CSRF)
-* HTML, CSS e JavaScript
-* XAMPP (opção para executar o MySQL localmente)
+- Python 3.10 ou superior
+- Flask
+- Flask-SQLAlchemy e SQLAlchemy (ORM)
+- MySQL e PyMySQL
+- Flask-WTF (proteção CSRF)
+- HTML, CSS e JavaScript
+- XAMPP (opção para executar o MySQL localmente)
 
-Requisitos
+## Requisitos
 
 Antes de começar, instale:
 
-* Python 3.10 ou superior
-* Git
-* MySQL (pode ser iniciado pelo XAMPP)
-* Visual Studio Code ou outro editor de sua preferência
+- Python 3.10 ou superior
+- Git
+- MySQL (pode ser iniciado pelo XAMPP)
+- Visual Studio Code ou outro editor de sua preferência
 
-Instalação
+## Instalação
 
-1. Baixar o projeto
+### 1. Baixar o projeto
 
 Abra o terminal e execute:
 
+```bash
 git clone https://github.com/Diogohk/IFPI---BIBLIOTECA.git
+```
 
 Entre na pasta do projeto:
 
+```bash
 cd "IFPI---BIBLIOTECA/BIBLIOTECA - PROJETO"
+```
 
-Se o nome ou a organização das pastas no seu computador estiver diferente, entre na pasta BIBLIOTECA - PROJETO antes de continuar.
+Se o nome ou a organização das pastas no seu computador estiver diferente, entre na pasta `BIBLIOTECA - PROJETO` antes de continuar.
 
-2. Criar e ativar o ambiente virtual
+### 2. Criar e ativar o ambiente virtual
 
-No Windows, dentro da pasta BIBLIOTECA - PROJETO, execute:
+No Windows, dentro da pasta `BIBLIOTECA - PROJETO`, execute:
 
+```powershell
 python -m venv .venv
+```
 
 Ative o ambiente virtual:
 
+```powershell
 .\.venv\Scripts\Activate.ps1
+```
 
 Se o PowerShell bloquear a ativação, abra o terminal Prompt de Comando (cmd) no VS Code e use:
 
+```bat
 .venv\Scripts\activate.bat
+```
 
-3. Instalar as dependências
+### 3. Instalar as dependências
 
 Com o ambiente virtual ativado, execute:
 
+```bash
 python -m pip install --upgrade pip
 pip install -r requirements.txt
+```
 
-Configuração do banco de dados
+## Configuração do banco de dados
 
-1. Inicie o serviço MySQL. Se estiver usando XAMPP, abra o painel do XAMPP e inicie MySQL.
-2. Na pasta principal do projeto, localize .env.example.
-3. Consulte esse arquivo para identificar os nomes das variáveis de configuração esperadas pela aplicação.
-4. Crie uma cópia chamada .env e preencha os valores locais de conexão com o MySQL.
-5. Nunca publique o arquivo .env, senhas ou outras credenciais no GitHub.
-6. Consulte MIGRACAO_MARCO_4_5.sql e a documentação do projeto para confirmar se a migração precisa ser executada no banco antes de iniciar a aplicação.
+1. Inicie o serviço MySQL. Se estiver usando XAMPP, abra o painel do XAMPP e inicie o MySQL.
+2. Na pasta principal do projeto, localize o arquivo `.env.example`.
+3. Crie uma cópia desse arquivo com o nome `.env`.
+4. Preencha no `.env` os dados de conexão com o MySQL. As variáveis utilizadas são `DB_USER`, `DB_PASSWORD`, `DB_HOST` e `DB_NAME`.
+5. Defina também uma `SECRET_KEY` privada e aleatória. Não utilize a chave de exemplo em produção.
+6. Nunca publique o arquivo `.env`, senhas ou outras credenciais no GitHub.
 
-Importante: os nomes exatos das variáveis do .env, o nome do banco de dados e os passos de importação da migração precisam corresponder aos arquivos de configuração atuais do projeto. Confira app/config.py e a documentação antes de preencher esses valores.
+O projeto utiliza SQLAlchemy. Ao iniciar, `run.py` chama `db.create_all()`, que cria tabelas mapeadas que ainda não existem. Esse comando **não altera automaticamente a estrutura de tabelas já existentes**.
 
-Como executar
+Se o banco já possuir tabelas de versões anteriores, consulte os scripts de migração antes de iniciar:
 
-Com o ambiente virtual ativado, o MySQL em execução e a configuração do banco concluída, execute na pasta principal:
+- `MIGRACAO_MARCO_4_5.sql`: adiciona os campos de ISBN aos livros e código aos exemplares. Faça backup do banco e confira se a migração ainda precisa ser aplicada antes de executá-la.
+- `CONFIGURAR_ACESSO.md`: orienta a configuração das colunas de matrícula e hash de senha na tabela de funcionários. Siga as instruções com atenção, especialmente se já existirem funcionários cadastrados.
 
+Não execute migrações repetidamente: os comandos de alteração de estrutura devem ser aplicados conforme o estado atual do banco.
+
+## Como executar
+
+Com o ambiente virtual ativado, o MySQL em execução e o banco configurado, execute na pasta principal:
+
+```bash
 python run.py
+```
 
-Depois, observe o endereço informado no terminal e abra-o no navegador.
+Depois, observe o endereço informado no terminal e abra-o no navegador. Na configuração padrão do Flask, o endereço local costuma ser:
 
-Se ocorrer um erro, confira primeiro se o MySQL está iniciado, se o .env está preenchido corretamente e se as dependências foram instaladas.
+```
+http://127.0.0.1:5000
+```
 
-Acesso de funcionário
+Se ocorrer um erro, confira primeiro se o MySQL está iniciado, se o arquivo `.env` está preenchido corretamente e se as dependências foram instaladas.
 
-O sistema é destinado aos funcionários da biblioteca.
+## Acesso de funcionário
 
-O repositório contém o arquivo criar_funcionario.py, relacionado à criação de um funcionário. Antes de tentar entrar no sistema:
+O sistema é destinado aos funcionários da biblioteca. Não existe usuário ou senha padrão confirmada no projeto. É necessário cadastrar um funcionário antes de entrar.
 
-1. Confirme que o banco de dados está configurado e que a migração necessária foi aplicada.
-2. Consulte as instruções de acesso em CONFIGURAR_ACESSO.md.
-3. Verifique no código de criar_funcionario.py quais dados são solicitados para criar o funcionário e como o cadastro é realizado.
-4. Execute o procedimento de criação conforme as instruções do próprio projeto.
-5. Na tela de login, use os dados cadastrados para o funcionário.
+### Criar o primeiro funcionário
 
-Atenção: não existe neste README uma matrícula, usuário ou senha padrão confirmada. Não tente adivinhar credenciais. O identificador de login e o procedimento correto devem ser confirmados em CONFIGURAR_ACESSO.md, criar_funcionario.py e no código da rota de login. Nunca compartilhe senhas.
+Com o ambiente virtual ativado, o banco configurado e a partir da pasta `BIBLIOTECA - PROJETO`, execute:
 
-Arquivos importantes
+```bash
+python criar_funcionario.py
+```
 
-Arquivo ou pasta	Finalidade
-app/	Código da aplicação Flask
-.env.example	Exemplo das configurações de ambiente
-.gitignore	Arquivos que não devem ser enviados ao Git
-CONFIGURAR_ACESSO.md	Orientações relacionadas ao acesso
-criar_funcionario.py	Script relacionado à criação de funcionário
-MIGRACAO_MARCO_4_5.sql	Script SQL de migração do banco
-requirements.txt	Dependências Python
-run.py	Arquivo de inicialização da aplicação
-test_connection.py	Script de teste da conexão
+O script solicitará:
 
-Segurança
+- Matrícula (até 20 caracteres, obrigatória e única)
+- Nome completo (até 150 caracteres)
+- Cargo (até 80 caracteres)
+- Senha e confirmação da senha (mínimo de 8 caracteres)
 
-* Não envie credenciais, senhas ou o arquivo .env para o repositório.
-* Mantenha o .env protegido e confira se ele está listado no .gitignore.
-* Utilize os formulários da aplicação e suas validações.
-* As operações com o banco devem seguir a implementação baseada em SQLAlchemy/ORM.
-* Não compartilhe credenciais de funcionários.
+A senha é solicitada sem aparecer na tela e armazenada no banco como hash. Guarde a senha em local seguro. O script também verifica se a matrícula já está cadastrada.
 
-Situação do desenvolvimento
+Depois do cadastro, acesse a tela de login em `/login` e entre utilizando a matrícula e a senha criadas.
+
+Se houver dúvidas sobre a estrutura da tabela de funcionários ou se o banco já possuir registros, consulte primeiro `CONFIGURAR_ACESSO.md`. Não compartilhe credenciais de funcionários.
+
+## Arquivos importantes
+
+| Arquivo ou pasta | Finalidade |
+|---|---|
+| `app/` | Código da aplicação Flask |
+| `.env.example` | Exemplo das configurações de ambiente |
+| `.gitignore` | Arquivos que não devem ser enviados ao Git |
+| `CONFIGURAR_ACESSO.md` | Orientações relacionadas à configuração do acesso |
+| `criar_funcionario.py` | Script para cadastrar um funcionário |
+| `MIGRACAO_MARCO_4_5.sql` | Script SQL de migração do banco |
+| `requirements.txt` | Dependências Python |
+| `run.py` | Arquivo de inicialização da aplicação |
+| `test_connection.py` | Script de teste da conexão |
+
+## Segurança
+
+- Não envie credenciais, senhas ou o arquivo `.env` para o repositório.
+- Mantenha o `.env` protegido e confira se ele está listado no `.gitignore`.
+- Defina uma `SECRET_KEY` privada e aleatória fora do ambiente de desenvolvimento. A chave de fallback existente na configuração serve apenas para desenvolvimento e não deve ser usada em produção.
+- As senhas dos funcionários são armazenadas como hash, não em texto puro.
+- Utilize os formulários da aplicação e suas validações.
+- As operações com o banco devem seguir a implementação baseada em SQLAlchemy/ORM.
+- Não compartilhe credenciais de funcionários.
+
+## Situação do desenvolvimento
 
 O projeto está em desenvolvimento. Consulte a aplicação e a documentação atualizadas para identificar quais funcionalidades estão implementadas e testadas.
 
-Equipe
+## Equipe
 
-Guardiões da Galáxia
+**Guardiões da Galáxia**  
 Instituto Federal do Piauí (IFPI) — Campus Paulistana

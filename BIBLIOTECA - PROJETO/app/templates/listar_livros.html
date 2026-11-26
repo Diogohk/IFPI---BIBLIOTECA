@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Livros cadastrados | Biblioteca IFPI{% endblock %}
+{% block content %}
+<div class="form-page">
+  <p class="eyebrow">CONSULTA • ACERVO</p><h1>Livros cadastrados</h1>
+  <div class="form-card">
+    {% if livros %}
+    <div class="table-responsive"><table><thead><tr><th>Título</th><th>Autor</th><th>ISBN</th><th>Exemplares</th><th>Ações</th></tr></thead><tbody>
+    {% for livro in livros %}<tr><td>{{ livro.titulo }}</td><td>{{ livro.autor }}</td><td>{{ livro.isbn or '—' }}</td><td>{{ livro.exemplares|length }}</td><td><a href="{{ url_for('cadastro.editar_livro', idlivro=livro.idlivro) }}">Editar</a><form method="POST" action="{{ url_for('cadastro.excluir_livro', idlivro=livro.idlivro) }}" data-confirm="Excluir este livro? A exclusão só será permitida se não houver exemplares vinculados."><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">Excluir</button></form></td></tr>{% endfor %}
+    </tbody></table></div>
+    {% else %}<p>Nenhum livro cadastrado.</p>{% endif %}
+    <div class="form-actions"><a href="{{ url_for('cadastro.cadastrar') }}">Cadastrar livro</a><a href="{{ url_for('dashboard.inicio') }}">Voltar ao painel</a></div>
+  </div>
+</div>
+{% endblock %}

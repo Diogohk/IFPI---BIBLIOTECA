@@ -4,38 +4,27 @@
 **Equipe:** Guardiões da Galáxia  
 **Responsável pelos testes:** Eduardo
 
----
-
-## 1. Objetivo
-
-Verificar o funcionamento das principais funcionalidades do sistema, identificando possíveis erros e confirmando se os resultados apresentados correspondem ao esperado.
-
-## 2. Casos de teste
+## Casos de teste
 
 | ID | Funcionalidade | Procedimento | Resultado esperado | Status |
 |:---:|---|---|---|:---:|
-| T01 | Login | Informar matrícula e senha corretas. | Acessar o painel principal do sistema. | Concluído |
-| T02 | Cadastro de alunos | Preencher os campos obrigatórios e enviar o formulário. | Registrar o aluno no banco de dados. | Concluído |
-| T03 | Cadastro de livros | Preencher os dados do livro e enviar o formulário. | Registrar o livro corretamente no banco de dados. | Conluído |
-| T04 | Validação de formulário | Tentar enviar um formulário com campos obrigatórios vazios. | Apresentar uma mensagem de validação. | Conluído |
-| T05 | Consulta de alunos | Acessar a página de alunos cadastrados. | Exibir os alunos registrados no banco de dados. | Concluído |
+| T01 | Login | Informar matrícula e senha corretas. | Acessar o painel principal. | A executar |
+| T02 | Cadastro de aluno | Preencher os campos obrigatórios. | Salvar aluno no banco. | A executar |
+| T03 | Consulta de alunos | Abrir a listagem. | Exibir alunos cadastrados. | A executar |
+| T04 | Cadastro de livro | Informar título, autor e ISBN válido. | Salvar obra no banco. | A executar |
+| T05 | ISBN inválido | Enviar ISBN com dígito verificador incorreto. | Impedir gravação e exibir aviso. | A executar |
+| T06 | Edição de livro | Alterar dados de uma obra existente. | Persistir alterações. | A executar |
+| T07 | Exclusão de livro vinculado | Tentar excluir obra com exemplar cadastrado. | Impedir exclusão e informar dependência. | A executar |
+| T08 | Cadastro de exemplar | Associar exemplar a livro existente. | Salvar exemplar e vínculo. | A executar |
+| T09 | Edição de exemplar | Alterar código ou situação. | Persistir alterações. | A executar |
+| T10 | Exclusão de exemplar | Excluir exemplar existente. | Remover registro. | A executar |
+| T11 | Proteção CSRF | Enviar POST sem token. | Rejeitar requisição. | A executar |
+| T12 | Duplicidade de código | Cadastrar código de exemplar já utilizado. | Impedir duplicidade. | A executar |
 
-## 3. Registro dos resultados
+## Registro de execução
 
-Após executar cada teste, atualizar seu status conforme o resultado:
+Os status acima permanecem como **A executar** até que os testes sejam realizados no ambiente com banco configurado. Registrar resultado observado, responsável, data e evidência após cada execução.
 
-- **Pendente:** teste ainda não realizado.
-- **Aprovado:** funcionalidade apresentou o resultado esperado.
-- **Reprovado:** funcionalidade apresentou erro ou resultado diferente do esperado.
+## Evidências
 
-## 4. Observações
-
-Os testes devem ser realizados no sistema em execução, verificando tanto o funcionamento das páginas quanto a comunicação com o banco de dados.
-
-Caso algum teste seja reprovado, registrar o erro encontrado para que possa ser corrigido pela equipe.
-
-## 5. Responsabilidade
-
-**Responsável:** Eduardo
-
-**Entrega:** execução dos testes funcionais, registro dos resultados e organização das evidências por meio de capturas de tela.
+Anexar capturas de tela reais do sistema em execução: formulários, mensagens de validação, listagens, edição, exclusão e registros relacionados no banco.

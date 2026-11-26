@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Exemplares cadastrados | Biblioteca IFPI{% endblock %}
+{% block content %}
+<div class="form-page"><p class="eyebrow">CONSULTA • EXEMPLARES</p><h1>Exemplares cadastrados</h1><div class="form-card">
+{% if exemplares %}<div class="table-responsive"><table><thead><tr><th>Código</th><th>Livro</th><th>Situação</th><th>Ações</th></tr></thead><tbody>
+{% for exemplar in exemplares %}<tr><td>{{ exemplar.codigo }}</td><td>{{ exemplar.livro.titulo }}</td><td>{{ {'disponivel':'Disponível','emprestado':'Emprestado','manutencao':'Em manutenção'}.get(exemplar.status, exemplar.status) }}</td><td><a href="{{ url_for('exemplares.editar_exemplar', idexemplar=exemplar.idexemplar) }}">Editar</a><form method="POST" action="{{ url_for('exemplares.excluir_exemplar', idexemplar=exemplar.idexemplar) }}" data-confirm="Excluir este exemplar?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">Excluir</button></form></td></tr>{% endfor %}
+</tbody></table></div>{% else %}<p>Nenhum exemplar cadastrado.</p>{% endif %}
+<div class="form-actions"><a href="{{ url_for('exemplares.cadastrar_exemplar') }}">Cadastrar exemplar</a><a href="{{ url_for('dashboard.inicio') }}">Voltar ao painel</a></div>
+</div></div>
+{% endblock %}

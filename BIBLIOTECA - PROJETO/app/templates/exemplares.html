@@ -1,44 +1,12 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro de exemplar | Biblioteca IFPI</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
-  <script src="{{ url_for('static', filename='js/forms.js') }}" defer></script>
-</head>
-<body>
-  <main class="container">
-    <header class="page-header">
-      <p class="eyebrow">Biblioteca IFPI · Campus Paulistana</p>
-      <h1>Cadastro de exemplar</h1>
-      <p>Registre uma unidade física de uma obra já cadastrada.</p>
-    </header>
-    <form class="form-card" data-demo-form>
-      <div class="field">
-        <label for="livro">Livro</label>
-        <input id="livro" name="livro" type="text" placeholder="Informe o título ou identificador do livro" required>
-      </div>
-      <div class="field">
-        <label for="codigo">Código de identificação do exemplar</label>
-        <input id="codigo" name="codigo" type="text" maxlength="30" required>
-      </div>
-      <div class="field">
-        <label for="estado">Estado do exemplar</label>
-        <select id="estado" name="estado" required>
-          <option value="">Selecione</option>
-          <option value="disponivel">Disponível</option>
-          <option value="emprestado">Emprestado</option>
-          <option value="manutencao">Em manutenção</option>
-        </select>
-      </div>
-      <div class="actions">
-        <button type="reset" class="button button-secondary">Limpar</button>
-        <button type="submit" class="button">Cadastrar exemplar</button>
-      </div>
-      <p class="feedback" role="status" aria-live="polite"></p>
-    </form>
-    <a class="back-link" href="{{ url_for('index') }}">Voltar ao início</a>
-  </main>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}{{ 'Editar exemplar' if exemplar else 'Cadastro de exemplar' }} | Biblioteca IFPI{% endblock %}
+{% block content %}
+<div class="form-page"><p class="eyebrow">ACERVO • EXEMPLARES</p><h1>{{ 'Editar exemplar' if exemplar else 'Cadastro de exemplar' }}</h1><p>Registre uma unidade física de uma obra cadastrada.</p>
+<form class="form-card" method="POST" action="{{ url_for('exemplares.editar_exemplar', idexemplar=exemplar.idexemplar) if exemplar else url_for('exemplares.cadastrar_exemplar') }}" data-confirm-reset="Deseja limpar os campos deste formulário?">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<div class="form-group"><label for="idlivro">Livro *</label><select id="idlivro" name="idlivro" required><option value="">Selecione uma obra</option>{% for livro in livros %}<option value="{{ livro.idlivro }}" {% if exemplar and exemplar.idlivro == livro.idlivro %}selected{% endif %}>{{ livro.titulo }} · {{ livro.autor }}</option>{% endfor %}</select></div>
+<div class="form-group"><label for="codigo">Código do exemplar *</label><input id="codigo" name="codigo" maxlength="30" required value="{{ exemplar.codigo if exemplar else '' }}"></div>
+<div class="form-group"><label for="status">Situação *</label><select id="status" name="status" required>{% for value, label in [('disponivel','Disponível'),('emprestado','Emprestado'),('manutencao','Em manutenção')] %}<option value="{{ value }}" {% if exemplar and exemplar.status == value %}selected{% elif not exemplar and value == 'disponivel' %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div>
+<div class="form-actions"><a href="{{ url_for('exemplares.listar_exemplares') }}">Cancelar</a><button type="reset" class="button button-secondary">Limpar</button><button type="submit" class="button">Salvar exemplar</button></div>
+</form><p><a href="{{ url_for('exemplares.listar_exemplares') }}">Consultar exemplares</a></p></div>
+{% endblock %}

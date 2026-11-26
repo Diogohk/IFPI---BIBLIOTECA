@@ -15,11 +15,13 @@ def create_app():
     from app.routes.dashboard import dashboard_bp
     from app.routes.cadastro import cadastro_bp
     from app.routes.alunos import alunos_bp
+    from app.routes.exemplares import exemplares_bp
 
     app.register_blueprint(login_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(cadastro_bp)
     app.register_blueprint(alunos_bp)
+    app.register_blueprint(exemplares_bp)
 
     @app.route("/")
     def index():

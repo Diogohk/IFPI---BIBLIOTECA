@@ -5,13 +5,13 @@
   if (!form) return;
 
   function validarISBN(valor) {
-    const isbn = valor.replace(/[\\s-]/g, "").toUpperCase();
-    if (/^\\d{9}[\\dX]$/.test(isbn)) {
+    const isbn = valor.replace(/[ -]/g, "").toUpperCase();
+    if (/^[0-9]{9}[0-9X]$/.test(isbn)) {
       const soma = [...isbn].reduce((total, char, index) =>
         total + (char === "X" ? 10 : Number(char)) * (10 - index), 0);
       if (soma % 11 === 0) return true;
     }
-    if (/^\\d{13}$/.test(isbn)) {
+    if (/^[0-9]{13}$/.test(isbn)) {
       const soma = [...isbn].reduce((total, char, index) =>
         total + Number(char) * (index % 2 === 0 ? 1 : 3), 0);
       if (soma % 10 === 0) return true;
@@ -36,7 +36,7 @@
 
     if (erros.length) {
       event.preventDefault();
-      window.alert("Não foi possível validar o formulário:\\n\\n• " + erros.join("\\n• "));
+      window.alert("Não foi possível validar o formulário:\n\n• " + erros.join("\n• "));
     }
   });
 })();

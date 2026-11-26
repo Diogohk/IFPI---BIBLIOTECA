@@ -7,5 +7,5 @@ cadastro_bp = Blueprint("cadastro", __name__)
 @login_obrigatorio
 def cadastrar():
     if request.method == "POST":
-        flash("O formulário está pronto, mas a gravação de livros ainda precisa ser integrada ao modelo.", "info")
+        flash("O formulário está pronto, mas o cadastro de livros ainda não foi integrado ao banco de dados.", "info")
     return render_template("cadastro.html")

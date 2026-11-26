@@ -16,9 +16,9 @@ def cadastrar_aluno():
         telefone = request.form.get("telefone", "").strip() or None
 
         if not matricula or not nome:
-            flash("Matrícula e nome são obrigatórios.", "error")
+            flash("Preencha os campos obrigatórios: matrícula e nome.", "error")
         elif db.session.get(Aluno, matricula):
-            flash("Esta matrícula já está cadastrada.", "error")
+            flash("Esta matrícula já está cadastrada. Informe outra matrícula.", "error")
         else:
             db.session.add(
                 Aluno(

@@ -51,7 +51,7 @@
       <div class="consulta-empty"><span class="empty-icon">▤</span><h3>Nenhum exemplar cadastrado</h3><p>Cadastre exemplares para acompanhar a disponibilidade das obras.</p><a class="consulta-primary" href="{{ url_for('exemplares.cadastrar_exemplar') }}">Cadastrar primeiro exemplar</a></div>
     {% endif %}
   </section>
-  <a class="consulta-back" href="{{ url_for('dashboard.inicio') }}>← Voltar ao painel</a>
+  <a class="consulta-back" href="{{ url_for('dashboard.inicio') }}">← Voltar ao painel</a>
 </main>
 {% endblock %}
 {% block scripts %}<script src="{{ url_for('static', filename='js/ConsultaListas.js') }}" defer></script>{% endblock %}

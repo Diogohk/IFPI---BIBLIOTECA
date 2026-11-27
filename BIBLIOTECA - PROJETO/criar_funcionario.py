@@ -61,6 +61,8 @@ def main():
             db.session.commit()
 
             print("\nFuncionário cadastrado com sucesso.")
+            if primeiro_administrador:
+                print("Este primeiro acesso recebeu a permissão de administrador.")
             print(f"Matrícula para login: {matricula}")
             print("A senha foi armazenada como hash. Guarde-a em local seguro.")
 

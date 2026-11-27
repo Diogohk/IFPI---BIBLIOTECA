@@ -1,41 +1,54 @@
 {% extends "base.html" %}
-{% block title %}Alunos cadastrados | Biblioteca IFPI{% endblock %}
+{% block title %}Alunos | Biblioteca IFPI{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/consultas.css') }}">{% endblock %}
 {% block content %}
-<div class="form-page">
-    <p class="eyebrow">CONSULTA • ALUNOS</p>
-    <h1>Alunos cadastrados</h1>
-    <p>Consulte, atualize ou remova os estudantes registrados.</p>
-    <div class="form-card">
-        {% if alunos %}
-        <div class="table-responsive">
-            <table>
-                <thead><tr><th>Matrícula</th><th>Nome</th><th>E-mail</th><th>Telefone</th><th>Ações</th></tr></thead>
-                <tbody>
-                {% for aluno in alunos %}
-                    <tr>
-                        <td>{{ aluno.matricula }}</td>
-                        <td>{{ aluno.nome }}</td>
-                        <td>{{ aluno.email or "Não informado" }}</td>
-                        <td>{{ aluno.telefone or "Não informado" }}</td>
-                        <td class="table-actions">
-                            <a href="{{ url_for('alunos.editar_aluno', matricula=aluno.matricula) }}">Editar</a>
-                            <form method="POST" action="{{ url_for('alunos.excluir_aluno', matricula=aluno.matricula) }}" data-confirm="Excluir este aluno? A operação não será permitida se houver empréstimos vinculados ao histórico.">
-                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                <button type="submit" class="button button-secondary">Excluir</button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-            <p>Nenhum aluno cadastrado até o momento.</p>
-        {% endif %}
-        <div class="form-actions">
-            <a href="{{ url_for('alunos.cadastrar_aluno') }}">Cadastrar aluno</a>
-            <a href="{{ url_for('dashboard.inicio') }}">Voltar ao painel</a>
-        </div>
+<main class="consulta-page">
+  <header class="consulta-header">
+    <div>
+      <p class="eyebrow">CADASTROS <span>/</span> ALUNOS</p>
+      <h1>Consulta de alunos</h1>
+      <p class="consulta-subtitle">Encontre e gerencie os estudantes cadastrados na biblioteca.</p>
     </div>
-</div>
+    <a class="consulta-primary" href="{{ url_for('alunos.cadastrar_aluno') }}">＋ Cadastrar aluno</a>
+  </header>
+
+  <section class="consulta-stats consulta-stats-single" aria-label="Resumo dos alunos">
+    <article class="consulta-stat"><span>Alunos cadastrados</span><strong>{{ alunos|length }}</strong></article>
+  </section>
+
+  <section class="consulta-panel">
+    <div class="consulta-toolbar">
+      <div><h2>Alunos cadastrados</h2><p>Pesquise por nome, matrícula, e-mail ou telefone.</p></div>
+      <label class="consulta-search"><span class="sr-only">Pesquisar alunos</span><input id="consulta-search" type="search" placeholder="⌕  Buscar aluno..."></label>
+    </div>
+    {% if alunos %}
+    <div class="consulta-table-wrap">
+      <table class="consulta-table">
+        <thead><tr><th>Aluno</th><th>Matrícula</th><th>Contato</th><th class="actions-heading">Ações</th></tr></thead>
+        <tbody id="consulta-rows">
+        {% for aluno in alunos %}
+          <tr class="consulta-row" data-search="{{ (aluno.nome ~ ' ' ~ aluno.matricula ~ ' ' ~ (aluno.email or '') ~ ' ' ~ (aluno.telefone or ''))|lower }}">
+            <td><div class="student-cell"><span class="student-avatar">{{ aluno.nome[:1]|upper }}</span><span><strong class="cell-title">{{ aluno.nome }}</strong><span class="cell-caption">Estudante</span></span></div></td>
+            <td><span class="codigo-chip">{{ aluno.matricula }}</span></td>
+            <td><span class="contact-main">{{ aluno.email or 'E-mail não informado' }}</span><span class="cell-caption">{{ aluno.telefone or 'Telefone não informado' }}</span></td>
+            <td class="consulta-actions">
+              <a class="action-link" href="{{ url_for('alunos.editar_aluno', matricula=aluno.matricula) }}">Editar</a>
+              <form method="POST" action="{{ url_for('alunos.excluir_aluno', matricula=aluno.matricula) }}" data-confirm="Excluir este aluno? A operação não será permitida se houver empréstimos vinculados ao histórico.">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="action-link action-danger">Excluir</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="consulta-no-results" id="consulta-empty" hidden>Nenhum aluno encontrado para essa pesquisa.</p>
+    {% else %}
+      <div class="consulta-empty"><span class="empty-icon">♙</span><h3>Nenhum aluno cadastrado</h3><p>Quando um aluno for cadastrado, ele aparecerá nesta lista.</p><a class="consulta-primary" href="{{ url_for('alunos.cadastrar_aluno') }}">Cadastrar primeiro aluno</a></div>
+    {% endif %}
+  </section>
+  <a class="consulta-back" href="{{ url_for('dashboard.inicio') }}">← Voltar ao painel</a>
+</main>
 {% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/ConsultaListas.js') }}" defer></script>{% endblock %}

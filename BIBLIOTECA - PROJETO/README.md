@@ -88,7 +88,7 @@ pip install -r requirements.txt
 
 A consulta ao Google Books é feita pelo back-end Flask, que lê `GOOGLE_BOOKS_API_KEY` do ambiente. O navegador chama apenas a rota autenticada `/api/google-books`, portanto a chave não é exposta no JavaScript. Como a chamada é feita pelo servidor, não use restrição de aplicativo por HTTP referrer. Em desenvolvimento local, deixe a restrição de aplicativo sem restrição e mantenha a restrição de API limitada à Books API. Em produção, prefira também restringir pelo IP fixo de saída do servidor, quando disponível.
 
-O projeto utiliza SQLAlchemy. Ao iniciar, `run.py` chama `db.create_all()`, que cria tabelas mapeadas que ainda não existem. Esse comando **não altera automaticamente a estrutura de tabelas já existentes**.
+O projeto utiliza SQLAlchemy. Na inicialização, a aplicação chama `db.create_all()` para criar tabelas ausentes e executa as migrações automáticas definidas em `app/migrations.py`. O `db.create_all()` isoladamente **não altera a estrutura de tabelas já existentes**; por isso, alterações de esquema precisam de migrações explícitas.
 
 Se o banco já possuir tabelas de versões anteriores, consulte os scripts de migração antes de iniciar:
 
@@ -103,7 +103,7 @@ Não execute migrações repetidamente: os comandos de alteração de estrutura 
 
 Ao selecionar um resultado na pesquisa do Google Books, o formulário também salva o endereço da capa escolhida. O catálogo exibe essa capa salva e não faz uma nova pesquisa por ISBN. A capa pode ser escolhida tanto no cadastro quanto na edição de um livro.
 
-Para bancos existentes, faça backup e execute uma única vez o script `MIGRACAO_CAPA_LIVRO.sql`, que adiciona a coluna `capa_url` à tabela `livros`. O `db.create_all()` não adiciona colunas em tabelas já existentes. Não execute o script novamente se a coluna já existir.
+A coluna `capa_url` é verificada e criada automaticamente pela aplicação na inicialização, por meio de `app/migrations.py`. Assim, ao atualizar o projeto e iniciar com `python run.py`, bancos antigos recebem a coluna sem precisar executar SQL manualmente. A rotina verifica se a coluna já existe e não a duplica. O arquivo `MIGRACAO_CAPA_LIVRO.sql` fica disponível apenas como referência para recuperação manual em instalações antigas nas quais a inicialização automática não possa ser utilizada. Faça backup antes de qualquer alteração manual.
 
 ## Como executar
 

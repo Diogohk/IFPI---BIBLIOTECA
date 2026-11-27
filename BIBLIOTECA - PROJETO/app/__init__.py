@@ -2,6 +2,7 @@ from flask import Flask, redirect, url_for, session
 from app.extensions import db, csrf
 from app.config import Config
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
@@ -23,8 +24,16 @@ def create_app():
     app.register_blueprint(alunos_bp)
     app.register_blueprint(exemplares_bp)
 
+    # Cria tabelas ausentes e aplica pequenas migrações compatíveis automaticamente.
+    # Assim, uma instalação antiga recebe a coluna capa_url sem SQL manual.
+    with app.app_context():
+        db.create_all()
+        from app.migrations import aplicar_migracoes_automaticas
+        aplicar_migracoes_automaticas()
+
     @app.route("/")
     def index():
         return redirect(url_for("dashboard.inicio") if session.get("funcionario_id")
                         else url_for("login.entrar"))
+
     return app

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Início | Biblioteca IFPI{% endblock %}
-{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='css/consultas.css') }}">{% endblock %}
 {% block content %}
 <div class="dashboard-layout">
   <aside class="dashboard-sidebar" aria-label="Navegação principal">
@@ -16,18 +16,58 @@
     </nav>
     <div class="sidebar-note"><span class="note-dot"></span><span>Sistema em desenvolvimento</span></div>
   </aside>
+
   <main class="dashboard-main">
-    <section class="welcome"><p class="eyebrow">PAINEL INICIAL</p><h1>Olá, {{ nome }}.</h1><p>Bem-vindo ao sistema da Biblioteca do IFPI — Campus Paulistana.</p><p class="welcome-detail">Acesse os formulários e consulte os registros disponíveis no sistema.</p></section>
-    <section class="section-block" aria-labelledby="forms-title"><div class="section-heading"><div><p class="eyebrow">RECURSOS DISPONÍVEIS</p><h2 id="forms-title">Acesso aos formulários</h2></div></div>
+    <section class="welcome">
+      <p class="eyebrow">PAINEL INICIAL</p>
+      <h1>Olá, {{ nome }}.</h1>
+      <p>Bem-vindo ao sistema da Biblioteca do IFPI — Campus Paulistana.</p>
+      <p class="welcome-detail">Acompanhe os registros e acesse rapidamente as áreas do sistema.</p>
+    </section>
+
+    <section class="dashboard-overview" aria-label="Resumo da biblioteca">
+      <article class="overview-card"><span class="overview-icon">▤</span><div><span>Obras cadastradas</span><strong>{{ total_livros }}</strong></div><a href="{{ url_for('cadastro.listar_livros') }}">Ver catálogo →</a></article>
+      <article class="overview-card"><span class="overview-icon">♙</span><div><span>Alunos cadastrados</span><strong>{{ total_alunos }}</strong></div><a href="{{ url_for('alunos.listar_alunos') }}">Ver alunos →</a></article>
+      <article class="overview-card"><span class="overview-icon">▣</span><div><span>Total de exemplares</span><strong>{{ total_exemplares }}</strong></div><a href="{{ url_for('exemplares.listar_exemplares') }}">Ver exemplares →</a></article>
+      <article class="overview-card overview-card-available"><span class="overview-icon">✓</span><div><span>Exemplares disponíveis</span><strong>{{ exemplares_disponiveis }}</strong></div><a href="{{ url_for('exemplares.listar_exemplares') }}">Consultar acervo →</a></article>
+    </section>
+
+    <section class="section-block" aria-labelledby="forms-title">
+      <div class="section-heading"><div><p class="eyebrow">ACESSO RÁPIDO</p><h2 id="forms-title">Cadastros</h2></div></div>
       <div class="forms-grid">
-        <a class="action-card" href="{{ url_for('cadastro.cadastrar') }}"><span class="card-icon">▤</span><span class="card-content"><strong>Cadastrar livro</strong><span>Registrar uma obra no acervo da biblioteca.</span><span class="card-link">Abrir formulário →</span></span></a>
-        <a class="action-card" href="{{ url_for('alunos.cadastrar_aluno') }}"><span class="card-icon">♙</span><span class="card-content"><strong>Cadastrar aluno</strong><span>Registrar os dados de um estudante.</span><span class="card-link">Abrir formulário →</span></span></a>
-        <a class="action-card" href="{{ url_for('exemplares.cadastrar_exemplar') }}"><span class="card-icon">▣</span><span class="card-content"><strong>Cadastrar exemplar</strong><span>Registrar uma unidade física de uma obra.</span><span class="card-link">Abrir formulário →</span></span></a>
+        <a class="action-card" href="{{ url_for('cadastro.cadastrar') }}"><span class="card-icon">▤</span><span class="card-content"><strong>Cadastrar livro</strong><span>Registrar uma obra no acervo.</span><span class="card-link">Abrir formulário →</span></span></a>
+        <a class="action-card" href="{{ url_for('alunos.cadastrar_aluno') }}"><span class="card-icon">♙</span><span class="card-content"><strong>Cadastrar aluno</strong><span>Registrar um estudante.</span><span class="card-link">Abrir formulário →</span></span></a>
+        <a class="action-card" href="{{ url_for('exemplares.cadastrar_exemplar') }}"><span class="card-icon">▣</span><span class="card-content"><strong>Cadastrar exemplar</strong><span>Adicionar uma unidade física de uma obra.</span><span class="card-link">Abrir formulário →</span></span></a>
       </div>
     </section>
-    <section class="future-section" aria-label="Funcionalidades futuras">
-      <article class="future-card"><div class="future-icon">↔</div><div><p class="eyebrow">FUNCIONALIDADE FUTURA</p><h2>Movimentações</h2><p>O histórico de atividades da biblioteca poderá ser acompanhado aqui em uma próxima etapa.</p></div><span class="future-badge">Em breve</span></article>
-      <article class="future-card"><div class="future-icon">▥</div><div><p class="eyebrow">FUNCIONALIDADE FUTURA</p><h2>Estatísticas da biblioteca</h2><p>Indicadores e resumos do acervo poderão ser apresentados aqui futuramente.</p></div><span class="future-badge">Em breve</span></article>
+
+    <section class="dashboard-tables" aria-label="Consultas rápidas">
+      <div class="dashboard-table-card">
+        <div class="dashboard-table-heading"><div><p class="eyebrow">ACERVO</p><h2>Livros cadastrados</h2></div><a href="{{ url_for('cadastro.listar_livros') }}">Ver todos →</a></div>
+        {% if livros %}
+        <div class="dashboard-table-scroll"><table class="dashboard-table"><thead><tr><th>Livro</th><th>Autor</th><th>Exemplares</th></tr></thead><tbody>
+          {% for livro in livros %}<tr><td><strong>{{ livro.titulo }}</strong><small>ISBN {{ livro.isbn or 'Não informado' }}</small></td><td>{{ livro.autor }}</td><td><span class="dashboard-count">{{ livro.exemplares|length }}</span></td></tr>{% endfor %}
+        </tbody></table></div>
+        {% else %}<p class="dashboard-table-empty">Nenhum livro cadastrado ainda.</p>{% endif %}
+      </div>
+
+      <div class="dashboard-table-card">
+        <div class="dashboard-table-heading"><div><p class="eyebrow">COMUNIDADE</p><h2>Alunos cadastrados</h2></div><a href="{{ url_for('alunos.listar_alunos') }}">Ver todos →</a></div>
+        {% if alunos %}
+        <div class="dashboard-table-scroll"><table class="dashboard-table"><thead><tr><th>Aluno</th><th>Matrícula</th><th>Contato</th></tr></thead><tbody>
+          {% for aluno in alunos %}<tr><td><strong>{{ aluno.nome }}</strong></td><td><span class="dashboard-code">{{ aluno.matricula }}</span></td><td>{{ aluno.email or 'Não informado' }}</td></tr>{% endfor %}
+        </tbody></table></div>
+        {% else %}<p class="dashboard-table-empty">Nenhum aluno cadastrado ainda.</p>{% endif %}
+      </div>
+
+      <div class="dashboard-table-card dashboard-table-wide">
+        <div class="dashboard-table-heading"><div><p class="eyebrow">CONTROLE DO ACERVO</p><h2>Exemplares registrados</h2></div><a href="{{ url_for('exemplares.listar_exemplares') }}">Ver todos →</a></div>
+        {% if exemplares %}
+        <div class="dashboard-table-scroll"><table class="dashboard-table"><thead><tr><th>Código</th><th>Obra</th><th>Autor</th><th>Situação</th></tr></thead><tbody>
+          {% for exemplar in exemplares %}<tr><td><span class="dashboard-code">{{ exemplar.codigo }}</span></td><td><strong>{{ exemplar.livro.titulo }}</strong></td><td>{{ exemplar.livro.autor }}</td><td><span class="dashboard-status dashboard-status-{{ exemplar.status }}">{{ {'disponivel':'Disponível','emprestado':'Emprestado','manutencao':'Em manutenção'}.get(exemplar.status, exemplar.status) }}</span></td></tr>{% endfor %}
+        </tbody></table></div>
+        {% else %}<p class="dashboard-table-empty">Nenhum exemplar cadastrado ainda.</p>{% endif %}
+      </div>
     </section>
   </main>
 </div>

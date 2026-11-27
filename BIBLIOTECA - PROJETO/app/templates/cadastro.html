@@ -3,7 +3,19 @@
 {% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/livros.css') }}">{% endblock %}
 {% block content %}
 <main class="livros-page">
-  <section class="livros-header"><div><p class="eyebrow">ACERVO • LIVROS</p><h1>{{ 'Editar livro' if livro else 'Registrar livro' }}</h1><p class="subtitle">Informe os dados da obra.</p></div></section>
+  <section class="livros-header"><div><p class="eyebrow">ACERVO • LIVROS</p><h1>{{ 'Editar livro' if livro else 'Registrar livro' }}</h1><p class="subtitle">Informe os dados da obra ou localize os dados pela API Google Books.</p></div></section>
+  {% if not livro %}
+  <section class="google-search-panel">
+    <h2>Buscar livro no Google Books</h2>
+    <p>Pesquise pelo ISBN ou pelo título e selecione um resultado para preencher o formulário.</p>
+    <div class="google-search-controls">
+      <input id="google-books-query" type="search" placeholder="Digite um ISBN ou título" aria-label="Pesquisar no Google Books">
+      <button type="button" class="button button-primary" id="google-books-search">Pesquisar</button>
+    </div>
+    <p class="google-search-status" id="google-books-status" role="status" aria-live="polite"></p>
+    <div class="google-books-results" id="google-books-results"></div>
+  </section>
+  {% endif %}
   <section class="form-card">
     <form id="form-livro" method="POST" action="{{ url_for('cadastro.editar_livro', idlivro=livro.idlivro) if livro else url_for('cadastro.cadastrar') }}" data-confirm-reset="Deseja limpar os campos deste formulário?">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -17,7 +29,10 @@
       <div class="form-footer"><p class="required-note">* Campos obrigatórios</p><div class="form-actions"><a href="{{ url_for('cadastro.listar_livros') }}">Cancelar</a><button type="reset" class="button button-secondary">Limpar</button><button class="button button-primary" type="submit">Salvar livro</button></div></div>
     </form>
   </section>
-  <p><a href="{{ url_for('cadastro.listar_livros') }}">Consultar livros cadastrados</a></p>
+  <p><a href="{{ url_for('cadastro.listar_livros') }}">Consultar catálogo de livros</a></p>
 </main>
 {% endblock %}
-{% block scripts %}<script src="{{ url_for('static', filename='js/Livros.js') }}" defer></script>{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/Livros.js') }}" defer></script>
+{% if not livro %}<script src="{{ url_for('static', filename='js/GoogleBooks.js') }}" defer></script>{% endif %}
+{% endblock %}

@@ -125,3 +125,110 @@ html[data-theme="dark"] .future-icon{background:#26372c;color:#b3c5b8}
 html[data-theme="dark"] .future-badge{background:#26372c;color:#a8b8ac}
 
 html[data-theme="dark"] .theme-icon-moon{display:none}html[data-theme="dark"] .theme-icon-sun{display:grid}
+
+
+/* Correções de contraste do tema escuro nas telas de formulário e pesquisa */
+html[data-theme="dark"] .form-page,
+html[data-theme="dark"] .livros-page,
+html[data-theme="dark"] .employee-form-page {
+  color: #e0ebe3;
+}
+html[data-theme="dark"] .form-page h1,
+html[data-theme="dark"] .livros-header h1,
+html[data-theme="dark"] .form-section h2,
+html[data-theme="dark"] .google-search-panel h2,
+html[data-theme="dark"] .catalog-card h2,
+html[data-theme="dark"] .employee-form-page h1 {
+  color: #e1ece4;
+}
+html[data-theme="dark"] .form-page > p:not(.eyebrow),
+html[data-theme="dark"] .livros-page .subtitle,
+html[data-theme="dark"] .livros-page .hint,
+html[data-theme="dark"] .livros-page .required-note,
+html[data-theme="dark"] .google-search-panel > p,
+html[data-theme="dark"] .google-search-status,
+html[data-theme="dark"] .catalog-count,
+html[data-theme="dark"] .catalog-empty,
+html[data-theme="dark"] .catalog-card-isbn,
+html[data-theme="dark"] .catalog-author,
+html[data-theme="dark"] .catalog-meta,
+html[data-theme="dark"] .catalog-copies,
+html[data-theme="dark"] .employee-readonly,
+html[data-theme="dark"] .employee-photo-field small {
+  color: #aebfb3;
+}
+html[data-theme="dark"] .form-card,
+html[data-theme="dark"] .google-search-panel,
+html[data-theme="dark"] .catalog-toolbar,
+html[data-theme="dark"] .google-book-result {
+  background: #1a2921;
+  border-color: #30463a;
+  color: #e0ebe3;
+}
+html[data-theme="dark"] .google-search-controls input,
+html[data-theme="dark"] .catalog-toolbar input,
+html[data-theme="dark"] .livros-page .field input,
+html[data-theme="dark"] .livros-page .field textarea,
+html[data-theme="dark"] .form-page .form-group input,
+html[data-theme="dark"] .form-page .form-group select,
+html[data-theme="dark"] .form-page .form-group textarea {
+  background: #142119;
+  border-color: #3b5144;
+  color: #e0ebe3;
+  color-scheme: dark;
+}
+html[data-theme="dark"] .google-search-controls input::placeholder,
+html[data-theme="dark"] .catalog-toolbar input::placeholder,
+html[data-theme="dark"] .livros-page .field input::placeholder,
+html[data-theme="dark"] .livros-page .field textarea::placeholder {
+  color: #829589;
+}
+html[data-theme="dark"] .livros-page .field label,
+html[data-theme="dark"] .catalog-search-label,
+html[data-theme="dark"] .form-page .form-group label,
+html[data-theme="dark"] .employee-photo-field label {
+  color: #c7d7cb;
+}
+html[data-theme="dark"] .google-book-result strong {
+  color: #e1ece4;
+}
+html[data-theme="dark"] .google-book-result small {
+  color: #a6b8ab;
+}
+html[data-theme="dark"] .google-book-result img,
+html[data-theme="dark"] .catalog-cover-wrap {
+  background: #24372b;
+}
+html[data-theme="dark"] .livros-page .form-footer {
+  border-color: #30463a;
+}
+html[data-theme="dark"] .livros-page .form-actions a,
+html[data-theme="dark"] .catalog-edit-link {
+  color: #a6d8b4;
+}
+html[data-theme="dark"] .livros-page .button-secondary {
+  background: #1c2d23;
+  border-color: #43594a;
+  color: #d2e0d6;
+}
+html[data-theme="dark"] .livros-page .button-secondary:hover {
+  background: #263c2d;
+}
+html[data-theme="dark"] .livros-page .flash-success {
+  background: #20382a;
+  color: #b8e0c2;
+}
+html[data-theme="dark"] .livros-page .flash-error,
+html[data-theme="dark"] .livros-page .flash-danger {
+  background: #382523;
+  color: #f0b0a8;
+}
+html[data-theme="dark"] .employee-form-card {
+  color: #e0ebe3;
+}
+html[data-theme="dark"] .employee-form-actions {
+  border-color: #30463a;
+}
+html[data-theme="dark"] .employee-form-actions > a {
+  color: #a6b8ab;
+}

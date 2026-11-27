@@ -22,7 +22,7 @@
   <section class="consulta-panel catalog-panel">
     <div class="consulta-toolbar">
       <div><h2>Obras cadastradas</h2><p>Pesquise por título, autor ou ISBN.</p></div>
-      <label class="consulta-search"><span class="sr-only">Pesquisar no catálogo</span><input id="catalog-search" type="search" placeholder="⌕  Buscar no catálogo..."></label>
+      <label class="consulta-search"><span class="sr-only">Pesquisar no catálogo</span><input id="catalog-search" type="search" placeholder="⌕  Buscar no catálogo..."></label><span class="catalog-count" id="catalog-count">{{ livros|length }} obra(s)</span>
     </div>
     {% if livros %}
     <section class="catalog-grid" id="catalog-grid">

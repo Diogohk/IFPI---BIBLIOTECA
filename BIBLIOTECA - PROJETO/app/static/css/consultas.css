@@ -1,0 +1,89 @@
+.consulta-page{width:min(1160px,100%);margin:0 auto;color:#1d3028}
+.consulta-header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 28px}
+.consulta-header h1{margin:0;color:#1c3329;font-size:clamp(1.9rem,4vw,2.55rem);letter-spacing:-.045em;line-height:1.12}
+.consulta-subtitle{margin:10px 0 0;color:#728078;font-size:.98rem}
+.consulta-header .eyebrow{color:#638273}
+.consulta-header .eyebrow span{padding:0 5px;color:#b0beb6}
+.consulta-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:11px 17px;border:0;border-radius:10px;background:#176b52;color:#fff;text-decoration:none;font-size:.9rem;font-weight:700;white-space:nowrap;box-shadow:0 5px 12px rgba(23,107,82,.14);transition:background .18s ease,transform .18s ease}
+.consulta-primary:hover{background:#10543f;transform:translateY(-1px)}
+.consulta-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.consulta-stats-single{grid-template-columns:minmax(190px,240px)}
+.consulta-stat{display:flex;flex-direction:column;gap:9px;padding:18px 20px;border:1px solid #e2ebe5;border-radius:13px;background:linear-gradient(145deg,#fff,#f9fcfa);box-shadow:0 5px 16px rgba(30,62,45,.035)}
+.consulta-stat span{color:#75847b;font-size:.82rem;font-weight:600}
+.consulta-stat strong{color:#1c4937;font-size:1.8rem;line-height:1;font-weight:750;letter-spacing:-.04em}
+.consulta-panel{overflow:hidden;border:1px solid #e2ebe5;border-radius:16px;background:#fff;box-shadow:0 10px 30px rgba(30,62,45,.055)}
+.consulta-toolbar{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:22px 24px;border-bottom:1px solid #edf1ee}
+.consulta-toolbar h2{margin:0;color:#253a30;font-size:1.05rem}
+.consulta-toolbar p{margin:6px 0 0;color:#87938c;font-size:.84rem}
+.consulta-search{display:block;width:min(330px,45%);flex:0 0 auto}
+.consulta-search input{width:100%;height:43px;padding:0 14px;border:1px solid #dce6df;border-radius:10px;background:#fbfdfb;color:#23372c;font:inherit;font-size:.88rem;outline:none;transition:border-color .18s,box-shadow .18s}
+.consulta-search input:focus{border-color:#70a78b;box-shadow:0 0 0 3px rgba(65,135,94,.12)}
+.consulta-table-wrap{width:100%;overflow-x:auto}
+.consulta-table{width:100%;border-collapse:collapse;text-align:left}
+.consulta-table thead{background:#f8faf8}
+.consulta-table th{padding:13px 22px;color:#78877e;font-size:.72rem;font-weight:750;letter-spacing:.075em;text-transform:uppercase;white-space:nowrap}
+.consulta-table td{padding:16px 22px;border-top:1px solid #eff3f0;vertical-align:middle}
+.consulta-table tbody tr{transition:background .15s ease}
+.consulta-table tbody tr:hover{background:#fbfdfb}
+.consulta-table tbody tr[hidden]{display:none}
+.cell-title{display:block;color:#293e33;font-size:.9rem;font-weight:700;line-height:1.4}
+.cell-caption{display:block;margin-top:4px;color:#8a968f;font-size:.78rem;line-height:1.4}
+.codigo-chip{display:inline-flex;padding:6px 9px;border:1px solid #e2ebe5;border-radius:7px;background:#f5f9f6;color:#456454;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.8rem;font-weight:650}
+.status-pill{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;font-size:.77rem;font-weight:700;white-space:nowrap}
+.status-pill:before{width:6px;height:6px;border-radius:50%;background:currentColor;content:""}
+.status-disponivel{background:#eaf6ee;color:#287348}
+.status-emprestado{background:#fff4e5;color:#a56616}
+.status-manutencao{background:#f1effb;color:#6652a3}
+.consulta-actions{display:flex;align-items:center;gap:14px;white-space:nowrap}
+.consulta-actions form{display:inline;margin:0}
+.action-link{padding:0;border:0;background:none;color:#287452;font:inherit;font-size:.82rem;font-weight:700;text-decoration:none;cursor:pointer}
+.action-link:hover{text-decoration:underline}
+.action-danger{color:#b14b45}
+.actions-heading{text-align:left}
+.student-cell{display:flex;align-items:center;gap:12px;min-width:180px}
+.student-avatar{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;border-radius:12px;background:#eaf4ed;color:#286344;font-size:.9rem;font-weight:800}
+.contact-main{display:block;max-width:270px;overflow:hidden;color:#3e5548;font-size:.84rem;text-overflow:ellipsis;white-space:nowrap}
+.consulta-empty{display:flex;flex-direction:column;align-items:center;padding:56px 20px;text-align:center}
+.empty-icon{display:grid;place-items:center;width:58px;height:58px;margin-bottom:15px;border-radius:18px;background:#edf6ef;color:#347451;font-size:1.6rem}
+.consulta-empty h3{margin:0;color:#2b4034;font-size:1.05rem}
+.consulta-empty p{max-width:390px;margin:8px 0 18px;color:#849188;font-size:.87rem;line-height:1.5}
+.consulta-no-results{padding:28px 20px;color:#87938c;text-align:center;font-size:.9rem}
+.consulta-back{display:inline-block;margin-top:22px;color:#648071;font-size:.86rem;font-weight:650;text-decoration:none}
+.consulta-back:hover{color:#176b52}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Catálogo de obras */
+.catalog-page{width:min(1240px,100%)}
+.catalog-panel{padding-bottom:22px}
+.catalog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:18px;padding:22px}
+.catalog-card{overflow:hidden;display:flex;flex-direction:column;min-width:0;border:1px solid #e6ece7;border-radius:14px;background:#fff;box-shadow:0 5px 18px rgba(31,61,43,.045);transition:transform .18s ease,box-shadow .18s ease}
+.catalog-card:hover{transform:translateY(-3px);box-shadow:0 12px 25px rgba(31,61,43,.09)}
+.catalog-cover-wrap{height:205px;display:grid;place-items:center;padding:17px;background:linear-gradient(145deg,#f0f5f1,#f8faf8)}
+.catalog-cover{display:block;max-width:132px;height:172px;object-fit:contain;border-radius:3px;box-shadow:0 7px 17px rgba(24,44,31,.18)}
+.catalog-cover[hidden],.catalog-cover-placeholder[hidden]{display:none}
+.catalog-cover-placeholder{color:#91a097;font-size:.82rem}
+.catalog-card-content{display:flex;flex:1;flex-direction:column;align-items:flex-start;padding:17px}
+.catalog-card-isbn{margin:0 0 8px;color:#87948c;font-size:.68rem;font-weight:700;letter-spacing:.07em}
+.catalog-card h2{margin:0;color:#263c30;font-size:1rem;line-height:1.4}
+.catalog-author{margin:8px 0 0;color:#4e6657;font-size:.86rem}
+.catalog-meta,.catalog-copies{margin:7px 0 0;color:#87938b;font-size:.77rem;line-height:1.45}
+.catalog-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;margin-top:auto;padding-top:16px}
+.catalog-edit-link{color:#287452;font-size:.81rem;font-weight:750;text-decoration:none}
+.catalog-edit-link:hover{text-decoration:underline}
+.catalog-delete-form{margin:0}
+.catalog-delete-form .button{min-height:32px;padding:6px 10px;border:1px solid #f0dedd;border-radius:8px;background:#fff8f7;color:#a74a43;font-size:.76rem;font-weight:700;cursor:pointer}
+.catalog-delete-form .button:hover{background:#fff0ee}
+@media(max-width:760px){
+ .consulta-header{align-items:flex-start;flex-direction:column}
+ .consulta-header .consulta-primary{width:100%}
+ .consulta-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .consulta-toolbar{align-items:stretch;flex-direction:column}
+ .consulta-search{width:100%}
+ .consulta-table th,.consulta-table td{padding:13px 15px}
+ .consulta-actions{gap:10px}
+ .catalog-grid{grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:12px;padding:14px}
+ .catalog-cover-wrap{height:175px}
+ .catalog-cover{height:145px;max-width:112px}
+ .catalog-card-content{padding:13px}
+}
+@media(max-width:430px){.consulta-stats{grid-template-columns:1fr 1fr}.consulta-stat{padding:15px}.consulta-stat strong{font-size:1.55rem}.catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}

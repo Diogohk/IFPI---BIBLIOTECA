@@ -4,6 +4,7 @@ from app.models.funcionario import Funcionario
 
 login_bp = Blueprint("login", __name__)
 
+
 @login_bp.route("/login", methods=["GET", "POST"])
 def entrar():
     if session.get("funcionario_id"):
@@ -18,11 +19,15 @@ def entrar():
             session.clear()
             session["funcionario_id"] = funcionario.idfuncionario
             session["funcionario_nome"] = funcionario.nome
+            session["funcionario_cargo"] = funcionario.cargo
+            session["funcionario_foto"] = funcionario.foto_perfil
+            session["funcionario_admin"] = bool(funcionario.is_admin)
             return redirect(url_for("dashboard.inicio"))
 
         flash("Matrícula ou senha inválida.", "error")
 
     return render_template("login.html")
+
 
 @login_bp.route("/sair", methods=["POST"])
 def sair():

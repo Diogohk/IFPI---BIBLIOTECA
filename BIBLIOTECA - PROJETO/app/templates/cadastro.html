@@ -4,7 +4,6 @@
 {% block content %}
 <main class="livros-page">
   <section class="livros-header"><div><p class="eyebrow">ACERVO • LIVROS</p><h1>{{ 'Editar livro' if livro else 'Registrar livro' }}</h1><p class="subtitle">Informe os dados da obra ou localize os dados pela API Google Books.</p></div></section>
-  {% if not livro %}
   <section class="google-search-panel">
     <h2>Buscar livro no Google Books</h2>
     <p>Pesquise pelo ISBN ou pelo título e selecione um resultado para preencher o formulário e definir a capa do catálogo.</p>
@@ -15,7 +14,6 @@
     <p class="google-search-status" id="google-books-status" role="status" aria-live="polite"></p>
     <div class="google-books-results" id="google-books-results"></div>
   </section>
-  {% endif %}
   <section class="form-card">
     <form id="form-livro" method="POST" action="{{ url_for('cadastro.editar_livro', idlivro=livro.idlivro) if livro else url_for('cadastro.cadastrar') }}" data-confirm-reset="Deseja limpar os campos deste formulário?">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -38,5 +36,5 @@
 {% endblock %}
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/Livros.js') }}" defer></script>
-{% if not livro %}<script src="{{ url_for('static', filename='js/GoogleBooks.js') }}" defer></script>{% endif %}
+<script src="{{ url_for('static', filename='js/GoogleBooks.js') }}" defer></script>
 {% endblock %}

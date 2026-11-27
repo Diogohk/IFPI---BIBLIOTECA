@@ -28,14 +28,95 @@ def pesquisar_google_books():
             params={"q": termo, "maxResults": 6, "key": api_key},
             timeout=10,
         )
-        resposta.raise_for_status()
+    except requests.Timeout:
+        current_app.logger.warning("Tempo limite excedido ao consultar Google Books.")
+        return jsonify({
+            "error": "O Google Books demorou para responder. Tente novamente."
+        }), 504
+    except requests.ConnectionError:
+        current_app.logger.warning("Falha de conexão com Google Books.")
+        return jsonify({
+            "error": "Não foi possível conectar ao Google Books. Verifique a internet do servidor."
+        }), 502
+    except requests.RequestException as erro:
+        # Não registrar a mensagem completa: ela pode conter a URL com a chave da API.
+        current_app.logger.warning(
+            "Falha HTTP ao consultar Google Books (%s).",
+            type(erro).__name__,
+        )
+        return jsonify({
+            "error": "O servidor não conseguiu concluir a consulta ao Google Books."
+        }), 502
+
+    try:
         dados = resposta.json()
-    except requests.RequestException:
-        current_app.logger.exception("Falha ao consultar a API Google Books.")
-        return jsonify({"error": "Não foi possível consultar o Google Books no momento."}), 502
     except ValueError:
-        current_app.logger.exception("Resposta inválida recebida do Google Books.")
-        return jsonify({"error": "O Google Books retornou uma resposta inválida."}), 502
+        current_app.logger.warning(
+            "Google Books retornou JSON inválido (HTTP %s).",
+            resposta.status_code,
+        )
+        return jsonify({
+            "error": "O Google Books retornou uma resposta inválida."
+        }), 502
+
+    if not resposta.ok:
+        erro_api = dados.get("error", {}) if isinstance(dados, dict) else {}
+        motivos = [
+            item.get("reason", "")
+            for item in erro_api.get("errors", [])
+            if isinstance(item, dict)
+        ]
+        motivo = next((item for item in motivos if item), "")
+        mensagem_google = erro_api.get("message", "")
+
+        # Registra somente o motivo/status. Nunca registrar a resposta ou URL,
+        # pois a URL da requisição contém a chave da API.
+        current_app.logger.warning(
+            "Google Books recusou a consulta (HTTP %s, motivo: %s).",
+            resposta.status_code,
+            motivo or "não informado",
+        )
+
+        if resposta.status_code == 403:
+            if motivo in ("accessNotConfigured", "serviceDisabled"):
+                mensagem = (
+                    "A Books API não está habilitada no projeto Google Cloud "
+                    "associado à chave."
+                )
+            elif motivo in ("keyInvalid", "invalid"):
+                mensagem = (
+                    "A chave do Google Books é inválida. Confira a variável "
+                    "GOOGLE_BOOKS_API_KEY no arquivo .env."
+                )
+            elif motivo in ("ipRefererBlocked", "refererBlocked"):
+                mensagem = (
+                    "A chave está bloqueada pelas restrições de aplicativo. "
+                    "Como a consulta é feita pelo Flask, revise as restrições "
+                    "da chave no Google Cloud."
+                )
+            elif motivo in ("dailyLimitExceeded", "quotaExceeded", "rateLimitExceeded"):
+                mensagem = (
+                    "A cota ou o limite de consultas do Google Books foi atingido."
+                )
+            else:
+                mensagem = (
+                    "O Google Cloud recusou a chave ou a requisição. Confira "
+                    "se a Books API está habilitada e se as restrições da chave "
+                    "permitem a consulta feita pelo servidor."
+                )
+            return jsonify({"error": mensagem, "status": resposta.status_code}), 502
+
+        if resposta.status_code == 429:
+            return jsonify({
+                "error": "O limite de consultas ao Google Books foi atingido. Tente novamente mais tarde.",
+                "status": resposta.status_code,
+            }), 429
+
+        return jsonify({
+            "error": "O Google Books retornou um erro HTTP "
+                     f"{resposta.status_code}. {mensagem_google[:180]}",
+            "status": resposta.status_code,
+        }), 502
 
     return jsonify(dados)
 

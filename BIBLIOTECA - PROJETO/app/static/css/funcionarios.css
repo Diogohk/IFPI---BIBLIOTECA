@@ -1,0 +1,17 @@
+.employee-form-page{width:min(980px,100%);margin:0 auto}
+.employee-form-card{padding:30px;border:1px solid #e2ebe5;border-radius:16px;background:#fff;box-shadow:0 10px 30px rgba(30,62,45,.05)}
+.employee-photo-field{display:flex;align-items:center;gap:18px;padding-bottom:24px;margin-bottom:25px;border-bottom:1px solid #edf1ee}
+.employee-photo-preview{display:grid;place-items:center;width:88px;height:88px;flex:0 0 88px;overflow:hidden;border:1px solid #dce9e1;border-radius:50%;background:#eaf4ed;color:#287452;font-size:30px;font-weight:800}
+.employee-photo-preview img{width:100%;height:100%;object-fit:cover}
+.employee-photo-field label{display:block;margin-bottom:8px;color:#344b3e;font-size:.9rem;font-weight:750}
+.employee-photo-field input{display:block;max-width:100%;font:inherit;font-size:.82rem}
+.employee-photo-field small{display:block;margin-top:7px;color:#89958e;font-size:.76rem}
+.employee-fields-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px}
+.employee-form-actions{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:10px;padding-top:22px;border-top:1px solid #edf1ee}
+.employee-form-actions>a{color:#75847b;font-size:.87rem;font-weight:650;text-decoration:none}
+.employee-readonly{margin:10px 0 22px;color:#7d8b82;font-size:.84rem}
+.employee-cell{display:flex;align-items:center;gap:11px;min-width:190px}
+.employee-avatar{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;object-fit:cover;border-radius:50%;background:#eaf4ed;color:#287452;font-size:1rem;font-weight:800}
+.employee-role{display:inline-flex;padding:6px 10px;border-radius:999px;background:#edf4ef;color:#3b6b4d;font-size:.75rem;font-weight:750}
+.employee-role-admin{background:#fff4dc;color:#91651b}
+@media(max-width:650px){.employee-form-card{padding:21px 17px}.employee-fields-grid{grid-template-columns:1fr}.employee-form-actions{align-items:stretch;flex-direction:column-reverse}.employee-form-actions .consulta-primary{width:100%}}

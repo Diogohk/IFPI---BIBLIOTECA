@@ -97,6 +97,14 @@ Se o banco já possuir tabelas de versões anteriores, consulte os scripts de mi
 
 Não execute migrações repetidamente: os comandos de alteração de estrutura devem ser aplicados conforme o estado atual do banco.
 
+
+
+### Capas dos livros no catálogo
+
+Ao selecionar um resultado na pesquisa do Google Books, o formulário também salva o endereço da capa escolhida. O catálogo exibe essa capa salva e não faz uma nova pesquisa por ISBN. A capa pode ser escolhida tanto no cadastro quanto na edição de um livro.
+
+Para bancos existentes, faça backup e execute uma única vez o script `MIGRACAO_CAPA_LIVRO.sql`, que adiciona a coluna `capa_url` à tabela `livros`. O `db.create_all()` não adiciona colunas em tabelas já existentes. Não execute o script novamente se a coluna já existir.
+
 ## Como executar
 
 Com o ambiente virtual ativado, o MySQL em execução e o banco configurado, execute na pasta principal:

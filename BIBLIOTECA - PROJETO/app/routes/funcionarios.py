@@ -51,8 +51,6 @@ def salvar_foto(arquivo, foto_atual=None):
     nome = f"{uuid.uuid4().hex}{extensao}"
     os.makedirs(current_app.config["UPLOAD_FOLDER"], exist_ok=True)
     arquivo.save(os.path.join(current_app.config["UPLOAD_FOLDER"], nome))
-    if foto_atual:
-        excluir_foto(foto_atual)
     return nome, None
 
 
@@ -144,7 +142,8 @@ def editar_funcionario(idfuncionario):
         elif senha and senha != confirmacao:
             flash("As senhas não coincidem.", "error")
         else:
-            foto, erro_foto = salvar_foto(request.files.get("foto"), funcionario.foto_perfil)
+            foto_antiga = funcionario.foto_perfil
+            foto, erro_foto = salvar_foto(request.files.get("foto"), foto_antiga)
             if erro_foto:
                 flash(erro_foto, "error")
             else:
@@ -155,6 +154,8 @@ def editar_funcionario(idfuncionario):
                 if senha:
                     funcionario.senha_hash = generate_password_hash(senha)
                 db.session.commit()
+                if foto_antiga and foto_antiga != foto:
+                    excluir_foto(foto_antiga)
                 if funcionario.idfuncionario == session.get("funcionario_id"):
                     session["funcionario_nome"] = funcionario.nome
                     session["funcionario_cargo"] = funcionario.cargo
@@ -191,16 +192,20 @@ def meu_perfil():
     if request.method == "POST":
         nome = request.form.get("nome", "").strip()
         cargo = request.form.get("cargo", "").strip()
-        foto, erro_foto = salvar_foto(request.files.get("foto"), funcionario.foto_perfil)
         if not nome or not cargo or len(nome) > 150 or len(cargo) > 80:
             flash("Informe nome e cargo dentro dos limites permitidos.", "error")
-        elif erro_foto:
-            flash(erro_foto, "error")
         else:
+            foto_antiga = funcionario.foto_perfil
+            foto, erro_foto = salvar_foto(request.files.get("foto"), foto_antiga)
+            if erro_foto:
+                flash(erro_foto, "error")
+                return render_template("perfil_funcionario.html", funcionario=funcionario)
             funcionario.nome = nome
             funcionario.cargo = cargo
             funcionario.foto_perfil = foto
             db.session.commit()
+            if foto_antiga and foto_antiga != foto:
+                excluir_foto(foto_antiga)
             session["funcionario_nome"] = nome
             session["funcionario_cargo"] = cargo
             session["funcionario_foto"] = foto

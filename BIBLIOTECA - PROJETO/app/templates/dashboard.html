@@ -13,8 +13,23 @@
       <a class="nav-item" href="{{ url_for('alunos.listar_alunos') }}"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></span><span>Consultar alunos</span></a>
       <a class="nav-item" href="{{ url_for('exemplares.cadastrar_exemplar') }}"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5zM9 3v18M12 7h4M12 11h4"/></svg></span><span>Cadastro de exemplares</span></a>
       <a class="nav-item" href="{{ url_for('exemplares.listar_exemplares') }}"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5zM9 3v18M12 7h4M12 11h4"/></svg></span><span>Consultar exemplares</span></a>
+      {% if session.get('funcionario_admin') %}
+      <a class="nav-item" href="{{ url_for('funcionarios.listar_funcionarios') }}"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 15a5.5 5.5 0 0 1 3.5 5"/></svg></span><span>Funcionários</span></a>
+      {% endif %}
     </nav>
-    <div class="sidebar-note"><span class="note-dot"></span><span>Sistema em desenvolvimento</span></div>
+    <div class="sidebar-bottom">
+      <a class="sidebar-account" href="{{ url_for('funcionarios.meu_perfil') }}">
+        {% if session.get('funcionario_foto') %}<img class="sidebar-avatar" src="{{ url_for('funcionarios.foto_funcionario', filename=session.get('funcionario_foto')) }}" alt="Foto do perfil">{% else %}<span class="sidebar-avatar sidebar-avatar-fallback">{{ session.get('funcionario_nome', 'F')[:1]|upper }}</span>{% endif %}
+        <span class="sidebar-account-copy"><strong>{{ session.get('funcionario_nome', 'Funcionário') }}</strong><small>{{ session.get('funcionario_cargo', 'Equipe da biblioteca') }}</small><small class="sidebar-profile-link">Meu perfil</small></span>
+        <svg class="sidebar-account-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false">
+        <span class="theme-toggle-icon theme-icon-moon"><svg viewBox="0 0 24 24"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.6 8.6 0 1 0 20.5 14.2Z"/></svg></span>
+        <span class="theme-toggle-icon theme-icon-sun"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></span>
+        <span class="theme-toggle-label">Modo escuro</span><span class="theme-toggle-state">Desativado</span>
+      </button>
+      <div class="sidebar-note"><span class="note-dot"></span><span>Sistema em desenvolvimento</span></div>
+    </div>
   </aside>
 
   <main class="dashboard-main">

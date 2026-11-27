@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Meu perfil | Biblioteca IFPI{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/consultas.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='css/funcionarios.css') }}">{% endblock %}
+{% block content %}
+<main class="employee-form-page">
+  <header class="consulta-header"><div><p class="eyebrow">CONTA <span>/</span> PERFIL</p><h1>Meu perfil</h1><p class="consulta-subtitle">Atualize sua identificação e sua foto de perfil.</p></div></header>
+  <section class="employee-form-card">
+    <form method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="employee-photo-field">
+        <div class="employee-photo-preview">{% if funcionario.foto_perfil %}<img src="{{ url_for('funcionarios.foto_funcionario', filename=funcionario.foto_perfil) }}" alt="Sua foto de perfil">{% else %}<span>{{ funcionario.nome[:1]|upper }}</span>{% endif %}</div>
+        <div><label for="foto">Foto de perfil</label><input id="foto" name="foto" type="file" accept="image/png,image/jpeg,image/webp"><small>JPG, PNG ou WEBP, até 2 MB.</small></div>
+      </div>
+      <div class="employee-fields-grid">
+        <div class="exemplar-field"><label for="nome">Nome completo *</label><input id="nome" name="nome" maxlength="150" required value="{{ funcionario.nome }}"></div>
+        <div class="exemplar-field"><label for="cargo">Cargo ou função *</label><input id="cargo" name="cargo" maxlength="80" required value="{{ funcionario.cargo }}"></div>
+      </div>
+      <p class="employee-readonly">Matrícula: <strong>{{ funcionario.matricula }}</strong> · Para alterar a senha, utilize a administração de funcionários.</p>
+      <div class="employee-form-actions"><a href="{{ url_for('dashboard.inicio') }}">Voltar ao painel</a><button class="consulta-primary" type="submit">Salvar perfil</button></div>
+    </form>
+  </section>
+</main>
+{% endblock %}

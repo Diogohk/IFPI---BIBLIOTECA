@@ -1,5 +1,6 @@
 from app.extensions import db
 
+
 class Funcionario(db.Model):
     __tablename__ = "funcionarios"
 
@@ -8,3 +9,5 @@ class Funcionario(db.Model):
     nome = db.Column(db.String(150), nullable=False)
     cargo = db.Column(db.String(80), nullable=False)
     senha_hash = db.Column(db.String(255), nullable=False)
+    foto_perfil = db.Column(db.String(255), nullable=True)
+    is_admin = db.Column(db.Boolean, nullable=False, default=False)

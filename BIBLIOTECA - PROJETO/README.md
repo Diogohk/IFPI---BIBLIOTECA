@@ -140,9 +140,21 @@ O script solicitará:
 - Cargo (até 80 caracteres)
 - Senha e confirmação da senha (mínimo de 8 caracteres)
 
-A senha é solicitada sem aparecer na tela e armazenada no banco como hash. Guarde a senha em local seguro. O script também verifica se a matrícula já está cadastrada.
+A senha é solicitada sem aparecer na tela e armazenada no banco como hash. Guarde a senha em local seguro. O script também verifica se a matrícula já está cadastrada. Se ainda não houver administrador, o primeiro funcionário criado recebe essa permissão automaticamente.
 
 Depois do cadastro, acesse a tela de login em `/login` e entre utilizando a matrícula e a senha criadas.
+
+### Gestão de funcionários
+
+Após entrar com uma conta administradora, use **Funcionários** no menu lateral para cadastrar, consultar, editar e excluir acessos. Contas novas recebem permissão de funcionário; somente um administrador pode gerenciar a equipe. O sistema impede excluir a própria conta e mantém pelo menos um administrador.
+
+Cada funcionário pode acessar **Meu perfil** para atualizar nome, cargo e foto. As fotos aceitas são JPG, PNG e WEBP, com limite de 2 MB, armazenadas na pasta local `instance/uploads/funcionarios`, que não deve ser enviada ao GitHub.
+
+Em bancos antigos, a inicialização adiciona automaticamente os campos de foto e permissão. Se já existirem funcionários e nenhum administrador, o cadastro mais antigo recebe a permissão inicial. Após atualizar o projeto, encerre a sessão e entre novamente para carregar as novas permissões.
+
+### Modo escuro
+
+O botão **Modo escuro**, no rodapé do menu lateral do painel, alterna a aparência do sistema. A preferência fica salva no navegador utilizado e não exige alteração no banco de dados.
 
 Se houver dúvidas sobre a estrutura da tabela de funcionários ou se o banco já possuir registros, consulte primeiro `CONFIGURAR_ACESSO.md`. Não compartilhe credenciais de funcionários.
 

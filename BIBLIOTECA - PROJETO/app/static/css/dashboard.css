@@ -441,3 +441,24 @@ a.action-card:hover {
 .exemplar-aside-illustration{display:block;width:100%;height:125px;object-fit:contain;margin:-4px auto 14px}
 @media(max-width:760px){.welcome-visual{min-height:0}.welcome-illustration{width:110px;max-height:105px}}
 @media(max-width:480px){.welcome-illustration{width:78px;max-height:85px}.welcome-visual{gap:8px}}
+
+
+/* Perfil e alternância de tema no rodapé da navegação */
+.sidebar-bottom{display:flex;flex-direction:column;gap:12px;margin-top:auto;padding-top:18px}
+.sidebar-account{display:flex;align-items:center;gap:10px;min-width:0;padding:10px 8px;border:1px solid #e7eee9;border-radius:11px;background:#fbfdfb;color:inherit;text-decoration:none}
+.sidebar-account:hover{background:#f1f7f3;border-color:#cbded1}
+.sidebar-avatar{width:38px;height:38px;flex:0 0 38px;object-fit:cover;border-radius:50%;background:#e5f1e8}
+.sidebar-avatar-fallback{display:grid;place-items:center;color:#276746;font-weight:800}
+.sidebar-account-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:2px}
+.sidebar-account-copy strong{overflow:hidden;color:#30463a;font-size:11px;text-overflow:ellipsis;white-space:nowrap}
+.sidebar-account-copy small{overflow:hidden;color:#849188;font-size:10px;text-overflow:ellipsis;white-space:nowrap}
+.sidebar-account-copy .sidebar-profile-link{color:#287452;font-weight:750}
+.sidebar-account-arrow{width:15px;height:15px;flex:0 0 auto;fill:none;stroke:#829188;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.theme-toggle{width:100%;display:flex;align-items:center;gap:9px;padding:11px 10px;border:1px solid #e3ebe5;border-radius:10px;background:#fff;color:#40554a;text-align:left;font:inherit;cursor:pointer;transition:background .18s,border-color .18s}
+.theme-toggle:hover{background:#f4f8f5;border-color:#c9dccf}
+.theme-toggle-icon{display:grid;place-items:center;width:20px;height:20px;color:#347653}
+.theme-toggle-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.theme-icon-sun{display:none}
+.theme-toggle-label{flex:1;font-size:11px;font-weight:750}
+.theme-toggle-state{color:#87948c;font-size:10px}
+@media(max-width:760px){.sidebar-bottom{margin-top:14px}}

@@ -123,3 +123,5 @@ html[data-theme="dark"] .future-card h2{color:#d9e6dc}
 html[data-theme="dark"] .future-card p:last-child{color:#a1b2a5}
 html[data-theme="dark"] .future-icon{background:#26372c;color:#b3c5b8}
 html[data-theme="dark"] .future-badge{background:#26372c;color:#a8b8ac}
+
+html[data-theme="dark"] .theme-icon-moon{display:none}html[data-theme="dark"] .theme-icon-sun{display:grid}

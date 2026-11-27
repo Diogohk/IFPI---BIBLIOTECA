@@ -1,10 +1,57 @@
 {% extends "base.html" %}
-{% block title %}Exemplares cadastrados | Biblioteca IFPI{% endblock %}
+{% block title %}Exemplares | Biblioteca IFPI{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/consultas.css') }}">{% endblock %}
 {% block content %}
-<div class="form-page"><p class="eyebrow">CONSULTA • EXEMPLARES</p><h1>Exemplares cadastrados</h1><div class="form-card">
-{% if exemplares %}<div class="table-responsive"><table><thead><tr><th>Código</th><th>Livro</th><th>Situação</th><th>Ações</th></tr></thead><tbody>
-{% for exemplar in exemplares %}<tr><td>{{ exemplar.codigo }}</td><td>{{ exemplar.livro.titulo }}</td><td>{{ {'disponivel':'Disponível','emprestado':'Emprestado','manutencao':'Em manutenção'}.get(exemplar.status, exemplar.status) }}</td><td><a href="{{ url_for('exemplares.editar_exemplar', idexemplar=exemplar.idexemplar) }}">Editar</a><form method="POST" action="{{ url_for('exemplares.excluir_exemplar', idexemplar=exemplar.idexemplar) }}" data-confirm="Excluir este exemplar?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">Excluir</button></form></td></tr>{% endfor %}
-</tbody></table></div>{% else %}<p>Nenhum exemplar cadastrado.</p>{% endif %}
-<div class="form-actions"><a href="{{ url_for('exemplares.cadastrar_exemplar') }}">Cadastrar exemplar</a><a href="{{ url_for('dashboard.inicio') }}">Voltar ao painel</a></div>
-</div></div>
+<main class="consulta-page">
+  <header class="consulta-header">
+    <div>
+      <p class="eyebrow">ACERVO <span>/</span> EXEMPLARES</p>
+      <h1>Exemplares cadastrados</h1>
+      <p class="consulta-subtitle">Acompanhe os volumes registrados e suas situações.</p>
+    </div>
+    <a class="consulta-primary" href="{{ url_for('exemplares.cadastrar_exemplar') }}">＋ Cadastrar exemplar</a>
+  </header>
+
+  <section class="consulta-stats" aria-label="Resumo dos exemplares">
+    <article class="consulta-stat"><span>Total de exemplares</span><strong>{{ exemplares|length }}</strong></article>
+    <article class="consulta-stat"><span>Disponíveis</span><strong>{{ exemplares|selectattr('status', 'equalto', 'disponivel')|list|length }}</strong></article>
+    <article class="consulta-stat"><span>Emprestados</span><strong>{{ exemplares|selectattr('status', 'equalto', 'emprestado')|list|length }}</strong></article>
+    <article class="consulta-stat"><span>Em manutenção</span><strong>{{ exemplares|selectattr('status', 'equalto', 'manutencao')|list|length }}</strong></article>
+  </section>
+
+  <section class="consulta-panel">
+    <div class="consulta-toolbar">
+      <div><h2>Todos os exemplares</h2><p>Pesquise pelo código, título ou situação.</p></div>
+      <label class="consulta-search"><span class="sr-only">Pesquisar exemplares</span><input id="consulta-search" type="search" placeholder="⌕  Buscar exemplar..."></label>
+    </div>
+    {% if exemplares %}
+    <div class="consulta-table-wrap">
+      <table class="consulta-table">
+        <thead><tr><th>Código</th><th>Obra</th><th>Situação</th><th class="actions-heading">Ações</th></tr></thead>
+        <tbody id="consulta-rows">
+        {% for exemplar in exemplares %}
+          <tr class="consulta-row" data-search="{{ (exemplar.codigo ~ ' ' ~ exemplar.livro.titulo ~ ' ' ~ exemplar.status)|lower }}">
+            <td><span class="codigo-chip">{{ exemplar.codigo }}</span></td>
+            <td><strong class="cell-title">{{ exemplar.livro.titulo }}</strong><span class="cell-caption">{{ exemplar.livro.autor }}</span></td>
+            <td><span class="status-pill status-{{ exemplar.status }}">{{ {'disponivel':'Disponível','emprestado':'Emprestado','manutencao':'Em manutenção'}.get(exemplar.status, exemplar.status) }}</span></td>
+            <td class="consulta-actions">
+              <a class="action-link" href="{{ url_for('exemplares.editar_exemplar', idexemplar=exemplar.idexemplar) }}">Editar</a>
+              <form method="POST" action="{{ url_for('exemplares.excluir_exemplar', idexemplar=exemplar.idexemplar) }}" data-confirm="Excluir este exemplar?">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="action-link action-danger" type="submit">Excluir</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="consulta-no-results" id="consulta-empty" hidden>Nenhum exemplar encontrado para essa pesquisa.</p>
+    {% else %}
+      <div class="consulta-empty"><span class="empty-icon">▤</span><h3>Nenhum exemplar cadastrado</h3><p>Cadastre exemplares para acompanhar a disponibilidade das obras.</p><a class="consulta-primary" href="{{ url_for('exemplares.cadastrar_exemplar') }}">Cadastrar primeiro exemplar</a></div>
+    {% endif %}
+  </section>
+  <a class="consulta-back" href="{{ url_for('dashboard.inicio') }}>← Voltar ao painel</a>
+</main>
 {% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/ConsultaListas.js') }}" defer></script>{% endblock %}

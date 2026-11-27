@@ -1,3 +1,4 @@
+/* Estilos das páginas de consulta */
 .consulta-page{width:min(1160px,100%);margin:0 auto;color:#1d3028}
 .consulta-header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 28px}
 .consulta-header h1{margin:0;color:#1c3329;font-size:clamp(1.9rem,4vw,2.55rem);letter-spacing:-.045em;line-height:1.12}
@@ -87,3 +88,40 @@
  .catalog-card-content{padding:13px}
 }
 @media(max-width:430px){.consulta-stats{grid-template-columns:1fr 1fr}.consulta-stat{padding:15px}.consulta-stat strong{font-size:1.55rem}.catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Formulário de cadastro e edição de exemplares */
+.exemplar-form-page{width:min(1040px,100%);margin:0 auto;color:#20352f}
+.exemplar-form-header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 28px}
+.exemplar-form-header h1{margin:0;color:#1c3329;font-size:clamp(2rem,4vw,2.65rem);letter-spacing:-.045em;line-height:1.12}
+.exemplar-form-header>div>p:last-child{margin:10px 0 0;color:#728078;font-size:.96rem}
+.exemplar-back-link{color:#287452;font-size:.87rem;font-weight:700;text-decoration:none;white-space:nowrap}
+.exemplar-back-link:hover{text-decoration:underline}
+.exemplar-form-layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:20px;align-items:start}
+.exemplar-form-card{padding:30px;border:1px solid #e2ebe5;border-radius:17px;background:#fff;box-shadow:0 12px 32px rgba(30,62,45,.06)}
+.exemplar-form-card-heading{display:flex;align-items:center;gap:14px;margin-bottom:28px;padding-bottom:22px;border-bottom:1px solid #edf1ee}
+.exemplar-form-icon{display:grid;place-items:center;width:48px;height:48px;flex:0 0 48px;border-radius:14px;background:#eaf4ed;color:#176b52;font-size:25px}
+.exemplar-form-card-heading h2{margin:0;color:#253a30;font-size:1.13rem}
+.exemplar-form-card-heading p{margin:5px 0 0;color:#87938c;font-size:.84rem;line-height:1.45}
+.exemplar-field{margin-bottom:23px}
+.exemplar-field label{display:block;margin-bottom:8px;color:#344b3e;font-size:.88rem;font-weight:750}
+.exemplar-field label span{color:#b14b45}
+.exemplar-field input,.exemplar-field select{display:block;width:100%;min-height:48px;padding:0 14px;border:1px solid #d9e4dc;border-radius:10px;background:#fbfdfb;color:#263b30;font:inherit;font-size:.91rem;outline:none;transition:border-color .18s,box-shadow .18s}
+.exemplar-field input:focus,.exemplar-field select:focus{border-color:#70a78b;box-shadow:0 0 0 3px rgba(65,135,94,.12)}
+.exemplar-field input::placeholder{color:#a1aca5}
+.exemplar-field small{display:block;margin-top:7px;color:#89958e;font-size:.77rem;line-height:1.45}
+.exemplar-form-actions{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:30px;padding-top:22px;border-top:1px solid #edf1ee}
+.exemplar-form-actions>a{color:#75847b;font-size:.87rem;font-weight:650;text-decoration:none}
+.exemplar-form-actions>div{display:flex;align-items:center;gap:10px}
+.exemplar-button-secondary,.exemplar-button-primary{min-height:43px;padding:0 16px;border-radius:9px;font:inherit;font-size:.85rem;font-weight:750;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}
+.exemplar-button-secondary{border:1px solid #dce6df;background:#fff;color:#53665a}
+.exemplar-button-secondary:hover{background:#f6f9f7}
+.exemplar-button-primary{border:1px solid #176b52;background:#176b52;color:#fff;box-shadow:0 5px 12px rgba(23,107,82,.13)}
+.exemplar-button-primary:hover{transform:translateY(-1px);background:#10543f}
+.exemplar-form-aside{padding:24px;border:1px solid #dce9e1;border-radius:16px;background:linear-gradient(150deg,#f0f7f2,#fff)}
+.exemplar-tip-icon{display:grid;place-items:center;width:34px;height:34px;margin-bottom:16px;border-radius:11px;background:#dceee2;color:#236744;font-weight:800}
+.exemplar-form-aside h2{margin:0 0 13px;color:#294334;font-size:1rem}
+.exemplar-form-aside ul{display:grid;gap:12px;margin:0;padding:0 0 0 18px;color:#68796e;font-size:.83rem;line-height:1.5}
+.exemplar-form-aside a{display:inline-block;margin-top:22px;color:#176b52;font-size:.82rem;font-weight:750;text-decoration:none}
+.exemplar-form-aside a:hover{text-decoration:underline}
+@media(max-width:760px){.exemplar-form-header{align-items:flex-start;flex-direction:column}.exemplar-form-layout{grid-template-columns:1fr}.exemplar-form-aside{order:2}}
+@media(max-width:520px){.exemplar-form-card{padding:21px 17px}.exemplar-form-actions{align-items:stretch;flex-direction:column-reverse}.exemplar-form-actions>div{display:grid;grid-template-columns:1fr 1.4fr}.exemplar-button-secondary,.exemplar-button-primary{padding:0 10px}.exemplar-form-actions>a{align-self:flex-start}}

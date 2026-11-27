@@ -9,6 +9,7 @@ from flask import (
 from werkzeug.security import generate_password_hash
 from app.extensions import db
 from app.models.funcionario import Funcionario
+from app.models.emprestimo import Emprestimo
 from app.routes.dashboard import login_obrigatorio
 
 funcionarios_bp = Blueprint("funcionarios", __name__, url_prefix="/funcionarios")
@@ -154,6 +155,10 @@ def editar_funcionario(idfuncionario):
                 if senha:
                     funcionario.senha_hash = generate_password_hash(senha)
                 db.session.commit()
+                if funcionario.idfuncionario == session.get("funcionario_id"):
+                    session["funcionario_nome"] = funcionario.nome
+                    session["funcionario_cargo"] = funcionario.cargo
+                    session["funcionario_foto"] = funcionario.foto_perfil
                 flash("Funcionário atualizado com sucesso.", "success")
                 return redirect(url_for("funcionarios.listar_funcionarios"))
 
@@ -168,6 +173,8 @@ def excluir_funcionario(idfuncionario):
         flash("Não é possível excluir a própria conta enquanto estiver conectado.", "error")
     elif funcionario.is_admin and Funcionario.query.filter_by(is_admin=True).count() <= 1:
         flash("O sistema precisa manter pelo menos um administrador.", "error")
+    elif Emprestimo.query.filter_by(funcionario_idfuncionario=idfuncionario).first():
+        flash("Não é possível excluir este funcionário porque há empréstimos registrados em seu nome.", "error")
     else:
         foto = funcionario.foto_perfil
         db.session.delete(funcionario)

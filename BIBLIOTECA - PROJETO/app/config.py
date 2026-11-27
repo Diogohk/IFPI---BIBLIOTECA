@@ -19,3 +19,4 @@ class Config:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     GOOGLE_BOOKS_API_KEY = os.getenv("GOOGLE_BOOKS_API_KEY", "").strip()
+    CADASTRO_FUNCIONARIO_CODIGO = os.getenv("CADASTRO_FUNCIONARIO_CODIGO", "").strip()

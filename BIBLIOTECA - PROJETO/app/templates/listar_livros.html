@@ -1,15 +1,42 @@
 {% extends "base.html" %}
-{% block title %}Livros cadastrados | Biblioteca IFPI{% endblock %}
+{% block title %}Catálogo de livros | Biblioteca IFPI{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/livros.css') }}">{% endblock %}
 {% block content %}
-<div class="form-page">
-  <p class="eyebrow">CONSULTA • ACERVO</p><h1>Livros cadastrados</h1>
-  <div class="form-card">
-    {% if livros %}
-    <div class="table-responsive"><table><thead><tr><th>Título</th><th>Autor</th><th>ISBN</th><th>Exemplares</th><th>Ações</th></tr></thead><tbody>
-    {% for livro in livros %}<tr><td>{{ livro.titulo }}</td><td>{{ livro.autor }}</td><td>{{ livro.isbn or '—' }}</td><td>{{ livro.exemplares|length }}</td><td><a href="{{ url_for('cadastro.editar_livro', idlivro=livro.idlivro) }}">Editar</a><form method="POST" action="{{ url_for('cadastro.excluir_livro', idlivro=livro.idlivro) }}" data-confirm="Excluir este livro? A exclusão só será permitida se não houver exemplares vinculados."><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">Excluir</button></form></td></tr>{% endfor %}
-    </tbody></table></div>
-    {% else %}<p>Nenhum livro cadastrado.</p>{% endif %}
-    <div class="form-actions"><a href="{{ url_for('cadastro.cadastrar') }}">Cadastrar livro</a><a href="{{ url_for('dashboard.inicio') }}">Voltar ao painel</a></div>
-  </div>
-</div>
+<main class="livros-page catalog-page">
+  <section class="livros-header">
+    <p class="eyebrow">ACERVO • CONSULTA</p>
+    <h1>Catálogo de livros</h1>
+    <p class="subtitle">Explore as obras registradas na biblioteca. As capas são carregadas pela API Google Books quando disponíveis.</p>
+  </section>
+  <section class="catalog-toolbar">
+    <label class="catalog-search-label" for="catalog-search">Pesquisar no catálogo</label>
+    <input id="catalog-search" type="search" placeholder="Buscar por título, autor ou ISBN">
+    <div class="catalog-count" id="catalog-count">{{ livros|length }} obra(s) no acervo</div>
+  </section>
+  {% if livros %}
+  <section class="catalog-grid" id="catalog-grid">
+    {% for livro in livros %}
+    <article class="catalog-card" data-isbn="{{ livro.isbn or '' }}">
+      <div class="catalog-cover-wrap">
+        <div class="catalog-cover-placeholder">Sem capa</div>
+        <img class="catalog-cover" alt="Capa de {{ livro.titulo }}" loading="lazy" hidden>
+      </div>
+      <div class="catalog-card-content">
+        <p class="catalog-card-isbn">ISBN {{ livro.isbn or 'não informado' }}</p>
+        <h2>{{ livro.titulo }}</h2>
+        <p class="catalog-author">{{ livro.autor }}</p>
+        <p class="catalog-meta">{{ livro.editora or 'Editora não informada' }}{% if livro.ano %} · {{ livro.ano }}{% endif %}</p>
+        <p class="catalog-copies">{{ livro.exemplares|length }} exemplar(es) cadastrado(s)</p>
+        <a class="catalog-edit-link" href="{{ url_for('cadastro.editar_livro', idlivro=livro.idlivro) }}">Editar dados</a>
+      </div>
+    </article>
+    {% endfor %}
+  </section>
+  <p class="catalog-empty" id="catalog-empty" hidden>Nenhum livro corresponde à pesquisa.</p>
+  {% else %}
+  <div class="form-card"><p>O catálogo ainda está vazio. Cadastre a primeira obra para começar.</p><div class="form-actions"><a href="{{ url_for('cadastro.cadastrar') }}">Cadastrar livro</a></div></div>
+  {% endif %}
+  <div class="form-actions catalog-footer"><a href="{{ url_for('cadastro.cadastrar') }}">Cadastrar livro</a><a href="{{ url_for('dashboard.inicio') }}">Voltar ao painel</a></div>
+</main>
 {% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/CatalogoLivros.js') }}" defer></script>{% endblock %}

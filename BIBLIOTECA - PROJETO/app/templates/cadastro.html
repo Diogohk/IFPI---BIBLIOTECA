@@ -7,7 +7,7 @@
   {% if not livro %}
   <section class="google-search-panel">
     <h2>Buscar livro no Google Books</h2>
-    <p>Pesquise pelo ISBN ou pelo título e selecione um resultado para preencher o formulário.</p>
+    <p>Pesquise pelo ISBN ou pelo título e selecione um resultado para preencher o formulário e definir a capa do catálogo.</p>
     <div class="google-search-controls">
       <input id="google-books-query" type="search" placeholder="Digite um ISBN ou título" aria-label="Pesquisar no Google Books">
       <button type="button" class="button button-primary" id="google-books-search">Pesquisar</button>
@@ -19,6 +19,7 @@
   <section class="form-card">
     <form id="form-livro" method="POST" action="{{ url_for('cadastro.editar_livro', idlivro=livro.idlivro) if livro else url_for('cadastro.cadastrar') }}" data-confirm-reset="Deseja limpar os campos deste formulário?">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" id="google-books-cover-url" name="capa_url" value="{{ livro.capa_url if livro and livro.capa_url else '' }}">
       <div class="form-section"><h2>Identificação da obra</h2><div class="form-grid">
         <div class="field field-full"><label for="titulo">Título *</label><input id="titulo" name="titulo" maxlength="255" required value="{{ livro.titulo if livro else '' }}"></div>
         <div class="field"><label for="isbn">ISBN *</label><input id="isbn" name="isbn" maxlength="17" required value="{{ livro.isbn if livro else '' }}"></div>
@@ -26,6 +27,9 @@
         <div class="field"><label for="editora">Editora</label><input id="editora" name="editora" maxlength="120" value="{{ livro.editora if livro else '' }}"></div>
         <div class="field"><label for="ano_publicacao">Ano de publicação</label><input id="ano_publicacao" name="ano_publicacao" type="number" min="1" max="2100" value="{{ livro.ano if livro and livro.ano else '' }}"></div>
       </div></div>
+      {% if livro and livro.capa_url %}
+      <p class="hint">A capa atualmente selecionada será mantida ao salvar as alterações.</p>
+      {% endif %}
       <div class="form-footer"><p class="required-note">* Campos obrigatórios</p><div class="form-actions"><a href="{{ url_for('cadastro.listar_livros') }}">Cancelar</a><button type="reset" class="button button-secondary">Limpar</button><button class="button button-primary" type="submit">Salvar livro</button></div></div>
     </form>
   </section>

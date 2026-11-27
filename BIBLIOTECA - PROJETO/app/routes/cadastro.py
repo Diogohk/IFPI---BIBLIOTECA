@@ -1,6 +1,6 @@
 import requests
+from urllib.parse import urlparse
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, current_app
-from sqlalchemy.exc import IntegrityError
 from app.extensions import db
 from app.models.livro import Livro
 from app.models.exemplar import Exemplar
@@ -30,34 +30,19 @@ def pesquisar_google_books():
         )
     except requests.Timeout:
         current_app.logger.warning("Tempo limite excedido ao consultar Google Books.")
-        return jsonify({
-            "error": "O Google Books demorou para responder. Tente novamente."
-        }), 504
+        return jsonify({"error": "O Google Books demorou para responder. Tente novamente."}), 504
     except requests.ConnectionError:
         current_app.logger.warning("Falha de conexão com Google Books.")
-        return jsonify({
-            "error": "Não foi possível conectar ao Google Books. Verifique a internet do servidor."
-        }), 502
+        return jsonify({"error": "Não foi possível conectar ao Google Books. Verifique a internet do servidor."}), 502
     except requests.RequestException as erro:
-        # Não registrar a mensagem completa: ela pode conter a URL com a chave da API.
-        current_app.logger.warning(
-            "Falha HTTP ao consultar Google Books (%s).",
-            type(erro).__name__,
-        )
-        return jsonify({
-            "error": "O servidor não conseguiu concluir a consulta ao Google Books."
-        }), 502
+        current_app.logger.warning("Falha HTTP ao consultar Google Books (%s).", type(erro).__name__)
+        return jsonify({"error": "O servidor não conseguiu concluir a consulta ao Google Books."}), 502
 
     try:
         dados = resposta.json()
     except ValueError:
-        current_app.logger.warning(
-            "Google Books retornou JSON inválido (HTTP %s).",
-            resposta.status_code,
-        )
-        return jsonify({
-            "error": "O Google Books retornou uma resposta inválida."
-        }), 502
+        current_app.logger.warning("Google Books retornou JSON inválido (HTTP %s).", resposta.status_code)
+        return jsonify({"error": "O Google Books retornou uma resposta inválida."}), 502
 
     if not resposta.ok:
         erro_api = dados.get("error", {}) if isinstance(dados, dict) else {}
@@ -68,9 +53,6 @@ def pesquisar_google_books():
         ]
         motivo = next((item for item in motivos if item), "")
         mensagem_google = erro_api.get("message", "")
-
-        # Registra somente o motivo/status. Nunca registrar a resposta ou URL,
-        # pois a URL da requisição contém a chave da API.
         current_app.logger.warning(
             "Google Books recusou a consulta (HTTP %s, motivo: %s).",
             resposta.status_code,
@@ -79,31 +61,15 @@ def pesquisar_google_books():
 
         if resposta.status_code == 403:
             if motivo in ("accessNotConfigured", "serviceDisabled"):
-                mensagem = (
-                    "A Books API não está habilitada no projeto Google Cloud "
-                    "associado à chave."
-                )
+                mensagem = "A Books API não está habilitada no projeto Google Cloud associado à chave."
             elif motivo in ("keyInvalid", "invalid"):
-                mensagem = (
-                    "A chave do Google Books é inválida. Confira a variável "
-                    "GOOGLE_BOOKS_API_KEY no arquivo .env."
-                )
+                mensagem = "A chave do Google Books é inválida. Confira GOOGLE_BOOKS_API_KEY no arquivo .env."
             elif motivo in ("ipRefererBlocked", "refererBlocked"):
-                mensagem = (
-                    "A chave está bloqueada pelas restrições de aplicativo. "
-                    "Como a consulta é feita pelo Flask, revise as restrições "
-                    "da chave no Google Cloud."
-                )
+                mensagem = "A chave está bloqueada pelas restrições de aplicativo. Revise as restrições da chave no Google Cloud."
             elif motivo in ("dailyLimitExceeded", "quotaExceeded", "rateLimitExceeded"):
-                mensagem = (
-                    "A cota ou o limite de consultas do Google Books foi atingido."
-                )
+                mensagem = "A cota ou o limite de consultas do Google Books foi atingido."
             else:
-                mensagem = (
-                    "O Google Cloud recusou a chave ou a requisição. Confira "
-                    "se a Books API está habilitada e se as restrições da chave "
-                    "permitem a consulta feita pelo servidor."
-                )
+                mensagem = "O Google Cloud recusou a chave ou a requisição. Confira a Books API e as restrições da chave."
             return jsonify({"error": mensagem, "status": resposta.status_code}), 502
 
         if resposta.status_code == 429:
@@ -113,8 +79,7 @@ def pesquisar_google_books():
             }), 429
 
         return jsonify({
-            "error": "O Google Books retornou um erro HTTP "
-                     f"{resposta.status_code}. {mensagem_google[:180]}",
+            "error": f"O Google Books retornou um erro HTTP {resposta.status_code}. {mensagem_google[:180]}",
             "status": resposta.status_code,
         }), 502
 
@@ -123,11 +88,28 @@ def pesquisar_google_books():
 
 def isbn_valido(valor):
     isbn = (valor or "").replace("-", "").replace(" ", "").upper()
-    if len(isbn) == 10 and (isbn[:9].isdigit()) and (isbn[9].isdigit() or isbn[9] == "X"):
+    if len(isbn) == 10 and isbn[:9].isdigit() and (isbn[9].isdigit() or isbn[9] == "X"):
         return sum((10 if c == "X" else int(c)) * (10-i) for i, c in enumerate(isbn)) % 11 == 0
     if len(isbn) == 13 and isbn.isdigit():
         return sum(int(c) * (1 if i % 2 == 0 else 3) for i, c in enumerate(isbn)) % 10 == 0
     return False
+
+
+def capa_google_valida(valor):
+    if not valor:
+        return None
+    if len(valor) > 2048:
+        return False
+    try:
+        parsed = urlparse(valor)
+    except ValueError:
+        return False
+    hosts_permitidos = {"books.google.com", "books.googleusercontent.com"}
+    if parsed.scheme != "https" or parsed.hostname not in hosts_permitidos:
+        return False
+    if parsed.username or parsed.password:
+        return False
+    return valor
 
 
 @cadastro_bp.route("/livros", methods=["GET", "POST"])
@@ -140,6 +122,7 @@ def cadastrar():
         editora = request.form.get("editora", "").strip() or None
         ano_txt = request.form.get("ano_publicacao", "").strip()
         ano = int(ano_txt) if ano_txt.isdigit() else None
+        capa_url = capa_google_valida(request.form.get("capa_url", "").strip())
 
         if not titulo or not autor or not isbn:
             flash("Preencha título, autor e ISBN.", "error")
@@ -147,10 +130,15 @@ def cadastrar():
             flash("O ISBN informado é inválido.", "error")
         elif ano_txt and (ano is None or not 1 <= ano <= 2100):
             flash("Informe um ano válido entre 1 e 2100.", "error")
+        elif capa_url is False:
+            flash("A capa selecionada não possui um endereço válido do Google Books.", "error")
         elif Livro.query.filter_by(isbn=isbn).first():
             flash("Já existe um livro cadastrado com esse ISBN.", "error")
         else:
-            db.session.add(Livro(titulo=titulo, autor=autor, isbn=isbn, editora=editora, ano=ano))
+            db.session.add(Livro(
+                titulo=titulo, autor=autor, isbn=isbn, editora=editora,
+                ano=ano, capa_url=capa_url
+            ))
             db.session.commit()
             flash("Livro cadastrado com sucesso!", "success")
             return redirect(url_for("cadastro.listar_livros"))
@@ -175,18 +163,23 @@ def editar_livro(idlivro):
         editora = request.form.get("editora", "").strip() or None
         ano_txt = request.form.get("ano_publicacao", "").strip()
         ano = int(ano_txt) if ano_txt.isdigit() else None
+        capa_enviada = request.form.get("capa_url", "").strip()
+        capa_url = capa_google_valida(capa_enviada) if capa_enviada else livro.capa_url
         duplicado = Livro.query.filter(Livro.isbn == isbn, Livro.idlivro != idlivro).first() if isbn else None
+
         if not titulo or not autor or not isbn:
             flash("Preencha título, autor e ISBN.", "error")
         elif not isbn_valido(isbn):
             flash("O ISBN informado é inválido.", "error")
         elif ano_txt and (ano is None or not 1 <= ano <= 2100):
             flash("Informe um ano válido entre 1 e 2100.", "error")
+        elif capa_url is False:
+            flash("A capa selecionada não possui um endereço válido do Google Books.", "error")
         elif duplicado:
             flash("Outro livro já utiliza esse ISBN.", "error")
         else:
             livro.titulo, livro.autor, livro.isbn = titulo, autor, isbn
-            livro.editora, livro.ano = editora, ano
+            livro.editora, livro.ano, livro.capa_url = editora, ano, capa_url
             db.session.commit()
             flash("Livro atualizado com sucesso!", "success")
             return redirect(url_for("cadastro.listar_livros"))

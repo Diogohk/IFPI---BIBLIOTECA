@@ -228,3 +228,63 @@
     width: 100%;
   }
 }
+
+
+/* Pesquisa Google Books no cadastro */
+.google-search-panel, .catalog-toolbar {
+  margin: 0 0 22px;
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #e3e8ef;
+  border-radius: 14px;
+}
+.google-search-panel h2 { margin: 0 0 8px; font-size: 1.08rem; }
+.google-search-panel p { margin: 0 0 14px; color: #667085; font-size: .9rem; }
+.google-search-controls { display: flex; gap: 10px; }
+.google-search-controls input, .catalog-toolbar input {
+  box-sizing: border-box; width: 100%; min-width: 0; padding: 12px 13px;
+  border: 1px solid #cfd6e0; border-radius: 8px; font: inherit;
+}
+.google-search-controls .button { flex: 0 0 auto; }
+.google-search-status { margin: 10px 0 0 !important; }
+.google-books-results { display: grid; gap: 10px; margin-top: 14px; }
+.google-book-result {
+  display: flex; align-items: center; gap: 14px; padding: 12px;
+  border: 1px solid #e3e8ef; border-radius: 10px;
+}
+.google-book-result img { width: 48px; height: 68px; object-fit: cover; background: #f1f4f8; }
+.google-book-result div { flex: 1; min-width: 0; }
+.google-book-result strong { display: block; color: #172033; }
+.google-book-result small { display: block; margin-top: 4px; color: #667085; }
+.google-book-result button { flex: 0 0 auto; }
+.catalog-toolbar { display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; align-items: center; }
+.catalog-search-label { grid-column: 1 / -1; font-weight: 700; color: #344054; }
+.catalog-count { color: #667085; font-size: .86rem; white-space: nowrap; }
+.catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 18px; }
+.catalog-card {
+  overflow: hidden; display: flex; flex-direction: column; background: #fff;
+  border: 1px solid #e3e8ef; border-radius: 14px;
+  box-shadow: 0 8px 24px rgb(16 24 40 / 5%);
+}
+.catalog-cover-wrap { height: 210px; display: grid; place-items: center; padding: 16px; background: #f4f6f9; }
+.catalog-cover { max-width: 130px; height: 180px; object-fit: contain; box-shadow: 0 5px 15px rgb(16 24 40 / 16%); }
+.catalog-cover-placeholder { color: #98a2b3; font-size: .9rem; }
+.catalog-card-content { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding: 17px; }
+.catalog-card-isbn { margin: 0 0 7px; color: #667085; font-size: .72rem; letter-spacing: .04em; }
+.catalog-card h2 { margin: 0; color: #172033; font-size: 1.04rem; line-height: 1.35; }
+.catalog-author { margin: 8px 0 0; color: #344054; font-size: .9rem; }
+.catalog-meta, .catalog-copies { margin: 7px 0 0; color: #667085; font-size: .82rem; }
+.catalog-edit-link { margin-top: auto; padding-top: 14px; color: #244f91; font-weight: 700; text-decoration: none; }
+.catalog-empty { padding: 24px; color: #667085; text-align: center; }
+.catalog-footer { margin-top: 22px; }
+.table-actions { white-space: nowrap; }
+.table-actions form { display: inline-block; margin-left: 8px; }
+.table-actions .button { min-height: 32px; padding: 6px 10px; font-size: .82rem; }
+@media (max-width: 640px) {
+  .google-search-controls { flex-direction: column; }
+  .google-search-controls .button { width: 100%; }
+  .google-book-result { align-items: flex-start; flex-wrap: wrap; }
+  .google-book-result button { width: 100%; }
+  .catalog-toolbar { grid-template-columns: 1fr; }
+  .catalog-count { white-space: normal; }
+}

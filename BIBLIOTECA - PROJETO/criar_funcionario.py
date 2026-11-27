@@ -48,11 +48,13 @@ def main():
                 else:
                     break
 
+            primeiro_administrador = not Funcionario.query.filter_by(is_admin=True).first()
             funcionario = Funcionario(
                 matricula=matricula,
                 nome=nome,
                 cargo=cargo,
                 senha_hash=generate_password_hash(senha),
+                is_admin=primeiro_administrador,
             )
 
             db.session.add(funcionario)

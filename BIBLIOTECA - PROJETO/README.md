@@ -144,6 +144,18 @@ A senha é solicitada sem aparecer na tela e armazenada no banco como hash. Guar
 
 Depois do cadastro, acesse a tela de login em `/login` e entre utilizando a matrícula e a senha criadas.
 
+### Cadastro pela tela de login
+
+A tela de login também oferece o link **Cadastrar novo funcionário**. Para evitar que pessoas de fora criem contas e acessem os dados da biblioteca, o cadastro exige um código de convite definido pelo administrador no arquivo `.env`:
+
+```env
+CADASTRO_FUNCIONARIO_CODIGO=defina_um_codigo_longo_e_dificil_de_adivinhar
+```
+
+Compartilhe esse código somente com os funcionários autorizados. Sem a variável configurada, o formulário permanece desativado. Os cadastros feitos pela tela pública recebem apenas permissão comum de funcionário; a conta administradora continua sendo criada pelo procedimento inicial ou gerenciada por um administrador. A senha deve ter pelo menos 8 caracteres e é armazenada como hash.
+
+O botão de modo escuro também está disponível nas telas de login e cadastro. A preferência é salva no navegador e não altera o banco de dados.
+
 ### Gestão de funcionários
 
 Após entrar com uma conta administradora, use **Funcionários** no menu lateral para cadastrar, consultar, editar e excluir acessos. Contas novas recebem permissão de funcionário; somente um administrador pode gerenciar a equipe. O sistema impede excluir a própria conta e mantém pelo menos um administrador.

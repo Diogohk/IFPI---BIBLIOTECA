@@ -4,40 +4,43 @@
 {% block content %}
 <div class="dashboard-layout">
   <aside class="dashboard-sidebar" aria-label="Navegação principal">
-    <div class="sidebar-heading"><span class="sidebar-mark" aria-hidden="true">B</span><div><strong>Biblioteca IFPI</strong><span>Campus Paulistana</span></div></div>
+    <div class="sidebar-heading"><span class="sidebar-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13A2.5 2.5 0 0 1 6.5 16H20M8 7h8M8 10h8"/></svg></span><div><strong>Biblioteca IFPI</strong><span>Campus Paulistana</span></div></div>
     <nav class="sidebar-nav">
-      <a class="nav-item active" href="{{ url_for('dashboard.inicio') }}" aria-current="page"><span class="nav-icon">⌂</span><span>Início</span></a>
-      <a class="nav-item" href="{{ url_for('cadastro.cadastrar') }}"><span class="nav-icon">▤</span><span>Cadastro de livros</span></a>
-      <a class="nav-item" href="{{ url_for('cadastro.listar_livros') }}"><span class="nav-icon">⌕</span><span>Consultar livros</span></a>
-      <a class="nav-item" href="{{ url_for('alunos.cadastrar_aluno') }}"><span class="nav-icon">♙</span><span>Cadastro de alunos</span></a>
-      <a class="nav-item" href="{{ url_for('alunos.listar_alunos') }}"><span class="nav-icon">⌕</span><span>Consultar alunos</span></a>
-      <a class="nav-item" href="{{ url_for('exemplares.cadastrar_exemplar') }}"><span class="nav-icon">▣</span><span>Cadastro de exemplares</span></a>
-      <a class="nav-item" href="{{ url_for('exemplares.listar_exemplares') }}"><span class="nav-icon">▣</span><span>Consultar exemplares</span></a>
+      <a class="nav-item active" href="{{ url_for('dashboard.inicio') }}" aria-current="page"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span><span>Início</span></a>
+      <a class="nav-item" href="{{ url_for('cadastro.cadastrar') }}"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M4 4.5v15A2.5 2.5 0 0 1 6.5 17H20M8 6h8M8 9h8"/></svg></span><span>Cadastro de livros</span></a>
+      <a class="nav-item" href="{{ url_for('cadastro.listar_livros') }}"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></span><span>Consultar livros</span></a>
+      <a class="nav-item" href="{{ url_for('alunos.cadastrar_aluno') }}"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span>Cadastro de alunos</span></a>
+      <a class="nav-item" href="{{ url_for('alunos.listar_alunos') }}"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></span><span>Consultar alunos</span></a>
+      <a class="nav-item" href="{{ url_for('exemplares.cadastrar_exemplar') }}"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5zM9 3v18M12 7h4M12 11h4"/></svg></span><span>Cadastro de exemplares</span></a>
+      <a class="nav-item" href="{{ url_for('exemplares.listar_exemplares') }}"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5zM9 3v18M12 7h4M12 11h4"/></svg></span><span>Consultar exemplares</span></a>
     </nav>
     <div class="sidebar-note"><span class="note-dot"></span><span>Sistema em desenvolvimento</span></div>
   </aside>
 
   <main class="dashboard-main">
-    <section class="welcome">
-      <p class="eyebrow">PAINEL INICIAL</p>
-      <h1>Olá, {{ nome }}.</h1>
-      <p>Bem-vindo ao sistema da Biblioteca do IFPI — Campus Paulistana.</p>
-      <p class="welcome-detail">Acompanhe os registros e acesse rapidamente as áreas do sistema.</p>
+    <section class="welcome welcome-visual">
+      <div class="welcome-copy">
+        <p class="eyebrow">PAINEL INICIAL</p>
+        <h1>Olá, {{ nome }}.</h1>
+        <p>Bem-vindo ao sistema da Biblioteca do IFPI — Campus Paulistana.</p>
+        <p class="welcome-detail">Acompanhe os registros e acesse rapidamente as áreas do sistema.</p>
+      </div>
+      <img class="welcome-illustration" src="{{ url_for('static', filename='img/biblioteca-ilustracao.svg') }}" alt="" aria-hidden="true">
     </section>
 
     <section class="dashboard-overview" aria-label="Resumo da biblioteca">
-      <article class="overview-card"><span class="overview-icon">▤</span><div><span>Obras cadastradas</span><strong>{{ total_livros }}</strong></div><a href="{{ url_for('cadastro.listar_livros') }}">Ver catálogo →</a></article>
-      <article class="overview-card"><span class="overview-icon">♙</span><div><span>Alunos cadastrados</span><strong>{{ total_alunos }}</strong></div><a href="{{ url_for('alunos.listar_alunos') }}">Ver alunos →</a></article>
-      <article class="overview-card"><span class="overview-icon">▣</span><div><span>Total de exemplares</span><strong>{{ total_exemplares }}</strong></div><a href="{{ url_for('exemplares.listar_exemplares') }}">Ver exemplares →</a></article>
-      <article class="overview-card overview-card-available"><span class="overview-icon">✓</span><div><span>Exemplares disponíveis</span><strong>{{ exemplares_disponiveis }}</strong></div><a href="{{ url_for('exemplares.listar_exemplares') }}">Consultar acervo →</a></article>
+      <article class="overview-card"><span class="overview-icon"><svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M4 4.5v15A2.5 2.5 0 0 1 6.5 17H20M8 6h8M8 9h8"/></svg></span><div><span>Obras cadastradas</span><strong>{{ total_livros }}</strong></div><a href="{{ url_for('cadastro.listar_livros') }}">Ver catálogo →</a></article>
+      <article class="overview-card"><span class="overview-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><div><span>Alunos cadastrados</span><strong>{{ total_alunos }}</strong></div><a href="{{ url_for('alunos.listar_alunos') }}">Ver alunos →</a></article>
+      <article class="overview-card"><span class="overview-icon"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5zM9 3v18M12 7h4M12 11h4"/></svg></span><div><span>Total de exemplares</span><strong>{{ total_exemplares }}</strong></div><a href="{{ url_for('exemplares.listar_exemplares') }}">Ver exemplares →</a></article>
+      <article class="overview-card overview-card-available"><span class="overview-icon"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg></span><div><span>Exemplares disponíveis</span><strong>{{ exemplares_disponiveis }}</strong></div><a href="{{ url_for('exemplares.listar_exemplares') }}">Consultar acervo →</a></article>
     </section>
 
     <section class="section-block" aria-labelledby="forms-title">
       <div class="section-heading"><div><p class="eyebrow">ACESSO RÁPIDO</p><h2 id="forms-title">Cadastros</h2></div></div>
       <div class="forms-grid">
-        <a class="action-card" href="{{ url_for('cadastro.cadastrar') }}"><span class="card-icon">▤</span><span class="card-content"><strong>Cadastrar livro</strong><span>Registrar uma obra no acervo.</span><span class="card-link">Abrir formulário →</span></span></a>
-        <a class="action-card" href="{{ url_for('alunos.cadastrar_aluno') }}"><span class="card-icon">♙</span><span class="card-content"><strong>Cadastrar aluno</strong><span>Registrar um estudante.</span><span class="card-link">Abrir formulário →</span></span></a>
-        <a class="action-card" href="{{ url_for('exemplares.cadastrar_exemplar') }}"><span class="card-icon">▣</span><span class="card-content"><strong>Cadastrar exemplar</strong><span>Adicionar uma unidade física de uma obra.</span><span class="card-link">Abrir formulário →</span></span></a>
+        <a class="action-card" href="{{ url_for('cadastro.cadastrar') }}"><span class="card-icon"><svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M4 4.5v15A2.5 2.5 0 0 1 6.5 17H20"/></svg></span><span class="card-content"><strong>Cadastrar livro</strong><span>Registrar uma obra no acervo.</span><span class="card-link">Abrir formulário →</span></span></a>
+        <a class="action-card" href="{{ url_for('alunos.cadastrar_aluno') }}"><span class="card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="card-content"><strong>Cadastrar aluno</strong><span>Registrar um estudante.</span><span class="card-link">Abrir formulário →</span></span></a>
+        <a class="action-card" href="{{ url_for('exemplares.cadastrar_exemplar') }}"><span class="card-icon"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5zM9 3v18M12 7h4M12 11h4"/></svg></span><span class="card-content"><strong>Cadastrar exemplar</strong><span>Adicionar uma unidade física de uma obra.</span><span class="card-link">Abrir formulário →</span></span></a>
       </div>
     </section>
 
@@ -50,7 +53,6 @@
         </tbody></table></div>
         {% else %}<p class="dashboard-table-empty">Nenhum livro cadastrado ainda.</p>{% endif %}
       </div>
-
       <div class="dashboard-table-card">
         <div class="dashboard-table-heading"><div><p class="eyebrow">COMUNIDADE</p><h2>Alunos cadastrados</h2></div><a href="{{ url_for('alunos.listar_alunos') }}">Ver todos →</a></div>
         {% if alunos %}
@@ -59,7 +61,6 @@
         </tbody></table></div>
         {% else %}<p class="dashboard-table-empty">Nenhum aluno cadastrado ainda.</p>{% endif %}
       </div>
-
       <div class="dashboard-table-card dashboard-table-wide">
         <div class="dashboard-table-heading"><div><p class="eyebrow">CONTROLE DO ACERVO</p><h2>Exemplares registrados</h2></div><a href="{{ url_for('exemplares.listar_exemplares') }}">Ver todos →</a></div>
         {% if exemplares %}

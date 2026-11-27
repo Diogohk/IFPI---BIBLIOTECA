@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const cards = Array.from(grid.querySelectorAll(".catalog-card"));
   cards.forEach(async card => {
-    const isbn = (card.dataset.isbn || "").replace(/[\\s-]/g, "");
+    const isbn = (card.dataset.isbn || "").replace(/[\s-]/g, "");
     if (!isbn) return;
     try {
       const response = await fetch("https://www.googleapis.com/books/v1/volumes?q=" + encodeURIComponent("isbn:" + isbn) + "&maxResults=1");

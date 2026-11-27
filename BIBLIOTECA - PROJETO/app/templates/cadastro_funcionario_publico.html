@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cadastrar funcionário | Biblioteca IFPI</title>
+  <script>try{if(localStorage.getItem("biblioteca-ifpi-theme")==="dark"){document.documentElement.dataset.theme="dark";}}catch(e){}</script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body class="auth-page">
+  <main class="auth-layout">
+    <div class="auth-topbar">
+      <a class="auth-brand" href="{{ url_for('login.entrar') }}"><span class="auth-brand-mark">B</span><span>Biblioteca <strong>IFPI</strong></span></a>
+      <button class="auth-theme-toggle" id="theme-toggle" type="button" aria-label="Alternar modo escuro" aria-pressed="false">
+        <span class="theme-icon-moon" aria-hidden="true">☾</span><span class="theme-icon-sun" aria-hidden="true">☀</span>
+        <span class="theme-toggle-label">Modo escuro</span>
+      </button>
+    </div>
+
+    <section class="auth-card auth-card-register">
+      <div class="auth-heading">
+        <span class="auth-eyebrow">ACESSO À EQUIPE</span>
+        <h1>Novo funcionário</h1>
+        <p>Preencha seus dados para solicitar a criação do acesso.</p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="auth-messages" role="status">
+            {% for category, message in messages %}
+              <p class="auth-message auth-message-{{ category }}">{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      {% if cadastro_ativo %}
+        <form action="{{ url_for('login.cadastrar') }}" method="POST" class="auth-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="auth-field">
+            <label for="nome">Nome completo</label>
+            <input id="nome" name="nome" type="text" maxlength="150" required autocomplete="name" placeholder="Seu nome completo">
+          </div>
+          <div class="auth-field">
+            <label for="matricula">Matrícula</label>
+            <input id="matricula" name="matricula" type="text" maxlength="20" required autocomplete="username" placeholder="Sua matrícula">
+          </div>
+          <div class="auth-field">
+            <label for="cargo">Cargo ou função</label>
+            <input id="cargo" name="cargo" type="text" maxlength="80" required placeholder="Ex.: Auxiliar de biblioteca">
+          </div>
+          <div class="auth-field">
+            <label for="codigo_convite">Código de convite</label>
+            <input id="codigo_convite" name="codigo_convite" type="password" required autocomplete="off" placeholder="Informe o código fornecido pelo administrador">
+          </div>
+          <div class="auth-field">
+            <label for="senha">Senha</label>
+            <input id="senha" name="senha" type="password" minlength="8" required autocomplete="new-password" placeholder="Mínimo de 8 caracteres">
+          </div>
+          <div class="auth-field">
+            <label for="confirmacao_senha">Confirmar senha</label>
+            <input id="confirmacao_senha" name="confirmacao_senha" type="password" minlength="8" required autocomplete="new-password" placeholder="Digite a senha novamente">
+          </div>
+          <button class="auth-submit" type="submit">Criar meu acesso</button>
+        </form>
+        <p class="auth-security-note">Novos cadastros recebem acesso de funcionário, sem permissões administrativas.</p>
+      {% else %}
+        <div class="auth-disabled">
+          <strong>Cadastro temporariamente indisponível</strong>
+          <p>O administrador precisa configurar o código de convite no arquivo <code>.env</code> para liberar novos cadastros.</p>
+        </div>
+      {% endif %}
+
+      <div class="auth-register">
+        <span>Já possui acesso?</span>
+        <a href="{{ url_for('login.entrar') }}">Voltar para o login</a>
+      </div>
+    </section>
+    <footer class="auth-footer">Biblioteca IFPI · Campus Paulistana</footer>
+  </main>
+  <script src="{{ url_for('static', filename='js/base.js') }}" defer></script>
+</body>
+</html>

@@ -15,3 +15,29 @@
 .employee-role{display:inline-flex;padding:6px 10px;border-radius:999px;background:#edf4ef;color:#3b6b4d;font-size:.75rem;font-weight:750}
 .employee-role-admin{background:#fff4dc;color:#91651b}
 @media(max-width:650px){.employee-form-card{padding:21px 17px}.employee-fields-grid{grid-template-columns:1fr}.employee-form-actions{align-items:stretch;flex-direction:column-reverse}.employee-form-actions .consulta-primary{width:100%}}
+
+
+/* Edição e recorte da foto de perfil */
+.employee-photo-editor{align-items:flex-start}
+.employee-photo-controls{min-width:0;flex:1}
+.employee-photo-controls input{max-width:100%}
+.photo-cropper{width:min(100%,390px);margin:0 0 26px 106px;padding:18px;border:1px solid #dce8e0;border-radius:14px;background:#f8fbf9}
+.photo-cropper[hidden]{display:none}
+.photo-cropper-heading{display:flex;flex-direction:column;gap:4px;margin-bottom:13px}
+.photo-cropper-heading strong{color:#30463a;font-size:.95rem}
+.photo-cropper-heading span{color:#78877e;font-size:.78rem}
+.photo-crop-frame{position:relative;width:100%;aspect-ratio:1;overflow:hidden;border-radius:12px;background:#18251d;cursor:grab;touch-action:none}
+.photo-crop-frame:active{cursor:grabbing}
+.photo-crop-frame img{position:absolute;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.photo-zoom-label{display:block;margin:14px 0 6px;color:#344b3e;font-size:.82rem;font-weight:700}
+.photo-zoom{display:block;width:100%;accent-color:#287452}
+.photo-crop-reset{margin-top:12px;padding:8px 12px;border:1px solid #cbded1;border-radius:8px;background:#fff;color:#286344;font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.topbar-profile{display:grid;place-items:center;width:38px;height:38px;overflow:hidden;border:1px solid #dce9e1;border-radius:50%;background:#eaf4ed;color:#287452;font-size:15px;font-weight:800;text-decoration:none}
+.topbar-profile img{width:100%;height:100%;object-fit:cover}
+@media(max-width:650px){.photo-cropper{width:100%;margin:0 0 24px}.employee-photo-field{align-items:flex-start}.employee-photo-preview{width:76px;height:76px;flex-basis:76px}}
+html[data-theme="dark"] .photo-cropper{background:#17261d;border-color:#3b5144}
+html[data-theme="dark"] .photo-cropper-heading strong,
+html[data-theme="dark"] .photo-zoom-label{color:#d2e2d6}
+html[data-theme="dark"] .photo-cropper-heading span{color:#a6b8ab}
+html[data-theme="dark"] .photo-crop-reset{background:#1d3025;border-color:#43594a;color:#c8e2cf}
+html[data-theme="dark"] .topbar-profile{border-color:#405849;background:#263d2e;color:#c8e2cf}

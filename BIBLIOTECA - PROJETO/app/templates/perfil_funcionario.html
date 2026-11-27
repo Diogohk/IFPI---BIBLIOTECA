@@ -5,12 +5,25 @@
 <main class="employee-form-page">
   <header class="consulta-header"><div><p class="eyebrow">CONTA <span>/</span> PERFIL</p><h1>Meu perfil</h1><p class="consulta-subtitle">Atualize sua identificação e sua foto de perfil.</p></div></header>
   <section class="employee-form-card">
-    <form method="POST" enctype="multipart/form-data">
+    <form id="profile-form" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <div class="employee-photo-field">
-        <div class="employee-photo-preview">{% if funcionario.foto_perfil %}<img src="{{ url_for('funcionarios.foto_funcionario', filename=funcionario.foto_perfil) }}" alt="Sua foto de perfil">{% else %}<span>{{ funcionario.nome[:1]|upper }}</span>{% endif %}</div>
-        <div><label for="foto">Foto de perfil</label><input id="foto" name="foto" type="file" accept="image/png,image/jpeg,image/webp"><small>JPG, PNG ou WEBP, até 2 MB.</small></div>
+      <div class="employee-photo-field employee-photo-editor">
+        <div class="employee-photo-preview" id="profile-preview">
+          {% if funcionario.foto_perfil %}<img id="profile-preview-image" src="{{ url_for('funcionarios.foto_funcionario', filename=funcionario.foto_perfil) }}" alt="Pré-visualização da foto de perfil">{% else %}<span id="profile-preview-fallback">{{ funcionario.nome[:1]|upper }}</span>{% endif %}
+        </div>
+        <div class="employee-photo-controls">
+          <label for="foto">Foto de perfil</label>
+          <input id="foto" name="foto" type="file" accept="image/png,image/jpeg,image/webp">
+          <small>JPG, PNG ou WEBP, até 2 MB. Depois de escolher, arraste a imagem para enquadrar.</small>
+        </div>
       </div>
+      <section class="photo-cropper" id="photo-cropper" hidden aria-label="Enquadramento da foto">
+        <div class="photo-cropper-heading"><strong>Enquadre sua foto</strong><span>Arraste para posicionar e ajuste o zoom</span></div>
+        <div class="photo-crop-frame" id="photo-crop-frame"><img id="photo-crop-image" alt="Imagem para enquadramento"></div>
+        <label class="photo-zoom-label" for="photo-zoom">Zoom</label>
+        <input id="photo-zoom" class="photo-zoom" type="range" min="1" max="3" step="0.01" value="1">
+        <button class="photo-crop-reset" type="button" id="photo-crop-reset">Centralizar imagem</button>
+      </section>
       <div class="employee-fields-grid">
         <div class="exemplar-field"><label for="nome">Nome completo *</label><input id="nome" name="nome" maxlength="150" required value="{{ funcionario.nome }}"></div>
         <div class="exemplar-field"><label for="cargo">Cargo ou função *</label><input id="cargo" name="cargo" maxlength="80" required value="{{ funcionario.cargo }}"></div>
@@ -20,4 +33,135 @@
     </form>
   </section>
 </main>
+{% endblock %}
+{% block scripts %}
+<script>
+(() => {
+  const input = document.getElementById("foto");
+  const form = document.getElementById("profile-form");
+  const cropper = document.getElementById("photo-cropper");
+  const frame = document.getElementById("photo-crop-frame");
+  const image = document.getElementById("photo-crop-image");
+  const zoomInput = document.getElementById("photo-zoom");
+  const resetButton = document.getElementById("photo-crop-reset");
+  const preview = document.getElementById("profile-preview");
+  const fallback = document.getElementById("profile-preview-fallback");
+  if (!input || !form || !frame || !image) return;
+
+  let objectUrl = null;
+  let scale = 1;
+  let left = 0;
+  let top = 0;
+  let renderedWidth = 0;
+  let renderedHeight = 0;
+  let startPointer = null;
+  let originalFile = null;
+  let previewImageElement = null;
+
+  function layoutImage() {
+    const size = frame.clientWidth;
+    const baseScale = Math.max(size / image.naturalWidth, size / image.naturalHeight);
+    scale = baseScale * Number(zoomInput.value);
+    renderedWidth = image.naturalWidth * scale;
+    renderedHeight = image.naturalHeight * scale;
+    left = Math.min(0, Math.max(size - renderedWidth, left));
+    top = Math.min(0, Math.max(size - renderedHeight, top));
+    image.style.width = renderedWidth + "px";
+    image.style.height = renderedHeight + "px";
+    image.style.left = left + "px";
+    image.style.top = top + "px";
+    if (previewImageElement) {
+      const factor = preview.clientWidth / size;
+      previewImageElement.style.width = renderedWidth * factor + "px";
+      previewImageElement.style.height = renderedHeight * factor + "px";
+      previewImageElement.style.left = left * factor + "px";
+      previewImageElement.style.top = top * factor + "px";
+    }
+  }
+
+  function centerImage() {
+    const size = frame.clientWidth;
+    const baseScale = Math.max(size / image.naturalWidth, size / image.naturalHeight);
+    scale = baseScale * Number(zoomInput.value);
+    renderedWidth = image.naturalWidth * scale;
+    renderedHeight = image.naturalHeight * scale;
+    left = (size - renderedWidth) / 2;
+    top = (size - renderedHeight) / 2;
+    layoutImage();
+  }
+
+  input.addEventListener("change", () => {
+    const file = input.files && input.files[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      input.value = "";
+      return;
+    }
+    originalFile = file;
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    objectUrl = URL.createObjectURL(file);
+    image.onload = () => {
+      cropper.hidden = false;
+      zoomInput.value = "1";
+      centerImage();
+      preview.replaceChildren();
+      previewImageElement = document.createElement("img");
+      previewImageElement.alt = "Pré-visualização da foto enquadrada";
+      previewImageElement.src = objectUrl;
+      previewImageElement.style.position = "absolute";
+      previewImageElement.style.maxWidth = "none";
+      previewImageElement.style.userSelect = "none";
+      preview.replaceChildren(previewImageElement);
+      if (fallback) fallback.remove();
+    };
+    image.src = objectUrl;
+  });
+
+  zoomInput.addEventListener("input", centerImage);
+  resetButton.addEventListener("click", () => {
+    zoomInput.value = "1";
+    centerImage();
+  });
+
+  frame.addEventListener("pointerdown", event => {
+    if (!originalFile) return;
+    startPointer = { x: event.clientX, y: event.clientY, left, top };
+    frame.setPointerCapture(event.pointerId);
+  });
+  frame.addEventListener("pointermove", event => {
+    if (!startPointer) return;
+    left = startPointer.left + event.clientX - startPointer.x;
+    top = startPointer.top + event.clientY - startPointer.y;
+    layoutImage();
+  });
+  const stopDrag = () => { startPointer = null; };
+  frame.addEventListener("pointerup", stopDrag);
+  frame.addEventListener("pointercancel", stopDrag);
+
+  form.addEventListener("submit", event => {
+    if (!originalFile) return;
+    event.preventDefault();
+    const size = frame.clientWidth;
+    const sourceX = -left / scale;
+    const sourceY = -top / scale;
+    const sourceSize = size / scale;
+    const canvas = document.createElement("canvas");
+    canvas.width = 512;
+    canvas.height = 512;
+    const context = canvas.getContext("2d");
+    context.drawImage(image, sourceX, sourceY, sourceSize, sourceSize, 0, 0, 512, 512);
+    canvas.toBlob(blob => {
+      if (!blob) {
+        form.submit();
+        return;
+      }
+      const croppedFile = new File([blob], "foto-perfil.jpg", { type: "image/jpeg" });
+      const transfer = new DataTransfer();
+      transfer.items.add(croppedFile);
+      input.files = transfer.files;
+      form.submit();
+    }, "image/jpeg", 0.92);
+  });
+})();
+</script>
 {% endblock %}

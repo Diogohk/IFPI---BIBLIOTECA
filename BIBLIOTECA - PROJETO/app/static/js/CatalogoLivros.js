@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const isbn = (card.dataset.isbn || "").replace(/[\s-]/g, "");
     if (!isbn) return;
     try {
-      const response = await fetch("https://www.googleapis.com/books/v1/volumes?q=" + encodeURIComponent("isbn:" + isbn) + "&maxResults=1");
+      const query = "isbn:" + isbn;
+      const response = await fetch("/api/google-books?q=" + encodeURIComponent(query));
       if (!response.ok) return;
       const data = await response.json();
       const info = data.items && data.items[0] && data.items[0].volumeInfo;

@@ -83,7 +83,10 @@ pip install -r requirements.txt
 3. Crie uma cópia desse arquivo com o nome `.env`.
 4. Preencha no `.env` os dados de conexão com o MySQL. As variáveis utilizadas são `DB_USER`, `DB_PASSWORD`, `DB_HOST` e `DB_NAME`.
 5. Defina também uma `SECRET_KEY` privada e aleatória. Não utilize a chave de exemplo em produção.
-6. Nunca publique o arquivo `.env`, senhas ou outras credenciais no GitHub.
+6. Crie uma chave no Google Cloud com a **Books API** habilitada e coloque-a na variável `GOOGLE_BOOKS_API_KEY` do arquivo `.env`.
+7. Nunca publique o arquivo `.env`, senhas ou outras credenciais no GitHub.
+
+A consulta ao Google Books é realizada pelo back-end Flask, que lê `GOOGLE_BOOKS_API_KEY` do ambiente e envia a chave ao Google. O navegador chama apenas a rota local `/api/google-books`, portanto a chave não fica exposta no JavaScript. Para desenvolvimento local, restrinja a chave à Books API e não use restrição de aplicativo por HTTP referrer, pois a chamada é feita pelo servidor. Em produção, prefira também uma restrição pelo IP fixo de saída do servidor, quando disponível.
 
 O projeto utiliza SQLAlchemy. Ao iniciar, `run.py` chama `db.create_all()`, que cria tabelas mapeadas que ainda não existem. Esse comando **não altera automaticamente a estrutura de tabelas já existentes**.
 

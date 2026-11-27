@@ -21,7 +21,7 @@
         </div>
         <div class="form-group">
             <label for="telefone">Telefone</label>
-            <input id="telefone" name="telefone" type="tel" maxlength="20" pattern="\\+?[0-9\\s().-]+" title="Use apenas números e caracteres de formatação." value="{{ aluno.telefone if aluno and aluno.telefone else '' }}">
+            <input id="telefone" name="telefone" type="tel" maxlength="20" pattern="\+?[0-9\s().-]+" title="Use apenas números e caracteres de formatação." value="{{ aluno.telefone if aluno and aluno.telefone else '' }}">
         </div>
         <div class="form-actions">
             <a href="{{ url_for('alunos.listar_alunos') if aluno else url_for('dashboard.inicio') }}">Cancelar</a>

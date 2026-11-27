@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   const dialog = document.querySelector("#feedback-dialog");
   const closeButton = document.querySelector("#feedback-close");
+
   if (dialog && typeof dialog.showModal === "function") {
     dialog.showModal();
+    closeButton?.focus();
     closeButton?.addEventListener("click", () => dialog.close());
     dialog.addEventListener("click", (event) => {
       if (event.target === dialog) dialog.close();

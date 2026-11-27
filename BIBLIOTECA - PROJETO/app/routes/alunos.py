@@ -1,3 +1,5 @@
+import re
+
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.extensions import db
 from app.models.aluno import Aluno
@@ -17,6 +19,12 @@ def cadastrar_aluno():
 
         if not matricula or not nome:
             flash("Preencha os campos obrigatórios: matrícula e nome.", "error")
+        elif len(matricula) > 20 or len(nome) > 150:
+            flash("Matrícula deve ter até 20 caracteres e nome até 150 caracteres.", "error")
+        elif email and (len(email) > 254 or not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email)):
+            flash("Informe um endereço de e-mail válido com até 254 caracteres.", "error")
+        elif telefone and len(telefone) > 20:
+            flash("O telefone deve ter até 20 caracteres.", "error")
         elif db.session.get(Aluno, matricula):
             flash("Esta matrícula já está cadastrada. Informe outra matrícula.", "error")
         else:

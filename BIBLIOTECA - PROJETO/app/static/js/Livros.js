@@ -4,6 +4,8 @@
   const form = document.querySelector("#form-livro");
   if (!form) return;
 
+  const isbnField = form.elements.isbn;
+
   function validarISBN(valor) {
     const isbn = valor.replace(/[ -]/g, "").toUpperCase();
     if (/^[0-9]{9}[0-9X]$/.test(isbn)) {
@@ -19,24 +21,13 @@
     return false;
   }
 
-  form.addEventListener("submit", (event) => {
-    const erros = [];
-    const titulo = form.elements.titulo.value.trim();
-    const autor = form.elements.autor.value.trim();
-    const isbn = form.elements.isbn.value.trim();
-    const ano = form.elements.ano_publicacao.value;
+  function atualizarValidadeISBN() {
+    const valor = isbnField.value.trim();
+    isbnField.setCustomValidity(
+      valor && !validarISBN(valor) ? "O ISBN informado não é válido." : ""
+    );
+  }
 
-    if (!titulo) erros.push("Informe o título do livro.");
-    if (!autor) erros.push("Informe o autor.");
-    if (!isbn) erros.push("Informe o ISBN.");
-    else if (!validarISBN(isbn)) erros.push("O ISBN informado é inválido.");
-    if (ano && (!Number.isInteger(Number(ano)) || Number(ano) < 1 || Number(ano) > 2100)) {
-      erros.push("Informe um ano de publicação válido (entre 1 e 2100).");
-    }
-
-    if (erros.length) {
-      event.preventDefault();
-      window.alert("Não foi possível validar o formulário:\n\n• " + erros.join("\n• "));
-    }
-  });
+  isbnField.addEventListener("input", atualizarValidadeISBN);
+  atualizarValidadeISBN();
 })();

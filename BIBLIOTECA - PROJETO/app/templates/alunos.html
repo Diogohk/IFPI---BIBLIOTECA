@@ -1,13 +1,33 @@
 {% extends "base.html" %}
-{% block title %}Cadastro de alunos | Biblioteca IFPI{% endblock %}
+{% block title %}{{ 'Editar aluno' if aluno else 'Cadastro de alunos' }} | Biblioteca IFPI{% endblock %}
 {% block content %}
-<div class="form-page"><p class="eyebrow">CADASTROS • ALUNOS</p><h1>Cadastro de alunos</h1><p>Informe os dados do estudante.</p>
-<form class="form-card" action="{{ url_for('alunos.cadastrar_aluno') }}" method="POST" data-confirm-reset="Deseja limpar todos os campos do cadastro?">
-<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-<div class="form-group"><label for="matricula">Matrícula *</label><input id="matricula" name="matricula" required maxlength="20"></div>
-<div class="form-group"><label for="nome">Nome completo *</label><input id="nome" name="nome" required maxlength="150"></div>
-<div class="form-group"><label for="email">E-mail</label><input id="email" name="email" type="email" maxlength="254"></div>
-<div class="form-group"><label for="telefone">Telefone</label><input id="telefone" name="telefone" type="tel" maxlength="20" pattern="\+?[0-9\s().-]+" title="Use apenas números e caracteres de formatação."></div>
-<div class="form-actions"><a href="{{ url_for('alunos.listar_alunos') }}">Ver alunos cadastrados</a><a href="{{ url_for('dashboard.inicio') }}">Voltar ao painel</a><button type="reset" class="button button-secondary">Limpar</button><button type="submit">Cadastrar aluno</button></div>
-</form></div>
+<div class="form-page">
+    <p class="eyebrow">CADASTROS • ALUNOS</p>
+    <h1>{{ 'Editar aluno' if aluno else 'Cadastro de alunos' }}</h1>
+    <p>{{ 'Atualize os dados do estudante.' if aluno else 'Informe os dados do estudante.' }}</p>
+    <form class="form-card" action="{{ url_for('alunos.editar_aluno', matricula=aluno.matricula) if aluno else url_for('alunos.cadastrar_aluno') }}" method="POST" data-confirm-reset="Deseja limpar todos os campos do cadastro?">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group">
+            <label for="matricula">Matrícula *</label>
+            <input id="matricula" name="matricula" required maxlength="20" value="{{ aluno.matricula if aluno else '' }}" {% if aluno %}readonly{% endif %}>
+        </div>
+        <div class="form-group">
+            <label for="nome">Nome completo *</label>
+            <input id="nome" name="nome" required maxlength="150" value="{{ aluno.nome if aluno else '' }}">
+        </div>
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" maxlength="254" value="{{ aluno.email if aluno and aluno.email else '' }}">
+        </div>
+        <div class="form-group">
+            <label for="telefone">Telefone</label>
+            <input id="telefone" name="telefone" type="tel" maxlength="20" pattern="\\+?[0-9\\s().-]+" title="Use apenas números e caracteres de formatação." value="{{ aluno.telefone if aluno and aluno.telefone else '' }}">
+        </div>
+        <div class="form-actions">
+            <a href="{{ url_for('alunos.listar_alunos') if aluno else url_for('dashboard.inicio') }}">Cancelar</a>
+            {% if not aluno %}<button type="reset" class="button button-secondary">Limpar</button>{% endif %}
+            <button type="submit">{{ 'Salvar alterações' if aluno else 'Cadastrar aluno' }}</button>
+        </div>
+    </form>
+</div>
 {% endblock %}

@@ -70,12 +70,32 @@
     image.style.height = renderedHeight + "px";
     image.style.left = left + "px";
     image.style.top = top + "px";
-    if (previewImageElement) {
-      const factor = preview.clientWidth / size;
-      previewImageElement.style.width = renderedWidth * factor + "px";
-      previewImageElement.style.height = renderedHeight * factor + "px";
-      previewImageElement.style.left = left * factor + "px";
-      previewImageElement.style.top = top * factor + "px";
+    updateLivePreview();
+  }
+
+  function updateLivePreview() {
+    if (!originalFile || !image.naturalWidth || !frame.clientWidth) return;
+    const output = document.createElement("canvas");
+    output.width = 160;
+    output.height = 160;
+    const context = output.getContext("2d");
+    const sourceSize = frame.clientWidth / scale;
+    context.drawImage(image, -left / scale, -top / scale, sourceSize, sourceSize, 0, 0, 160, 160);
+    const croppedPreview = output.toDataURL("image/jpeg", 0.88);
+
+    if (previewImageElement) previewImageElement.src = croppedPreview;
+
+    const topbar = document.getElementById("topbar-profile");
+    if (topbar) {
+      let topbarImage = document.getElementById("topbar-profile-image");
+      if (!topbarImage) {
+        topbar.replaceChildren();
+        topbarImage = document.createElement("img");
+        topbarImage.id = "topbar-profile-image";
+        topbarImage.alt = "Foto de perfil";
+        topbar.appendChild(topbarImage);
+      }
+      topbarImage.src = croppedPreview;
     }
   }
 
@@ -108,11 +128,14 @@
       previewImageElement = document.createElement("img");
       previewImageElement.alt = "Pré-visualização da foto enquadrada";
       previewImageElement.src = objectUrl;
-      previewImageElement.style.position = "absolute";
-      previewImageElement.style.maxWidth = "none";
+      previewImageElement.style.display = "block";
+      previewImageElement.style.width = "100%";
+      previewImageElement.style.height = "100%";
+      previewImageElement.style.objectFit = "cover";
       previewImageElement.style.userSelect = "none";
       preview.replaceChildren(previewImageElement);
       if (fallback) fallback.remove();
+      layoutImage();
     };
     image.src = objectUrl;
   });

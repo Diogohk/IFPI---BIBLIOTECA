@@ -27,7 +27,13 @@
         <p class="catalog-author">{{ livro.autor }}</p>
         <p class="catalog-meta">{{ livro.editora or 'Editora não informada' }}{% if livro.ano %} · {{ livro.ano }}{% endif %}</p>
         <p class="catalog-copies">{{ livro.exemplares|length }} exemplar(es) cadastrado(s)</p>
-        <a class="catalog-edit-link" href="{{ url_for('cadastro.editar_livro', idlivro=livro.idlivro) }}">Editar dados</a>
+        <div class="catalog-actions">
+          <a class="catalog-edit-link" href="{{ url_for('cadastro.editar_livro', idlivro=livro.idlivro) }}">Editar dados</a>
+          <form class="catalog-delete-form" method="POST" action="{{ url_for('cadastro.excluir_livro', idlivro=livro.idlivro) }}" data-confirm="Excluir esta obra? A exclusão só será permitida se não houver exemplares vinculados.">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="button button-secondary">Excluir</button>
+          </form>
+        </div>
       </div>
     </article>
     {% endfor %}

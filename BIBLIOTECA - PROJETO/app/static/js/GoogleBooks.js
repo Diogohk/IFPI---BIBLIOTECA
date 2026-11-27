@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fields.author.value = (info.authors || []).join(", ");
     fields.isbn.value = getIsbn(volume);
     fields.publisher.value = info.publisher || "";
-    const year = (info.publishedDate || "").match(/^\\d{4}/);
+    const year = (info.publishedDate || "").match(/^\d{4}/);
     fields.year.value = year ? year[0] : "";
     fields.title.dispatchEvent(new Event("input", { bubbles: true }));
     fields.isbn.dispatchEvent(new Event("input", { bubbles: true }));
@@ -40,8 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
       status.textContent = "Digite um ISBN ou título para pesquisar.";
       return;
     }
-    const normalized = term.replace(/[\\s-]/g, "");
-    const query = /^\\d{10,13}$/.test(normalized)
+    const normalized = term.replace(/[\s-]/g, "");
+    const query = /^\d{10,13}$/.test(normalized)
       ? "isbn:" + normalized
       : "intitle:" + term;
     searchButton.disabled = true;

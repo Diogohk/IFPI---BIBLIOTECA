@@ -23,8 +23,12 @@ def cadastrar_aluno():
             flash("Matrícula deve ter até 20 caracteres e nome até 150 caracteres.", "error")
         elif email and (len(email) > 254 or not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email)):
             flash("Informe um endereço de e-mail válido com até 254 caracteres.", "error")
-        elif telefone and len(telefone) > 20:
-            flash("O telefone deve ter até 20 caracteres.", "error")
+        elif telefone and (
+            len(telefone) > 20
+            or not re.fullmatch(r"\+?[0-9\s().-]+", telefone)
+            or not 10 <= len(re.sub(r"\D", "", telefone)) <= 13
+        ):
+            flash("Informe um telefone válido, com 10 a 13 dígitos. Use apenas números e caracteres de formatação.", "error")
         elif db.session.get(Aluno, matricula):
             flash("Esta matrícula já está cadastrada. Informe outra matrícula.", "error")
         else:

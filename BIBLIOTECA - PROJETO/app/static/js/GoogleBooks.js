@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     results.innerHTML = "";
 
     try {
-      const response = await fetch("https://www.googleapis.com/books/v1/volumes?q=" + encodeURIComponent(query) + "&maxResults=6&langRestrict=pt");
+      const response = await fetch("https://www.googleapis.com/books/v1/volumes?q=" + encodeURIComponent(query) + "&maxResults=6");
       if (!response.ok) throw new Error("A API respondeu com erro.");
       const data = await response.json();
       const items = data.items || [];

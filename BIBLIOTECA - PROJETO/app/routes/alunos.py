@@ -14,12 +14,12 @@ def validar_dados_aluno(matricula, nome, email, telefone, matricula_atual=None):
         return "Preencha os campos obrigatórios: matrícula e nome."
     if len(matricula) > 20 or len(nome) > 150:
         return "Matrícula deve ter até 20 caracteres e nome até 150 caracteres."
-    if email and (len(email) > 254 or not re.fullmatch(r"[^@\\s]+@[^@\\s]+\\.[^@\\s]+", email)):
+    if email and (len(email) > 254 or not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email)):
         return "Informe um endereço de e-mail válido com até 254 caracteres."
     if telefone and (
         len(telefone) > 20
-        or not re.fullmatch(r"\\+?[0-9\\s().-]+", telefone)
-        or not 10 <= len(re.sub(r"\\D", "", telefone)) <= 13
+        or not re.fullmatch(r"\+?[0-9\s().-]+", telefone)
+        or not 10 <= len(re.sub(r"\D", "", telefone)) <= 13
     ):
         return "Informe um telefone válido, com 10 a 13 dígitos."
     existente = db.session.get(Aluno, matricula)

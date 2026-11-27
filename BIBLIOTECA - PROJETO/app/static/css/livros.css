@@ -288,3 +288,8 @@
   .catalog-toolbar { grid-template-columns: 1fr; }
   .catalog-count { white-space: normal; }
 }
+
+.catalog-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; margin-top: auto; padding-top: 14px; }
+.catalog-actions .catalog-edit-link { margin-top: 0; padding-top: 0; }
+.catalog-delete-form { margin: 0; }
+.catalog-delete-form .button { min-height: 34px; padding: 7px 11px; font-size: .82rem; }

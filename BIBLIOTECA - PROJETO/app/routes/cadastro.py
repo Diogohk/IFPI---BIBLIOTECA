@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+import requests
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, current_app
 from sqlalchemy.exc import IntegrityError
 from app.extensions import db
 from app.models.livro import Livro
@@ -7,6 +8,38 @@ from app.routes.dashboard import login_obrigatorio
 
 cadastro_bp = Blueprint("cadastro", __name__)
 
+
+@cadastro_bp.get("/api/google-books")
+@login_obrigatorio
+def pesquisar_google_books():
+    termo = request.args.get("q", "").strip()
+    if not termo:
+        return jsonify({"error": "Informe um ISBN ou título para pesquisar."}), 400
+    if len(termo) > 200:
+        return jsonify({"error": "A pesquisa deve ter no máximo 200 caracteres."}), 400
+
+    api_key = current_app.config.get("GOOGLE_BOOKS_API_KEY")
+    if not api_key:
+        return jsonify({"error": "A chave do Google Books não está configurada no servidor."}), 503
+
+    try:
+        resposta = requests.get(
+            "https://www.googleapis.com/books/v1/volumes",
+            params={"q": termo, "maxResults": 6, "key": api_key},
+            timeout=10,
+        )
+        resposta.raise_for_status()
+        dados = resposta.json()
+    except requests.RequestException:
+        current_app.logger.exception("Falha ao consultar a API Google Books.")
+        return jsonify({"error": "Não foi possível consultar o Google Books no momento."}), 502
+    except ValueError:
+        current_app.logger.exception("Resposta inválida recebida do Google Books.")
+        return jsonify({"error": "O Google Books retornou uma resposta inválida."}), 502
+
+    return jsonify(dados)
+
+
 def isbn_valido(valor):
     isbn = (valor or "").replace("-", "").replace(" ", "").upper()
     if len(isbn) == 10 and (isbn[:9].isdigit()) and (isbn[9].isdigit() or isbn[9] == "X"):
@@ -14,6 +47,7 @@ def isbn_valido(valor):
     if len(isbn) == 13 and isbn.isdigit():
         return sum(int(c) * (1 if i % 2 == 0 else 3) for i, c in enumerate(isbn)) % 10 == 0
     return False
+
 
 @cadastro_bp.route("/livros", methods=["GET", "POST"])
 @login_obrigatorio
@@ -41,11 +75,13 @@ def cadastrar():
             return redirect(url_for("cadastro.listar_livros"))
     return render_template("cadastro.html", livro=None)
 
+
 @cadastro_bp.route("/livros/listar")
 @login_obrigatorio
 def listar_livros():
     livros = Livro.query.order_by(Livro.titulo.asc()).all()
     return render_template("listar_livros.html", livros=livros)
+
 
 @cadastro_bp.route("/livros/<int:idlivro>/editar", methods=["GET", "POST"])
 @login_obrigatorio
@@ -74,6 +110,7 @@ def editar_livro(idlivro):
             flash("Livro atualizado com sucesso!", "success")
             return redirect(url_for("cadastro.listar_livros"))
     return render_template("cadastro.html", livro=livro)
+
 
 @cadastro_bp.route("/livros/<int:idlivro>/excluir", methods=["POST"])
 @login_obrigatorio

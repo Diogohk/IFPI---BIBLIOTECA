@@ -1,7 +1,7 @@
 .employee-form-page{width:min(980px,100%);margin:0 auto}
 .employee-form-card{padding:30px;border:1px solid #e2ebe5;border-radius:16px;background:#fff;box-shadow:0 10px 30px rgba(30,62,45,.05)}
 .employee-photo-field{display:flex;align-items:center;gap:18px;padding-bottom:24px;margin-bottom:25px;border-bottom:1px solid #edf1ee}
-.employee-photo-preview{display:grid;place-items:center;width:88px;height:88px;flex:0 0 88px;overflow:hidden;border:1px solid #dce9e1;border-radius:50%;background:#eaf4ed;color:#287452;font-size:30px;font-weight:800}
+.employee-photo-preview{position:relative;display:grid;place-items:center;width:88px;height:88px;flex:0 0 88px;overflow:hidden;border:1px solid #dce9e1;border-radius:50%;background:#eaf4ed;color:#287452;font-size:30px;font-weight:800}
 .employee-photo-preview img{width:100%;height:100%;object-fit:cover}
 .employee-photo-field label{display:block;margin-bottom:8px;color:#344b3e;font-size:.9rem;font-weight:750}
 .employee-photo-field input{display:block;max-width:100%;font:inherit;font-size:.82rem}

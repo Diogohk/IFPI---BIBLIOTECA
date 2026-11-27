@@ -232,3 +232,104 @@ html[data-theme="dark"] .employee-form-actions {
 html[data-theme="dark"] .employee-form-actions > a {
   color: #a6b8ab;
 }
+
+
+/* Contraste do conteúdo interno dos cartões e painéis no tema escuro */
+html[data-theme="dark"] .consulta-panel,
+html[data-theme="dark"] .consulta-stat,
+html[data-theme="dark"] .catalog-card,
+html[data-theme="dark"] .exemplar-form-card,
+html[data-theme="dark"] .exemplar-form-aside,
+html[data-theme="dark"] .employee-form-card,
+html[data-theme="dark"] .google-search-panel,
+html[data-theme="dark"] .google-book-result,
+html[data-theme="dark"] .catalog-toolbar,
+html[data-theme="dark"] .overview-card,
+html[data-theme="dark"] .action-card,
+html[data-theme="dark"] .future-card,
+html[data-theme="dark"] .dashboard-table-card,
+html[data-theme="dark"] .form-card {
+  color: #e0ebe3;
+}
+
+html[data-theme="dark"] .consulta-panel h1,
+html[data-theme="dark"] .consulta-panel h2,
+html[data-theme="dark"] .consulta-panel h3,
+html[data-theme="dark"] .consulta-stat strong,
+html[data-theme="dark"] .consulta-stat h2,
+html[data-theme="dark"] .catalog-card-content h2,
+html[data-theme="dark"] .exemplar-form-card h2,
+html[data-theme="dark"] .exemplar-form-aside h2,
+html[data-theme="dark"] .employee-form-card h2,
+html[data-theme="dark"] .google-search-panel h2,
+html[data-theme="dark"] .overview-card strong,
+html[data-theme="dark"] .action-card strong,
+html[data-theme="dark"] .future-card h2,
+html[data-theme="dark"] .dashboard-table-card h2,
+html[data-theme="dark"] .form-card h2 {
+  color: #e6f0e8;
+}
+
+html[data-theme="dark"] .consulta-panel p,
+html[data-theme="dark"] .consulta-panel small,
+html[data-theme="dark"] .consulta-panel li,
+html[data-theme="dark"] .consulta-stat p,
+html[data-theme="dark"] .consulta-stat span,
+html[data-theme="dark"] .catalog-card-content p,
+html[data-theme="dark"] .catalog-card-content small,
+html[data-theme="dark"] .exemplar-form-card p,
+html[data-theme="dark"] .exemplar-form-card small,
+html[data-theme="dark"] .exemplar-form-aside p,
+html[data-theme="dark"] .exemplar-form-aside li,
+html[data-theme="dark"] .employee-form-card p,
+html[data-theme="dark"] .employee-form-card small,
+html[data-theme="dark"] .google-search-panel p,
+html[data-theme="dark"] .google-book-result small,
+html[data-theme="dark"] .overview-card span,
+html[data-theme="dark"] .action-card .card-content > span:not(.card-link),
+html[data-theme="dark"] .future-card p,
+html[data-theme="dark"] .dashboard-table-card p,
+html[data-theme="dark"] .form-card p {
+  color: #b7c8bc;
+}
+
+html[data-theme="dark"] .consulta-panel label,
+html[data-theme="dark"] .consulta-stat label,
+html[data-theme="dark"] .catalog-card-content label,
+html[data-theme="dark"] .exemplar-form-card label,
+html[data-theme="dark"] .exemplar-form-aside label,
+html[data-theme="dark"] .employee-form-card label,
+html[data-theme="dark"] .google-search-panel label,
+html[data-theme="dark"] .form-card label {
+  color: #cbd9cf;
+}
+
+html[data-theme="dark"] .consulta-panel a,
+html[data-theme="dark"] .consulta-stat a,
+html[data-theme="dark"] .catalog-card-content a,
+html[data-theme="dark"] .exemplar-form-card a,
+html[data-theme="dark"] .exemplar-form-aside a,
+html[data-theme="dark"] .employee-form-card a,
+html[data-theme="dark"] .google-search-panel a,
+html[data-theme="dark"] .overview-card a,
+html[data-theme="dark"] .future-card a {
+  color: #a6d8b4;
+}
+
+html[data-theme="dark"] .consulta-panel input,
+html[data-theme="dark"] .consulta-panel select,
+html[data-theme="dark"] .consulta-panel textarea,
+html[data-theme="dark"] .consulta-stat input,
+html[data-theme="dark"] .consulta-stat select,
+html[data-theme="dark"] .consulta-stat textarea,
+html[data-theme="dark"] .exemplar-form-card input,
+html[data-theme="dark"] .exemplar-form-card select,
+html[data-theme="dark"] .exemplar-form-card textarea,
+html[data-theme="dark"] .employee-form-card input,
+html[data-theme="dark"] .employee-form-card select,
+html[data-theme="dark"] .employee-form-card textarea {
+  background: #142119;
+  border-color: #43594a;
+  color: #e0ebe3;
+  color-scheme: dark;
+}

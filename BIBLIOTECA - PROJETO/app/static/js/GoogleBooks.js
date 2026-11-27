@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchButton = document.getElementById("google-books-search");
   const results = document.getElementById("google-books-results");
   const status = document.getElementById("google-books-status");
+  const coverField = document.getElementById("google-books-cover-url");
   if (!input || !searchButton || !results || !status) return;
 
   const fields = {
@@ -13,26 +14,16 @@ document.addEventListener("DOMContentLoaded", () => {
     year: document.getElementById("ano_publicacao")
   };
 
-  function normalizeIsbn(value) {
-    return (value || "").replace(/[\s-]/g, "").toUpperCase();
-  }
-
   function getIsbn(volume) {
     const ids = volume.industryIdentifiers || [];
     const preferred = ids.find(item => item.type === "ISBN_13") || ids.find(item => item.type === "ISBN_10");
     return preferred ? preferred.identifier : "";
   }
 
-  function matchesIsbn(volume, expectedIsbn) {
-    const ids = (volume.volumeInfo && volume.volumeInfo.industryIdentifiers) || [];
-    return ids.some(item => normalizeIsbn(item.identifier) === expectedIsbn);
-  }
-
-  function getCoverUrls(info) {
+  function getCoverUrl(info) {
     const links = info.imageLinks || {};
-    return [links.thumbnail, links.smallThumbnail]
-      .filter(Boolean)
-      .map(url => url.replace(/^http:/i, "https:"));
+    const url = links.thumbnail || links.smallThumbnail || "";
+    return url.replace(/^http:/i, "https:");
   }
 
   function selectBook(volume) {
@@ -43,29 +34,26 @@ document.addEventListener("DOMContentLoaded", () => {
     fields.publisher.value = info.publisher || "";
     const year = (info.publishedDate || "").match(/^\d{4}/);
     fields.year.value = year ? year[0] : "";
+    if (coverField) coverField.value = getCoverUrl(info);
     fields.title.dispatchEvent(new Event("input", { bubbles: true }));
     fields.isbn.dispatchEvent(new Event("input", { bubbles: true }));
-    status.textContent = "Dados preenchidos. Confira as informações e valide o ISBN antes de salvar.";
+    status.textContent = coverField && coverField.value
+      ? "Livro e capa selecionados. Confira os dados antes de salvar."
+      : "Livro selecionado, mas a API não forneceu capa para este resultado.";
     results.innerHTML = "";
     fields.title.focus();
   }
 
   function renderCover(cover, info) {
-    const urls = getCoverUrls(info);
-    let index = 0;
+    const url = getCoverUrl(info);
     cover.alt = info.title ? "Capa de " + info.title : "Capa do livro";
-    cover.hidden = true;
-
-    const tryNext = () => {
-      if (index >= urls.length) {
-        cover.hidden = true;
-        return;
-      }
-      cover.src = urls[index++];
-    };
+    if (!url) {
+      cover.hidden = true;
+      return;
+    }
     cover.onload = () => { cover.hidden = false; };
-    cover.onerror = tryNext;
-    if (urls.length) tryNext();
+    cover.onerror = () => { cover.hidden = true; };
+    cover.src = url;
   }
 
   async function searchBooks() {
@@ -74,9 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
       status.textContent = "Digite um ISBN ou título para pesquisar.";
       return;
     }
-    const normalized = normalizeIsbn(term);
-    const isbnSearch = /^\d{10,13}$/.test(normalized);
-    const query = isbnSearch ? "isbn:" + normalized : "intitle:" + term;
+    const isbnSearch = /^\d[\d\s-]{8,16}$/.test(term);
+    const query = isbnSearch ? "isbn:" + term.replace(/[\s-]/g, "") : "intitle:" + term;
 
     searchButton.disabled = true;
     status.textContent = "Pesquisando no Google Books...";
@@ -86,21 +73,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch("/api/google-books?q=" + encodeURIComponent(query));
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "A API respondeu com erro.");
-      let items = data.items || [];
-
-      // Em buscas por ISBN, não exibe resultados de outra edição/obra.
-      if (isbnSearch) {
-        items = items.filter(volume => matchesIsbn(volume, normalized));
-      }
+      const items = data.items || [];
 
       if (!items.length) {
-        status.textContent = isbnSearch
-          ? "Nenhuma edição com esse ISBN foi confirmada. Confira o código ou pesquise pelo título."
-          : "Nenhum resultado encontrado. Você ainda pode preencher os campos manualmente.";
+        status.textContent = "Nenhum resultado encontrado. Você ainda pode preencher os campos manualmente.";
         return;
       }
 
-      status.textContent = items.length + " resultado(s). Selecione a obra correta:";
+      status.textContent = items.length + " resultado(s). Selecione a edição cuja capa deseja usar:";
       items.forEach(volume => {
         const info = volume.volumeInfo || {};
         const item = document.createElement("article");

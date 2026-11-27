@@ -90,12 +90,11 @@ A consulta ao Google Books é feita pelo back-end Flask, que lê `GOOGLE_BOOKS_A
 
 O projeto utiliza SQLAlchemy. Na inicialização, a aplicação chama `db.create_all()` para criar tabelas ausentes e executa as migrações automáticas definidas em `app/migrations.py`. O `db.create_all()` isoladamente **não altera a estrutura de tabelas já existentes**; por isso, alterações de esquema precisam de migrações explícitas.
 
-Se o banco já possuir tabelas de versões anteriores, consulte os scripts de migração antes de iniciar:
+As alterações de estrutura necessárias são centralizadas em `app/migrations.py` e executadas automaticamente durante a inicialização. A rotina verifica a existência de tabelas, colunas e índices antes de criá-los. Ela contempla ISBN dos livros, código dos exemplares, endereço das capas, foto de perfil e permissão administrativa dos funcionários.
 
-- `MIGRACAO_MARCO_4_5.sql`: adiciona os campos de ISBN aos livros e código aos exemplares. Faça backup do banco e confira se a migração ainda precisa ser aplicada antes de executá-la.
-- `CONFIGURAR_ACESSO.md`: orienta a configuração das colunas de matrícula e hash de senha na tabela de funcionários. Siga as instruções com atenção, especialmente se já existirem funcionários cadastrados.
+Em bancos antigos, códigos de exemplares ainda vazios recebem identificadores no formato `EX-<idexemplar>`. Se já houver ISBNs duplicados ou códigos duplicados, a inicialização informa o conflito em vez de aplicar uma restrição única que possa comprometer os dados. Faça backup do banco antes de atualizar a aplicação.
 
-Não execute migrações repetidamente: os comandos de alteração de estrutura devem ser aplicados conforme o estado atual do banco.
+Não é necessário executar scripts SQL manualmente para essas migrações. O arquivo `CONFIGURAR_ACESSO.md` continua sendo uma referência para a configuração inicial das credenciais e da tabela de funcionários.
 
 
 

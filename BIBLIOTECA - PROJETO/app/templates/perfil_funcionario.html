@@ -56,6 +56,7 @@
   let renderedHeight = 0;
   let startPointer = null;
   let originalFile = null;
+  let previewImageElement = null;
 
   function layoutImage() {
     const size = frame.clientWidth;
@@ -69,6 +70,13 @@
     image.style.height = renderedHeight + "px";
     image.style.left = left + "px";
     image.style.top = top + "px";
+    if (previewImageElement) {
+      const factor = preview.clientWidth / size;
+      previewImageElement.style.width = renderedWidth * factor + "px";
+      previewImageElement.style.height = renderedHeight * factor + "px";
+      previewImageElement.style.left = left * factor + "px";
+      previewImageElement.style.top = top * factor + "px";
+    }
   }
 
   function centerImage() {
@@ -97,13 +105,13 @@
       zoomInput.value = "1";
       centerImage();
       preview.replaceChildren();
-      const previewImage = document.createElement("img");
-      previewImage.alt = "Pré-visualização da foto enquadrada";
-      previewImage.src = objectUrl;
-      preview.appendChild(previewImage);
-      previewImage.style.objectFit = "cover";
-      previewImage.style.width = "100%";
-      previewImage.style.height = "100%";
+      previewImageElement = document.createElement("img");
+      previewImageElement.alt = "Pré-visualização da foto enquadrada";
+      previewImageElement.src = objectUrl;
+      previewImageElement.style.position = "absolute";
+      previewImageElement.style.maxWidth = "none";
+      previewImageElement.style.userSelect = "none";
+      preview.replaceChildren(previewImageElement);
       if (fallback) fallback.remove();
     };
     image.src = objectUrl;

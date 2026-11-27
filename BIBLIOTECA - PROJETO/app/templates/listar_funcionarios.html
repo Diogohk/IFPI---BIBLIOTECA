@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Funcionários | Biblioteca IFPI{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/consultas.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='css/funcionarios.css') }}">{% endblock %}
+{% block content %}
+<main class="consulta-page">
+  <header class="consulta-header">
+    <div><p class="eyebrow">GESTÃO <span>/</span> EQUIPE</p><h1>Funcionários</h1><p class="consulta-subtitle">Gerencie os acessos e os perfis da equipe da biblioteca.</p></div>
+    <a class="consulta-primary" href="{{ url_for('funcionarios.cadastrar_funcionario') }}">＋ Cadastrar funcionário</a>
+  </header>
+  <section class="consulta-stats consulta-stats-single"><article class="consulta-stat"><span>Funcionários cadastrados</span><strong>{{ funcionarios|length }}</strong></article></section>
+  <section class="consulta-panel">
+    <div class="consulta-toolbar"><div><h2>Equipe da biblioteca</h2><p>Consulte, edite ou remova os cadastros.</p></div><label class="consulta-search"><span class="sr-only">Pesquisar funcionários</span><input id="consulta-search" type="search" placeholder="Buscar por nome, matrícula ou cargo..."></label></div>
+    {% if funcionarios %}
+    <div class="consulta-table-wrap"><table class="consulta-table"><thead><tr><th>Funcionário</th><th>Matrícula</th><th>Permissão</th><th class="actions-heading">Ações</th></tr></thead><tbody id="consulta-rows">
+      {% for funcionario in funcionarios %}
+      <tr data-search="{{ (funcionario.nome ~ ' ' ~ funcionario.matricula ~ ' ' ~ funcionario.cargo)|lower }}">
+        <td><div class="employee-cell">{% if funcionario.foto_perfil %}<img class="employee-avatar" src="{{ url_for('funcionarios.foto_funcionario', filename=funcionario.foto_perfil) }}" alt="Foto de {{ funcionario.nome }}">{% else %}<span class="employee-avatar employee-avatar-placeholder">{{ funcionario.nome[:1]|upper }}</span>{% endif %}<span><strong class="cell-title">{{ funcionario.nome }}</strong><span class="cell-caption">{{ funcionario.cargo }}</span></span></div></td>
+        <td><span class="codigo-chip">{{ funcionario.matricula }}</span></td>
+        <td><span class="employee-role {{ 'employee-role-admin' if funcionario.is_admin else '' }}">{{ 'Administrador' if funcionario.is_admin else 'Funcionário' }}</span></td>
+        <td class="consulta-actions"><a class="action-link" href="{{ url_for('funcionarios.editar_funcionario', idfuncionario=funcionario.idfuncionario) }}">Editar</a>
+          {% if funcionario.idfuncionario != session.get('funcionario_id') %}<form method="POST" action="{{ url_for('funcionarios.excluir_funcionario', idfuncionario=funcionario.idfuncionario) }}" data-confirm="Excluir o acesso deste funcionário?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="action-link action-danger" type="submit">Excluir</button></form>{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody></table></div><p class="consulta-no-results" id="consulta-empty" hidden>Nenhum funcionário encontrado.</p>
+    {% else %}<div class="consulta-empty"><h3>Nenhum funcionário cadastrado</h3><p>Cadastre os integrantes da equipe para gerenciar seus acessos.</p><a class="consulta-primary" href="{{ url_for('funcionarios.cadastrar_funcionario') }}">Cadastrar funcionário</a></div>{% endif %}
+  </section>
+  <a class="consulta-back" href="{{ url_for('dashboard.inicio') }}">← Voltar ao painel</a>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/ConsultaListas.js') }}" defer></script>{% endblock %}

@@ -1,1 +1,60 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Entrar | Biblioteca IFPI</title><link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}"></head><body><main class="container"><h1>Biblioteca IFPI</h1><p>Entre com sua matrícula e senha para acessar o sistema.</p>{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category, message in messages %}<p role="status" class="flash-message">{{ message }}</p>{% endfor %}{% endif %}{% endwith %}<form action="{{ url_for('login.entrar') }}" method="POST"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><div class="form-group"><label for="matricula">Matrícula</label><input type="text" id="matricula" name="matricula" required autocomplete="username"></div><div class="form-group"><label for="senha">Senha</label><input type="password" id="senha" name="senha" required autocomplete="current-password"></div><button type="submit">Entrar</button></form></main></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrar | Biblioteca IFPI</title>
+  <script>try{if(localStorage.getItem("biblioteca-ifpi-theme")==="dark"){document.documentElement.dataset.theme="dark";}}catch(e){}</script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body class="auth-page">
+  <main class="auth-layout">
+    <div class="auth-topbar">
+      <a class="auth-brand" href="{{ url_for('login.entrar') }}"><span class="auth-brand-mark">B</span><span>Biblioteca <strong>IFPI</strong></span></a>
+      <button class="auth-theme-toggle" id="theme-toggle" type="button" aria-label="Alternar modo escuro" aria-pressed="false">
+        <span class="theme-icon-moon" aria-hidden="true">☾</span><span class="theme-icon-sun" aria-hidden="true">☀</span>
+        <span class="theme-toggle-label">Modo escuro</span>
+      </button>
+    </div>
+
+    <section class="auth-card">
+      <div class="auth-heading">
+        <span class="auth-eyebrow">SISTEMA DE GERENCIAMENTO</span>
+        <h1>Bem-vindo de volta</h1>
+        <p>Entre com seus dados de acesso para continuar.</p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="auth-messages" role="status">
+            {% for category, message in messages %}
+              <p class="auth-message auth-message-{{ category }}">{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form action="{{ url_for('login.entrar') }}" method="POST" class="auth-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="auth-field">
+          <label for="matricula">Matrícula</label>
+          <input type="text" id="matricula" name="matricula" required autocomplete="username" placeholder="Digite sua matrícula">
+        </div>
+        <div class="auth-field">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" name="senha" required autocomplete="current-password" placeholder="Digite sua senha">
+        </div>
+        <button class="auth-submit" type="submit">Entrar no sistema</button>
+      </form>
+
+      <div class="auth-register">
+        <span>É funcionário e ainda não tem acesso?</span>
+        <a href="{{ url_for('login.cadastrar') }}">Cadastrar novo funcionário</a>
+      </div>
+    </section>
+    <footer class="auth-footer">Biblioteca IFPI · Campus Paulistana</footer>
+  </main>
+  <script src="{{ url_for('static', filename='js/base.js') }}" defer></script>
+</body>
+</html>

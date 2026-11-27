@@ -6,7 +6,7 @@
   <section class="livros-header">
     <p class="eyebrow">ACERVO • CONSULTA</p>
     <h1>Catálogo de livros</h1>
-    <p class="subtitle">Explore as obras registradas na biblioteca. As capas são carregadas pela API Google Books quando disponíveis.</p>
+    <p class="subtitle">Explore as obras registradas na biblioteca. O catálogo exibe a capa escolhida durante o cadastro.</p>
   </section>
   <section class="catalog-toolbar">
     <label class="catalog-search-label" for="catalog-search">Pesquisar no catálogo</label>
@@ -16,10 +16,10 @@
   {% if livros %}
   <section class="catalog-grid" id="catalog-grid">
     {% for livro in livros %}
-    <article class="catalog-card" data-isbn="{{ livro.isbn or '' }}">
+    <article class="catalog-card">
       <div class="catalog-cover-wrap">
-        <div class="catalog-cover-placeholder">Sem capa</div>
-        <img class="catalog-cover" alt="Capa de {{ livro.titulo }}" loading="lazy" hidden>
+        <div class="catalog-cover-placeholder" {% if livro.capa_url %}hidden{% endif %}>Sem capa</div>
+        <img class="catalog-cover" alt="Capa de {{ livro.titulo }}" loading="lazy" {% if livro.capa_url %}src="{{ livro.capa_url }}"{% else %}hidden{% endif %}>
       </div>
       <div class="catalog-card-content">
         <p class="catalog-card-isbn">ISBN {{ livro.isbn or 'não informado' }}</p>

@@ -44,14 +44,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const query = /^\d{10,13}$/.test(normalized)
       ? "isbn:" + normalized
       : "intitle:" + term;
+
     searchButton.disabled = true;
     status.textContent = "Pesquisando no Google Books...";
     results.innerHTML = "";
 
     try {
-      const response = await fetch("https://www.googleapis.com/books/v1/volumes?q=" + encodeURIComponent(query) + "&maxResults=6");
-      if (!response.ok) throw new Error("A API respondeu com erro.");
+      const response = await fetch("/api/google-books?q=" + encodeURIComponent(query));
       const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "A API respondeu com erro.");
       const items = data.items || [];
       if (!items.length) {
         status.textContent = "Nenhum resultado encontrado. Você ainda pode preencher os campos manualmente.";
@@ -82,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
         results.appendChild(item);
       });
     } catch (error) {
-      status.textContent = "Não foi possível acessar o Google Books agora. Tente novamente ou preencha manualmente.";
+      status.textContent = error.message || "Não foi possível acessar o Google Books agora. Tente novamente ou preencha manualmente.";
     } finally {
       searchButton.disabled = false;
     }

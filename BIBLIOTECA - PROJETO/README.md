@@ -5,7 +5,7 @@
 
 ## Sobre o projeto
 
-O Biblioteca IFPI é um sistema web desenvolvido para apoiar as atividades do Setor de Biblioteca do IFPI — Campus Paulistana. A aplicação é direcionada aos funcionários da biblioteca e permite, nesta etapa, acessar os formulários de cadastro de livros e alunos e consultar os alunos cadastrados.
+O Biblioteca IFPI é um sistema web desenvolvido para apoiar as atividades do Setor de Biblioteca do IFPI — Campus Paulistana. A aplicação é direcionada aos funcionários da biblioteca e oferece cadastro e consulta de livros em formato de catálogo, cadastro, consulta e edição de alunos, além de pesquisa de metadados bibliográficos pela API Google Books.
 
 O projeto está em desenvolvimento. Funcionalidades que ainda não estejam integradas e testadas — como cadastro de exemplares, empréstimos, devoluções, movimentações e estatísticas — não devem ser consideradas disponíveis.
 
@@ -17,6 +17,7 @@ O projeto está em desenvolvimento. Funcionalidades que ainda não estejam integ
 - MySQL e PyMySQL
 - Flask-WTF (proteção CSRF)
 - HTML, CSS e JavaScript
+- Google Books API (pesquisa de metadados e capas de livros)
 - XAMPP (opção para executar o MySQL localmente)
 
 ## Requisitos

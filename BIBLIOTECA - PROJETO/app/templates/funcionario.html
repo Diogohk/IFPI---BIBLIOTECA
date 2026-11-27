@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Editar funcionário' if funcionario else 'Cadastrar funcionário' }} | Biblioteca IFPI{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/consultas.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='css/funcionarios.css') }}">{% endblock %}
+{% block content %}
+<main class="employee-form-page">
+  <header class="consulta-header"><div><p class="eyebrow">GESTÃO <span>/</span> EQUIPE</p><h1>{{ 'Editar funcionário' if funcionario else 'Cadastrar funcionário' }}</h1><p class="consulta-subtitle">Dados de acesso e identificação do integrante da biblioteca.</p></div><a class="consulta-back" href="{{ url_for('funcionarios.listar_funcionarios') }}">← Voltar à equipe</a></header>
+  <section class="employee-form-card">
+    <form method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="employee-photo-field">
+        <div class="employee-photo-preview">{% if funcionario and funcionario.foto_perfil %}<img src="{{ url_for('funcionarios.foto_funcionario', filename=funcionario.foto_perfil) }}" alt="Foto atual">{% else %}<span>{{ funcionario.nome[:1]|upper if funcionario else 'F' }}</span>{% endif %}</div>
+        <div><label for="foto">Foto de perfil</label><input id="foto" name="foto" type="file" accept="image/png,image/jpeg,image/webp"><small>JPG, PNG ou WEBP, até 2 MB.</small></div>
+      </div>
+      <div class="employee-fields-grid">
+        <div class="exemplar-field"><label for="nome">Nome completo *</label><input id="nome" name="nome" maxlength="150" required value="{{ funcionario.nome if funcionario else '' }}" autocomplete="name"></div>
+        <div class="exemplar-field"><label for="matricula">Matrícula *</label><input id="matricula" name="matricula" maxlength="20" required value="{{ funcionario.matricula if funcionario else '' }}" autocomplete="off"></div>
+        <div class="exemplar-field"><label for="cargo">Cargo ou função *</label><input id="cargo" name="cargo" maxlength="80" required value="{{ funcionario.cargo if funcionario else '' }}" placeholder="Ex.: Bibliotecário"></div>
+        <div class="exemplar-field"><label for="senha">{{ 'Nova senha' if funcionario else 'Senha *' }}</label><input id="senha" name="senha" type="password" minlength="8" {% if not funcionario %}required{% endif %} autocomplete="new-password"><small>{% if funcionario %}Deixe em branco para manter a senha atual.{% else %}Mínimo de 8 caracteres.{% endif %}</small></div>
+        <div class="exemplar-field"><label for="confirmacao_senha">{{ 'Confirmar nova senha' if funcionario else 'Confirmar senha *' }}</label><input id="confirmacao_senha" name="confirmacao_senha" type="password" minlength="8" {% if not funcionario %}required{% endif %} autocomplete="new-password"></div>
+      </div>
+      <div class="employee-form-actions"><a href="{{ url_for('funcionarios.listar_funcionarios') }}">Cancelar</a><button class="consulta-primary" type="submit">{{ 'Salvar alterações' if funcionario else 'Cadastrar funcionário' }}</button></div>
+    </form>
+  </section>
+</main>
+{% endblock %}
